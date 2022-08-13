@@ -1,0 +1,25 @@
+ -Hunt for chocolates!-
+
+Chocolate hunter Runa is addicted to chocolate.
+Help her earn chocolate through battle.
+
+ -In the camp-
+
+She must eat enough chocolate in a certain amount of time.
+She can extend her life by eating chocolate.
+
+She can make potions by extracting ingredients from chocolate to recover her health.
+
+She can upgrade equipments by special magic which costs large amount of chocolate.
+
+ -In the route-
+
+There are three paths ahead.
+
+ -In the battle-
+
+She can fight with two types of attack.
+
+Melee type is one-targeted attack.
+
+She can also cast spells for powerful attack, but it costs mana.
