@@ -16,6 +16,10 @@ public:
     bn::optional<Game_Type> Update();
 
 private:
+    void PrintText();
+    void PressLeftRight();
+
+    bn::array<bn::unique_ptr<Battle_Sequence>, 3> _next_sequence;
     bn::sprite_text_generator& _text_generator;
     bn::vector<bn::sprite_ptr, 20> _text_sprite;
 

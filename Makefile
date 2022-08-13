@@ -27,7 +27,7 @@
 #---------------------------------------------------------------------------------------------------------------------
 TARGET      :=  $(notdir $(CURDIR))
 BUILD       :=  build
-LIBBUTANO   :=  C:/Users/lshdo/butano-10_5_0/butano
+LIBBUTANO   :=  ../../butano
 PYTHON      :=  python
 SOURCES     :=  src
 INCLUDES    :=  include
@@ -35,8 +35,8 @@ DATA        :=
 GRAPHICS    :=  graphics
 AUDIO       :=  audio
 DMGAUDIO    :=  dmg_audio
-ROMTITLE    :=  runa_sim
-ROMCODE     :=  RNSM
+ROMTITLE    :=  chocolate_hunt
+ROMCODE     :=  CHRN
 USERFLAGS   :=  
 USERASFLAGS :=  
 USERLDFLAGS :=  
