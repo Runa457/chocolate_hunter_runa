@@ -10,7 +10,7 @@ namespace Runa::Scene
 Game::Game(Status& status, bn::sprite_text_generator& text_generator) :
     _status(status),
     _text_generator(text_generator),
-    _subscene(new Runa::Game::Choice(_battle_sq, text_generator))
+    _subscene(new Runa::Game::Choice(status, _battle_sq, text_generator))
 {
     bn::bg_palettes::set_transparent_color(bn::color(0, 0, 0));
     //_text_generator.generate(0, 0, bn::format<5>("{}", _status.Level), _status_text);
@@ -34,7 +34,7 @@ bn::optional<Scene_Type> Game::Update()
             _subscene.reset();
             break;
         case Runa::Game::Game_Type::Choice:
-            _subscene.reset(new Runa::Game::Choice(_battle_sq, _text_generator));
+            _subscene.reset(new Runa::Game::Choice(_status, _battle_sq, _text_generator));
             break;
         case Runa::Game::Game_Type::Exit:
             return Scene_Type::Title;

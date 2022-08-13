@@ -9,6 +9,7 @@ Enemy::Enemy(int _index, short _level) :
 {
     Init();
 }
+Enemy::~Enemy() {}
 
 void Enemy::Init()
 {
