@@ -1,4 +1,5 @@
 .qtc_clangd/
+build/
 *.cflags
 *.config
 *.creator
@@ -9,3 +10,5 @@
 *.gba
 *.elf
 *.sav
+runa_simulator.elf
+runa_simulator.sav
