@@ -17,7 +17,7 @@ constexpr bn::string_view INTRO_LIST[NUM_INTRO] = {
     "placeholder",
     "",
     "",
-    "XXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
     "Press B to return"
 };
 constexpr int INTRO_X = -110;

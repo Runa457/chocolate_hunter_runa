@@ -10,18 +10,38 @@ namespace Runa::Game
 class Choice final : public Game_Root
 {
 public:
-    Choice(Status& status, bn::unique_ptr<Battle_Sequence>& battle_sq,
-           bn::sprite_text_generator& text_generator);
+    Choice(bn::sprite_text_generator& text_generator,
+           bn::random& random_generator,
+           Status& status,
+           bn::unique_ptr<Battle_Sequence>& battle_sq);
     ~Choice();
     bn::optional<Game_Type> Update();
 
 private:
-    void PrintText();
-    void PressLeftRight();
+    enum Menu : char
+    {
+        Left = 0,
+        Center = 1,
+        Right = 2
+    };
 
-    bn::array<bn::unique_ptr<Battle_Sequence>, 3> _next_sequence;
+    void Print_text();
+    void Press_left_right();
+    void Cursor_update(int move_direction);
+
+    bn::array<bn::unique_ptr<Battle_Sequence>, 3> _sequence_option;
     bn::sprite_text_generator& _text_generator;
     bn::vector<bn::sprite_ptr, 20> _text_sprite;
+    bn::sprite_ptr _cursor;
+
+    bn::random& _random;
+    bn::unique_ptr<Battle_Sequence>& _next_sequence;
+
+    Menu _current_menu;
+
+    Effect::Transition _scene_start;
+    Effect::Transition _scene_end;
+    static constexpr int TRANSITION_FRAMES = 10;
 
 };
 

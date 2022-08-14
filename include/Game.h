@@ -3,8 +3,10 @@
 
 #include "Game_type.h"
 #include "Status.h"
+#include "Effect_transition.h"
 
 #include "bn_optional.h"
+#include "bn_keypad.h"
 #include "bn_sprite_ptr.h"
 #include "bn_sprite_text_generator.h"
 

@@ -15,20 +15,40 @@ public:
     void Init();
     void Write();
 
-    int Get_level();
+    short Get_level();
+    int Get_hp();
+    int Get_mp();
+    int Get_exp();
+    short Get_turns();
+
+    bool Value_changed();
+
+    /**
+     * @brief Called at end of turn. Decrease left_turns by 1.
+     * @return Returns true if no turn left.
+     */
+    bool turn_end();
+
 private:
     /**
      * @brief Player (Runa) status.
      */
-    int Level;
-    int hp, maxhp;
-    int mp, maxmp;
+    short Level;
+    int hp;
+    int mp;
     int exp;
-    int left_turns;
-    int strength, constitution;
-    int ATK, DEF;
-    int stratum;
+    short left_turns;
+    short Weapon_level;
+    short Armor_level;
+    short stratum;
     int num_chocolate;
+
+    /**
+     * @brief For interface update.
+     * Value will be changed to true when other stats changed.
+     * After interface updated, value will be returned to false.
+     */
+    bool _value_changed = false;
 };
 
 } // namespace Runa

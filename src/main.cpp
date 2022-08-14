@@ -10,8 +10,9 @@
 #include "Status.h"
 
 #include "bn_sprite_text_generator.h"
+#include "bn_random.h"
 
-#include "common_fixed_8x16_sprite_font.h"
+#include "common_variable_8x16_sprite_font.h"
 
 // for debug; from sym_merged <- delete at end
 #include <bn_fixed_point.h>
@@ -29,8 +30,9 @@ int main()
 {
     bn::core::init();
 
-    bn::sprite_text_generator text_generator(common::fixed_8x16_sprite_font);
+    bn::sprite_text_generator text_generator(common::variable_8x16_sprite_font);
     text_generator.set_bg_priority(1);
+    bn::random random_generator;
 
     /**
      * @brief Game data.
@@ -94,6 +96,7 @@ int main()
 //
 
         bn::core::update();
+        random_generator.update();
 
         if (nextscene)
         {
@@ -117,7 +120,7 @@ int main()
                 scene.reset(new Scene::Introduction(text_generator));
                 break;
             case Scene::Scene_Type::Main_game:
-                scene.reset(new Scene::Game(status, text_generator));
+                scene.reset(new Scene::Game(text_generator, random_generator, status));
                 break;
             case Scene::Scene_Type::Options:
                 // placeholder: not implemented yet!!

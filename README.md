@@ -19,7 +19,7 @@ Help her earn chocolate through battle.
   She can make potions by extracting ingredients from chocolate to recover her health. But she cannot restore her life with potions.\
   Upgrading equipments by special magic costs a lot of chocolate, but it is worth it.
 
-+ #### In the junction
++ #### In the crossroad
 
   After each battle, you can choose one of the three paths to proceed.\
   Each path contains series of battles.\

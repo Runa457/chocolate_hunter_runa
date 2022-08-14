@@ -18,7 +18,7 @@ public:
     bn::optional<Scene_Type> Update();
 
 private:
-    enum class Menu : char
+    enum Menu : char
     {
         Main_game_start,
         Introduction,
@@ -33,7 +33,7 @@ private:
         {"Start", "Introdunction", "Options", "Credits", "Back to title"};
 
     bn::sprite_text_generator& _text_generator;
-    bn::vector<bn::sprite_ptr, 20> _menu_text;
+    bn::vector<bn::sprite_ptr, 15> _menu_text;
 
     bn::sprite_ptr _cursor;
     //bn::regular_bg_ptr bg;
@@ -60,7 +60,7 @@ private:
     /**
      * @brief Prints menu texts.
      */
-    void PrintText();
+    void Print_text();
 };
 
 } // namespace Runa::Scene

@@ -13,7 +13,7 @@ constexpr Enemy_data Enemy_base_data[] = {
     Enemy_data(bn::sprite_items::cursor_0, "Plc_hldr", 10, 10, 10, 1, 1, 1)
 };
 
-Enemy_data Get_enemy_base_data(int index)
+const Enemy_data& Get_enemy_base_data(int index)
 {
     return Enemy_base_data[index];
 }

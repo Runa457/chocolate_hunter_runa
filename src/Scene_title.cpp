@@ -14,12 +14,12 @@ static constexpr int MENU_Y_INT = 12;
 
 Title::Title(bn::sprite_text_generator& text_generator) :
     _text_generator(text_generator),
-    _cursor(bn::sprite_items::cursor_0.create_sprite(MENU_X-8, MENU_Y)),
+    _cursor(bn::sprite_items::cursor_0.create_sprite(MENU_X-10, MENU_Y)),
     _scene_start(Effect::Type::Transparency, Effect::Direction::In, TRANSITION_FRAMES),
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES)
     //bg(bn::regular_bg_items::bg_title.create_bg(0, 0))
 {
-    PrintText();
+    Print_text();
     bn::bg_palettes::set_transparent_color(bn::color(16, 16, 16));
 
     _cursor.set_blending_enabled(true);
@@ -67,11 +67,8 @@ void Title::Press_up_down()
 }
 void Title::Cursor_update(int move_direction)
 {
-    int next_cursor = static_cast<int>(_current_menu);
-    next_cursor = (next_cursor + NUM_MENU_OPTIONS + move_direction) % NUM_MENU_OPTIONS;
-    _current_menu = static_cast<Menu>(next_cursor);
-
-    _cursor.set_position({MENU_X-8, MENU_Y + next_cursor * MENU_Y_INT});
+    _current_menu = static_cast<Menu>((_current_menu + NUM_MENU_OPTIONS + move_direction) % NUM_MENU_OPTIONS);
+    _cursor.set_position(MENU_X-10, MENU_Y + _current_menu * MENU_Y_INT);
 }
 bn::optional<Scene_Type> Title::Get_next_scene()
 {
@@ -92,7 +89,7 @@ bn::optional<Scene_Type> Title::Get_next_scene()
     }
     return bn::nullopt;
 }
-void Title::PrintText()
+void Title::Print_text()
 {
     for (int i = 0; i < NUM_MENU_OPTIONS; i++)
     {

@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "bn_sprite_ptr.h"
 
 namespace Runa::Game::Enemy
 {
@@ -36,6 +37,11 @@ bool Enemy::Hp_change(short increment)
     if (hp > maxhp) { hp = maxhp; }
     else if (hp <= 0) { return true; }
     return false;
+}
+
+void Enemy::Sprite_create(short x, short y, bn::vector<bn::sprite_ptr, 3>& sprite)
+{
+    sprite.push_back(bn::sprite_ptr(_base_data.sprite_item.create_sprite(x, y)));
 }
 
 } // namespace Runa::Game::Enemy

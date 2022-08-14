@@ -3,6 +3,8 @@
 
 #include "Enemy_data.h"
 
+#include "bn_vector.h"
+
 namespace Runa::Game::Enemy
 {
 
@@ -13,6 +15,7 @@ public:
     ~Enemy();
 
     void Init();
+
     int Get_exp();
     int Get_choco();
 
@@ -24,6 +27,14 @@ public:
      * @return Returns true if hp is below 0 (dead)
      */
     bool Hp_change(short increment);
+
+    /**
+     * @brief Create sprite of enemy object.
+     * @param X coordinate of sprite.
+     * @param Y coordinate of sprite.
+     * @param Pointer of sprite object.
+     */
+    void Sprite_create(short x, short y, bn::vector<bn::sprite_ptr, 3>& sprite);
 
 private:
     Enemy_data _base_data;

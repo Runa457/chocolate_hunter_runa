@@ -28,7 +28,7 @@ public:
     //AI_type ai;
 };
 
-Enemy_data Get_enemy_base_data(int index);
+const Enemy_data& Get_enemy_base_data(int index);
 
 } // namespace Runa::Game::Enemy
 
