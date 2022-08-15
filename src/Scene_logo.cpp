@@ -17,7 +17,7 @@ Logo::Logo(bn::sprite_text_generator& text_generator) :
     _logo_bg.set_blending_enabled(true);
     _logo_bg.set_mosaic_enabled(true);
 
-    _scene_start.Init();
+    _scene_start.Start();
 }
 Logo::~Logo() {}
 
@@ -33,7 +33,7 @@ bn::optional<Scene_Type> Logo::Update()
         {
         case Effect::State::Waiting:
             if (bn::keypad::a_held() || --_waiting_frame <= 0)
-                { _scene_end.Init(); }
+                { _scene_end.Start(); }
             break;
         case Effect::State::Ongoing:
             _scene_end.Update();

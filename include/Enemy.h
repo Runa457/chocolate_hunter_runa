@@ -16,17 +16,29 @@ public:
 
     void Init();
 
+    const bn::string_view& Get_name();
+    const short& Get_level();
+    int Get_hp();
+    const short& Get_atk();
+    const short& Get_def();
+    const short& Get_spd();
     int Get_exp();
-    int Get_choco();
+    short Get_choco();
 
     /**
      * @brief Change hp and check if hp is below 0
      * @param Amount of change of hp.
      * > 0: heal
      * < 0: damage
-     * @return Returns true if hp is below 0 (dead)
+     * @return Returns true if hp is 0 or low (dead).
      */
     bool Hp_change(short increment);
+
+    /**
+     * @brief Same as Hp_change(0)
+     * @return True if hp is 0 or low.
+     */
+    bool Is_dead();
 
     /**
      * @brief Create sprite of enemy object.
@@ -39,7 +51,7 @@ public:
 private:
     Enemy_data _base_data;
     short level;
-    short hp, maxhp;
+    int hp, maxhp;
     short atk, def, spd;
 
 };

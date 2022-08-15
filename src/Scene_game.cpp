@@ -42,6 +42,10 @@ bn::optional<Scene_Type> Game::Update()
             _subscene.reset(new Runa::Game::Choice(_text_generator, _random, _status, _battle_sq));
             break;
         case Runa::Game::Game_Type::Exit:
+            _text_generator.set_center_alignment();
+            _text_generator.generate(0, 0, "Game over", _status_text);
+            _text_generator.set_left_alignment();
+            _status.Init();
             return Scene_Type::Title;
         default:
             BN_ERROR("Unknown Scene type: ", (int)*_game_mode);

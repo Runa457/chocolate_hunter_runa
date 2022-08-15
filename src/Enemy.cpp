@@ -22,22 +22,32 @@ void Enemy::Init()
     // spd = 1% increase per level
     spd = _base_data.base_spd * (100 + level * 1) / 100;
 }
+
+const bn::string_view& Enemy::Get_name() { return _base_data.name; }
+const short& Enemy::Get_level() { return level; }
+int Enemy::Get_hp() { return hp; }
+const short& Enemy::Get_atk() { return atk; }
+const short& Enemy::Get_def() { return def; }
+const short& Enemy::Get_spd() { return spd; }
 int Enemy::Get_exp()
 {
     // exp = 10% increase per level
-    return _base_data.base_exp * (100 + level * 10) / 100;
+    return (int)_base_data.base_exp * (100 + level * 10) / 100;
 }
-int Enemy::Get_choco()
+short Enemy::Get_choco()
 {
     return _base_data.base_choco;
 }
+
 bool Enemy::Hp_change(short increment)
 {
     hp += increment;
     if (hp > maxhp) { hp = maxhp; }
-    else if (hp <= 0) { return true; }
+    else if (hp <= 0) { hp = 0; return true; }
     return false;
 }
+
+bool Enemy::Is_dead() { return hp <= 0; }
 
 void Enemy::Sprite_create(short x, short y, bn::vector<bn::sprite_ptr, 3>& sprite)
 {

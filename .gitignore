@@ -10,5 +10,6 @@ build/
 *.gba
 *.elf
 *.sav
+*.png
 runa_simulator.elf
 runa_simulator.sav

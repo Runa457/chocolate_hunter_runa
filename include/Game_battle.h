@@ -24,20 +24,27 @@ private:
         Target_select,
         Confirm,
         Turn_action,
-        End_turn
+        Effect_action,
+        End_turn,
+        End_battle
     };
-
-    void Print_text();
 
     /**
      * @brief Called at start of battle.
      * Create sprite of enemies.
      */
     void Battle_start();
-    bool Action_select(); // bool -> state
-    bool Target_select(); // same
-    bool Confirm();
+    State Action_select();
+    State Target_select();
+    State Confirm();
     void Turn_action();
+    bool Effect_action();
+    void Enemy_dead(short index);
+
+    /**
+     * @brief Prints enemy level, name and stats.
+     */
+    void Print_enemy_information();
 
     /**
      * @brief Called at end of battle.
@@ -47,6 +54,7 @@ private:
 
     Status& _status;
     State _state;
+    short _action_order;
 
     bn::sprite_text_generator& _text_generator;
     bn::vector<bn::sprite_ptr, 20> _battle_text;
@@ -65,6 +73,9 @@ private:
     short _enemy_x[3] = {-60, 0, 60};
     bool _attack_type;
     short _target_index;
+
+    Effect::Transition _text_end;
+    Effect::Transition _enemy_end;
 };
 
 } // namespace Runa::Game

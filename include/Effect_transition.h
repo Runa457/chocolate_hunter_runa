@@ -39,21 +39,28 @@ public:
     Transition(Type type, Direction direction, int transition_frame);
     ~Transition();
     void Update();
-    void Init();
+
+    void Reset();
+    void Start();
+
     State Get_state();
 
 private:
     Type _type;
 
     /**
-     * @brief Out for fadeout / In for fadein
+     * @brief Out for fade-out / In for fade-in
      */
     Direction _direction;
 
     /**
-     * @brief Total number of frames
+     * @brief Total number of frames during transition.
      */
     int _transition_frame;
+    /**
+     * @brief Number of frames left to finish transition.
+     */
+    int _frame_left;
 
     /**
      * @brief Current state of transition object.

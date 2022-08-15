@@ -84,11 +84,27 @@ int Status::Get_hp() { return hp; }
 int Status::Get_mp() { return mp; }
 int Status::Get_exp() { return exp; }
 short Status::Get_turns() { return left_turns; }
+short Status::Get_weapon() { return Weapon_level; }
+short Status::Get_armor() { return Armor_level; }
 
-bool Status::Value_changed() { return _value_changed; }
+bool Status::Hp_change(short increment)
+{
+    _value_changed = true;
+    hp += increment;
+    if (hp > Get_hp_data(Level)) { hp = Get_hp_data(Level); }
+    else if (hp <= 0) { hp = 0; return true; }
+    return false;
+}
+
+bool Status::Value_changed()
+{
+    if (_value_changed) { _value_changed = false; return true; }
+    else { return false; }
+}
 
 bool Status::turn_end()
 {
+    _value_changed = true;
     return --left_turns <= 0;
 }
 

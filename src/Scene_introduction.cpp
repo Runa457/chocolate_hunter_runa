@@ -39,7 +39,7 @@ Introduction::Introduction(bn::sprite_text_generator& text_generator) :
     {
         text_sprite.set_blending_enabled(true);
     }
-    _scene_start.Init();
+    _scene_start.Start();
 }
 Introduction::~Introduction() {}
 
@@ -54,7 +54,7 @@ bn::optional<Scene_Type> Introduction::Update()
         switch (_scene_end.Get_state())
         {
         case Effect::State::Waiting:
-            if (bn::keypad::b_pressed()) { _scene_end.Init(); }
+            if (bn::keypad::b_pressed()) { _scene_end.Start(); }
             break;
         case Effect::State::Ongoing:
             _scene_end.Update();

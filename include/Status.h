@@ -20,7 +20,22 @@ public:
     int Get_mp();
     int Get_exp();
     short Get_turns();
+    short Get_weapon();
+    short Get_armor();
 
+    /**
+     * @brief Change hp and check if hp is below 0
+     * @param Amount of change of hp.
+     * > 0: heal
+     * < 0: damage
+     * @return Returns true if hp is 0 or low (dead).
+     */
+    bool Hp_change(short increment);
+
+    /**
+     * @brief Check if value is changed and return flag _value_changed to false.
+     * @return True if any of status is changed.
+     */
     bool Value_changed();
 
     /**
@@ -46,7 +61,7 @@ private:
     /**
      * @brief For interface update.
      * Value will be changed to true when other stats changed.
-     * After interface updated, value will be returned to false.
+     * After value checked, value will be returned to false.
      */
     bool _value_changed = false;
 };

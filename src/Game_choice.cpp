@@ -38,7 +38,7 @@ Choice::Choice(bn::sprite_text_generator& text_generator,
     {
         text_sprite.set_blending_enabled(true);
     }
-    _scene_start.Init();
+    _scene_start.Start();
 }
 Choice::~Choice() {}
 
@@ -55,7 +55,7 @@ bn::optional<Game_Type> Choice::Update()
         {
         case Effect::State::Waiting:
             Press_left_right();
-            if (bn::keypad::a_pressed()) { _scene_end.Init(); }
+            if (bn::keypad::a_pressed()) { _scene_end.Start(); }
             break;
         case Effect::State::Ongoing:
             _scene_end.Update();
