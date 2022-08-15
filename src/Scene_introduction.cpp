@@ -18,7 +18,7 @@ constexpr bn::string_view INTRO_LIST[NUM_INTRO] = {
     "",
     "",
     "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "Press B to return"
+    "Press A to proceed, B to return"
 };
 constexpr int INTRO_X = -110;
 constexpr int INTRO_Y = -64;

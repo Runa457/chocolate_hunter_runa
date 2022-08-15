@@ -2,6 +2,7 @@
 #include "Stats_data.h"
 
 #include "bn_format.h"
+#include "bn_algorithm.h"
 
 #include "bn_sprite_items_cursor_0.h"
 
@@ -22,7 +23,7 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
     _attack_type(false),
     _target_index(0),
     _enemy_end(static_cast<Effect::Type>(Effect::Type::Transparency | Effect::Type::Sprite_mosaic),
-               Effect::Direction::Out, 10),
+               Effect::Direction::Out, 20),
     _text_end(Effect::Type::Transparency, Effect::Direction::Out, 15)
 {
     _cursor.set_visible(false);
@@ -96,16 +97,19 @@ bn::optional<Game_Type> Battle::Update()
         if (_status.turn_end()) { return Game_Type::Exit; }
         if (_status.Get_hp() <= 0) { return Game_Type::Exit; }
 
-        if (_num_enemies <= 0) { _state = State::End_battle; }
+        if (_num_enemies <= 0)
+        {
+            Battle_end();
+            _state = State::End_battle;
+        }
         else { _state = State::Start_turn; }
         break;
     case State::End_battle:
-        for (bn::sprite_ptr& spr : _enemy_sprite)
+        if (bn::keypad::a_pressed())
         {
-            if (spr.visible()) { return bn::nullopt; }
+            _battle_text.clear();
+            return (_battle_sq->To_next_seq()) ? Game_Type::Rest : Game_Type::Battle; //<-Rest
         }
-        if (Battle_end()) { return Game_Type::Choice; }
-        else { return Game_Type::Battle; }
         break;
     }
     return bn::nullopt;
@@ -155,7 +159,17 @@ void Battle::Print_enemy_information()
 
 Battle::State Battle::Confirm()
 {
-    if (bn::keypad::a_pressed()) { return State::Turn_action; }
+    if (bn::keypad::a_pressed())
+    {
+        _attack_order.clear();
+        _attack_order.push_back({Get_spd_data(_status.Get_level()), -1});
+        for (int i = 0; i < _enemies.size(); i++)
+        {
+            _attack_order.push_back({_enemies[i].Get_spd(), i});
+        }
+        bn::sort(_attack_order.rbegin(), _attack_order.rend());
+        return State::Turn_action;
+    }
     if (bn::keypad::b_pressed()) { return State::Action_select; }
     return State::Confirm;//
 }
@@ -163,36 +177,32 @@ void Battle::Turn_action()
 {
     int level = _status.Get_level();
     int damage;
+    short index = _attack_order[_action_order].second;
+
     _text_generator.set_center_alignment();
 
-    switch (_action_order)
+    if (index == -1) // player attack
     {
-    case 0:
-        //some formulars
-        damage = bn::max(Get_atk_data(level)*Get_weapon_data(_status.Get_weapon()) - _enemies[_target_index].Get_def(), 1);
+        if (_attack_type)
+        {
+            if (!_status.Mp_change(-5)) { _attack_type = false; }
+        }
+        damage = Damage_calculator(Get_str_data(level), Get_weapon_data(_status.Get_weapon()), _enemies[_target_index].Get_def(), 0, Get_int_data(level), _attack_type); // enemy weapon/armor level?
 
         _text_generator.generate(_enemy_x[_target_index], -30, bn::format<5>("{}", damage), _damage_text);
         for (bn::sprite_ptr& text : _damage_text)
         {
-            text.set_blending_enabled(true);
+            text.set_blending_enabled   (true);
         }
         _text_end.Start();
 
         _enemies[_target_index].Hp_change(-damage);
-        ++_action_order;
-        break;
-    case 1:
-    case 2:
-    case 3:
-        if (_enemies.size() < _action_order || _enemies[_action_order-1].Is_dead())
-        {
-            ++_action_order;
-            _text_generator.set_left_alignment();
-            return;
-        }
-        damage = bn::max(_enemies[_action_order-1].Get_atk()-Get_def_data(level), 1);
+    }
+    else if (!_enemies[index].Is_dead()) // enemy attack
+    {
+        damage = Damage_calculator(_enemies[index].Get_atk(), 0, Get_def_data(level), Get_armor_data(_status.Get_armor()), 0, false);
 
-        _text_generator.generate(-80, 50, bn::format<5>("{}", damage), _damage_text);
+        _text_generator.generate(-90, 40, bn::format<5>("{}", damage), _damage_text);
         for (bn::sprite_ptr& text : _damage_text)
         {
             text.set_blending_enabled(true);
@@ -200,13 +210,22 @@ void Battle::Turn_action()
         _text_end.Start();
 
         _status.Hp_change(-damage);
-        ++_action_order;
-        break;
-    default:
-        break;
     }
+
     _text_generator.set_left_alignment();
+    ++_action_order;
 }
+
+int Battle::Damage_calculator(int str, int weapon, int def, int armor, int inte, bool type)
+{
+    int base = (type) ? inte * 2 : str;
+    int dmg = (base + weapon + 1) / (def + 1);
+    dmg = dmg + (base * base / 3 + weapon + 1) / (def + armor + 1);
+    dmg = dmg + weapon - armor;
+    dmg = bn::max(1, dmg);
+    return dmg;
+}
+
 bool Battle::Effect_action()
 {
     switch (_text_end.Get_state())
@@ -288,11 +307,25 @@ void Battle::Battle_start()
         //enemy_hpbar;
     }
 }
-bool Battle::Battle_end()
+void Battle::Battle_end()
 {
-    // exp, choco gain
+    int xp = 0;
+    int choco = 0;
+
+    for (Enemy::Enemy& enemy : _enemies)
+    {
+        xp += enemy.Get_exp();
+        choco += enemy.Get_choco();
+    }
+    _text_generator.set_center_alignment();
+    _text_generator.generate(0, 10, "Victory!", _battle_text);
+    _text_generator.generate(0, 20, bn::format<35>("Gain {} exp, {} chocolates.", xp, choco), _battle_text);
+    _text_generator.set_left_alignment();
+
+    _status.Exp_earn(xp);
+    _status.Choco_earn(choco);
+
     if (_battle_sq->Get_is_boss()) { /* stratum++; */ }
-    return _battle_sq->To_next_seq();
 }
 
 } // namespace Runa::Scene

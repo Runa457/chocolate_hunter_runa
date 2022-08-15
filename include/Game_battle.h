@@ -36,10 +36,18 @@ private:
     void Battle_start();
     State Action_select();
     State Target_select();
+
+    /**
+     * @brief Confirm current action.
+     * Speed check & ordering happens here.
+     * @return Next state
+     */
     State Confirm();
     void Turn_action();
     bool Effect_action();
     void Enemy_dead(short index);
+
+    int Damage_calculator(int str, int weapon, int def, int armor, int inte, bool type);
 
     /**
      * @brief Prints enemy level, name and stats.
@@ -48,13 +56,14 @@ private:
 
     /**
      * @brief Called at end of battle.
-     * @return Returns true if last sequence is ended.
+     * Gain exp, chocolate.
      */
-    bool Battle_end();
+    void Battle_end();
 
     Status& _status;
     State _state;
     short _action_order;
+    bn::vector<bn::pair<int, short>, 4> _attack_order;
 
     bn::sprite_text_generator& _text_generator;
     bn::vector<bn::sprite_ptr, 20> _battle_text;

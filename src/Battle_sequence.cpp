@@ -20,7 +20,7 @@ Battle_Sequence::Battle_Sequence(bn::random& random_generator,
     }
     else
     {
-        _num_sequence = _random.get_int(1, 4);
+        _num_sequence = _random.get_int(2, 6);
         for (int i = 0; i < _num_sequence; i++)
         {
             _enemies.push_back(bn::vector<Enemy::Enemy, 3>());

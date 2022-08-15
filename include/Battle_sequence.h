@@ -39,7 +39,7 @@ private:
     int _total_choco;
     int _total_enemy;
 
-    bn::vector<bn::vector<Enemy::Enemy, 3>, 3> _enemies;
+    bn::vector<bn::vector<Enemy::Enemy, 3>, 5> _enemies;
 
 };
 

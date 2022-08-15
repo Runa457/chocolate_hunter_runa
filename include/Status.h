@@ -22,6 +22,7 @@ public:
     short Get_turns();
     short Get_weapon();
     short Get_armor();
+    short Get_choco();
 
     /**
      * @brief Change hp and check if hp is below 0
@@ -31,6 +32,22 @@ public:
      * @return Returns true if hp is 0 or low (dead).
      */
     bool Hp_change(short increment);
+    /**
+     * @brief Change mp and check if mp is enough.
+     * @param Amount of change.
+     * @return Returns false if mp is not enough.
+     */
+    bool Mp_change(short increment);
+    /**
+     * @brief Exp_earn
+     * @param increment
+     * @return Returns true if leveled up.
+     */
+    bool Exp_earn(int increment);
+    void Choco_earn(int increment);
+    void Life_regain();
+    void Weapon_upgrade();
+    void Armor_upgrade();
 
     /**
      * @brief Check if value is changed and return flag _value_changed to false.
@@ -56,7 +73,7 @@ private:
     short Weapon_level;
     short Armor_level;
     short stratum;
-    int num_chocolate;
+    int chocolate;
 
     /**
      * @brief For interface update.
