@@ -13,7 +13,7 @@ constexpr bn::string_view CREDITS_LIST[NUM_CREDITS] = {
     "",
     "Programming: Lsh Games",
     "Music:",
-    "Graphic:",
+    "Graphics: Lsh Games",
     "",
     "Special Thanks: copyrat90",
     "",

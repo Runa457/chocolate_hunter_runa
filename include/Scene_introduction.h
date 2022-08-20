@@ -17,11 +17,15 @@ public:
 
 private:
     bn::sprite_text_generator& _text_generator;
-    bn::vector<bn::sprite_ptr, 50> _intro_text;
+    bn::vector<bn::sprite_ptr, 80> _intro_text;
+    bn::vector<bn::sprite_ptr, 5> _page_text;
 
     Effect::Transition _scene_start;
     Effect::Transition _scene_end;
     static constexpr int TRANSITION_FRAMES = 15;
+
+    int _current_page = 0;
+    void Print_text();
 };
 
 } // namespace Runa::Scene

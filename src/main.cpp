@@ -4,6 +4,7 @@
 #include "Scene_logo.h"
 #include "Scene_title.h"
 #include "Scene_game.h"
+#include "Scene_option.h"
 #include "Scene_credits.h"
 #include "Scene_introduction.h"
 
@@ -123,8 +124,7 @@ int main()
                 scene.reset(new Scene::Game(text_generator, random_generator, status));
                 break;
             case Scene::Scene_Type::Options:
-                // placeholder: not implemented yet!!
-                scene.reset(new Scene::Title(text_generator));
+                scene.reset(new Scene::Option(text_generator, status));
                 break;
             case Scene::Scene_Type::Credits:
                 scene.reset(new Scene::Credits(text_generator));

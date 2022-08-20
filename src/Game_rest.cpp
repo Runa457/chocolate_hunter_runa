@@ -89,6 +89,7 @@ bn::optional<Game_Type> Rest::Update()
 
 void Rest::Print_text()
 {
+    _save_text.clear();
     _text_sprite.clear();
 
     _text_generator.set_center_alignment();

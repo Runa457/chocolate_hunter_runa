@@ -8,7 +8,7 @@ namespace Runa
 
 struct Save_data
 {
-    constexpr static const char* SAVE_CHECK = "RUNA_0814";
+    constexpr static const char* SAVE_CHECK = "RUNA_0820";
 
     char CHECK[10] = {};
     short level = 0;

@@ -17,7 +17,7 @@ public:
     bn::optional<Game_Type> Update();
 
 private:
-    enum class State
+    enum class State : char
     {
         Start_turn,
         Action_select,
