@@ -37,6 +37,7 @@ private:
     bn::sprite_ptr _cursor;
 
     Menu _current_menu;
+    int _cost[4];
 
     Effect::Transition _scene_start;
     Effect::Transition _scene_end;

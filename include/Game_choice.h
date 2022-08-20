@@ -36,6 +36,7 @@ private:
 
     bn::random& _random;
     bn::unique_ptr<Battle_Sequence>& _next_sequence;
+    Status& _status;
 
     Menu _current_menu;
 

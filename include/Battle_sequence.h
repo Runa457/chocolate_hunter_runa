@@ -13,7 +13,7 @@ class Battle_Sequence
 {
 public:
     Battle_Sequence(bn::random& random_generator,
-                    int player_level, bool is_boss); // short stratum_num
+                    int player_level, short stratum, bool is_boss); // short stratum_num
     ~Battle_Sequence();
 
     bool Get_is_boss();
@@ -24,7 +24,7 @@ public:
 
     /**
      * @brief Increase current sequence index by 1.
-     * @return Return true if last sequence ends.
+     * @return Return false if last sequence ends.
      */
     bool To_next_seq();
 

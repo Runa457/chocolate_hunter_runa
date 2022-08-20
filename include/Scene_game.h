@@ -32,6 +32,7 @@ private:
 
     bn::sprite_text_generator& _text_generator;
     bn::vector<bn::sprite_ptr, 60> _status_text;
+    bn::vector<bn::sprite_ptr, 2> _choco_icon;
 
     bn::unique_ptr<Runa::Game::Battle_Sequence> _battle_sq;
 };

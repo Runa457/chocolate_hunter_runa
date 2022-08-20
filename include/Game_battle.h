@@ -47,8 +47,6 @@ private:
     bool Effect_action();
     void Enemy_dead(short index);
 
-    int Damage_calculator(int str, int weapon, int def, int armor, int inte, bool type);
-
     /**
      * @brief Prints enemy level, name and stats.
      */
@@ -66,7 +64,7 @@ private:
     bn::vector<bn::pair<int, short>, 4> _attack_order;
 
     bn::sprite_text_generator& _text_generator;
-    bn::vector<bn::sprite_ptr, 20> _battle_text;
+    bn::vector<bn::sprite_ptr, 30> _battle_text;
     bn::vector<bn::sprite_ptr, 5> _damage_text;
 
     bn::unique_ptr<Battle_Sequence>& _battle_sq;
@@ -75,6 +73,8 @@ private:
     bn::vector<bn::sprite_ptr, 3> _enemy_sprite;
     bn::vector<bn::sprite_ptr, 3> _enemy_hp_sprite;
 
+    bn::sprite_ptr _sword_attack_sprite;
+    bn::sprite_ptr _magic_attack_sprite;
     bn::sprite_ptr _cursor;
     /**
      * @brief false : melee type, true : magic type

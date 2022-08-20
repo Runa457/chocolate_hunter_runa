@@ -6,6 +6,8 @@
 
 #include "bn_format.h"
 
+#include "bn_sprite_items_icon_choco.h"
+
 namespace Runa::Scene
 {
 
@@ -17,6 +19,9 @@ Game::Game(bn::sprite_text_generator& text_generator,
     _text_generator(text_generator),
     _subscene(new Runa::Game::Choice(text_generator, random_generator, status, _battle_sq))
 {
+    _choco_icon.push_back(bn::sprite_items::icon_choco.create_sprite(112, -72));
+    _choco_icon.push_back(bn::sprite_items::icon_choco.create_sprite(112, 72));
+
     bn::bg_palettes::set_transparent_color(bn::color(8, 8, 8));
     Print_text();
 }
@@ -43,11 +48,16 @@ bn::optional<Scene_Type> Game::Update()
             _subscene.reset(new Runa::Game::Choice(_text_generator, _random, _status, _battle_sq));
             break;
         case Runa::Game::Game_Type::Exit:
+            _status_text.clear();
             _text_generator.set_center_alignment();
             _text_generator.generate(0, 0, "Game over", _status_text);
             _text_generator.set_left_alignment();
-            _status.Init();
-            return Scene_Type::Title;
+            if (bn::keypad::a_pressed())
+            {
+                _status.Init();
+                return Scene_Type::Title;
+            }
+            break;
         default:
             BN_ERROR("Unknown Scene type: ", (int)*_game_mode);
             break;
@@ -60,12 +70,14 @@ void Game::Print_text()
 {
     int level = _status.Get_level();
     _status_text.clear();
+    _text_generator.generate(-116, -72, bn::format<10>("Stratum {}", _status.Get_stratum()), _status_text);
     _text_generator.generate(-60, 42, bn::format<17>("Level: {} - {}%", level, _status.Get_exp()*100/Get_exp_data(level)), _status_text);
     _text_generator.generate(-60, 52, bn::format<17>("Hp: {}/ {}", _status.Get_hp(), Get_hp_data(level)), _status_text);
     _text_generator.generate(-60, 62, bn::format<17>("Mp: {}/ {}", _status.Get_mp(), Get_mp_data(level)), _status_text);
     _text_generator.generate(-60, 72, bn::format<17>("Left turns: {}", _status.Get_turns()), _status_text);
     _text_generator.set_right_alignment();
-    _text_generator.generate(116, 72, bn::format<7>("{}", _status.Get_choco()), _status_text);
+    _text_generator.generate(104, 72, bn::format<7>("{}", _status.Get_choco()), _status_text);
+    _text_generator.generate(104, -72, bn::format<4>("{}%", _status.Get_multiplier()), _status_text);
     _text_generator.set_left_alignment();
 }
 

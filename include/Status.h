@@ -22,7 +22,9 @@ public:
     short Get_turns();
     short Get_weapon();
     short Get_armor();
+    short Get_stratum();
     short Get_choco();
+    short Get_multiplier();
 
     /**
      * @brief Change hp and check if hp is below 0
@@ -38,16 +40,18 @@ public:
      * @return Returns false if mp is not enough.
      */
     bool Mp_change(short increment);
-    /**
-     * @brief Exp_earn
-     * @param increment
-     * @return Returns true if leveled up.
-     */
-    bool Exp_earn(int increment);
+
+    void Exp_earn(int increment);
     void Choco_earn(int increment);
     void Life_regain();
     void Weapon_upgrade();
     void Armor_upgrade();
+
+    void Next_stratum();
+    /**
+     * @brief At the end of battle sequence, lower multiplier by 5%.
+     */
+    void Lower_multiplier();
 
     /**
      * @brief Check if value is changed and return flag _value_changed to false.
@@ -74,6 +78,7 @@ private:
     short Armor_level;
     short stratum;
     int chocolate;
+    int choco_multiplier;
 
     /**
      * @brief For interface update.

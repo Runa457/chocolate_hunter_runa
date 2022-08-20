@@ -14,13 +14,13 @@ Enemy::~Enemy() {}
 
 void Enemy::Init()
 {
-    // hp = 5% increase per level
-    maxhp = hp = _base_data.base_maxhp * (100 + level * 5) / 100;
-    // atk, def = 10% increase per level
-    atk = _base_data.base_atk * (100 + level * 10) / 100;
-    def = _base_data.base_def * (100 + level * 10) / 100;
-    // spd = 1% increase per level
-    spd = _base_data.base_spd * (100 + level * 1) / 100;
+    // hp = 10% increase per level
+    maxhp = hp = _base_data.base_maxhp * (100 + level * 10) / 100;
+    // atk, def = 5% increase per level
+    atk = _base_data.base_atk * (100 + level * 5) / 100;
+    def = _base_data.base_def * (100 + level * 5) / 100;
+    // spd = 3% increase per level
+    spd = _base_data.base_spd * (100 + level * 3) / 100;
 }
 
 const bn::string_view& Enemy::Get_name() { return _base_data.name; }

@@ -1,13 +1,23 @@
 #include "Game_battle.h"
 #include "Stats_data.h"
+#include "Damage_formula.h"
 
 #include "bn_format.h"
 #include "bn_algorithm.h"
 
-#include "bn_sprite_items_cursor_0.h"
+#include "bn_sprite_items_select_cursor_square.h"
+#include "bn_sprite_items_select_cursor_down.h"
+#include "bn_sprite_items_icon_sword_attack.h"
+#include "bn_sprite_items_icon_magic_attack.h"
 
 namespace Runa::Game
 {
+
+namespace
+{
+constexpr int ATTACK_ICON_X = 104;
+constexpr int ATTACK_ICON_Y = 40;
+}
 
 Battle::Battle(bn::sprite_text_generator& text_generator,
                Status& status,
@@ -19,7 +29,9 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
     _battle_sq(battle_sq),
     _enemies(battle_sq->Get_current_enemies()),
     _num_enemies(3),
-    _cursor(bn::sprite_items::cursor_0.create_sprite(94, 56)),
+    _cursor(bn::sprite_items::select_cursor_square.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y)),
+    _sword_attack_sprite(bn::sprite_items::icon_sword_attack.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y)),
+    _magic_attack_sprite(bn::sprite_items::icon_magic_attack.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y+16)),
     _attack_type(false),
     _target_index(0),
     _enemy_end(static_cast<Effect::Type>(Effect::Type::Transparency | Effect::Type::Sprite_mosaic),
@@ -27,6 +39,8 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
     _text_end(Effect::Type::Transparency, Effect::Direction::Out, 15)
 {
     _cursor.set_visible(false);
+    _sword_attack_sprite.set_visible(false);
+    _magic_attack_sprite.set_visible(false);
     Battle_start();
 }
 Battle::~Battle() {}
@@ -39,14 +53,21 @@ bn::optional<Game_Type> Battle::Update()
         _state = State::Action_select;
         break;
     case State::Action_select:
-        _cursor.set_item(bn::sprite_items::cursor_0);
+        _cursor.set_item(bn::sprite_items::select_cursor_square);
         _cursor.set_visible(true);
+        _sword_attack_sprite.set_visible(true);
+        _magic_attack_sprite.set_visible(true);
 
         _state = Action_select();
-        if (_state == State::Target_select) { Print_enemy_information(); }
+        if (_state == State::Target_select)
+        {
+            Print_enemy_information();
+            _sword_attack_sprite.set_visible(false);
+            _magic_attack_sprite.set_visible(false);
+        }
         break;
     case State::Target_select:
-        _cursor.set_item(bn::sprite_items::cursor_0); // <- cursor_1
+        _cursor.set_item(bn::sprite_items::select_cursor_down);
 
         _state = Target_select();
         switch (_state)
@@ -58,8 +79,8 @@ bn::optional<Game_Type> Battle::Update()
             _cursor.set_visible(false);
             _battle_text.clear();
             _text_generator.set_center_alignment();
-            _text_generator.generate(0, 10, "Confirm?", _battle_text);
-            _text_generator.generate(0, 20, "A: YES B: NO", _battle_text);
+            _text_generator.generate(0, 15, "Confirm?", _battle_text);
+            _text_generator.generate(0, 25, "A: YES B: NO", _battle_text);
             _text_generator.set_left_alignment();
             break;
         default:
@@ -108,9 +129,19 @@ bn::optional<Game_Type> Battle::Update()
         if (bn::keypad::a_pressed())
         {
             _battle_text.clear();
-            return (_battle_sq->To_next_seq()) ? Game_Type::Rest : Game_Type::Battle; //<-Rest
+            if (_battle_sq->To_next_seq()) { return Game_Type::Battle; }
+            else
+            {
+                _status.Lower_multiplier();
+                if (_battle_sq->Get_is_boss())
+                {
+                    _status.Next_stratum();
+                }
+                return Game_Type::Rest;
+            }
         }
         break;
+    default: break;
     }
     return bn::nullopt;
 }
@@ -122,7 +153,7 @@ Battle::State Battle::Action_select()
     {
         _attack_type = (_attack_type) ? false : true;
     }
-    _cursor.set_position(94, (_attack_type) ? 72 : 56);
+    _cursor.set_position(ATTACK_ICON_X, (_attack_type) ? ATTACK_ICON_Y + 16 : ATTACK_ICON_Y);
     return State::Action_select;
 }
 Battle::State Battle::Target_select()
@@ -150,7 +181,7 @@ void Battle::Print_enemy_information()
 {
     _battle_text.clear();
     _text_generator.set_center_alignment();
-    _text_generator.generate(0, -60, bn::format<15>("Lv {} {}", _enemies[_target_index].Get_level(), _enemies[_target_index].Get_name()), _battle_text);
+    _text_generator.generate(0, -60, bn::format<20>("Lv {} {}", _enemies[_target_index].Get_level(), _enemies[_target_index].Get_name()), _battle_text);
     _text_generator.generate(0, -50, bn::format<10>("Hp {}", _enemies[_target_index].Get_hp()), _battle_text);
     // debug line ; stats
     _text_generator.generate(0, -40, bn::format<20>("A {} D {} S {}", _enemies[_target_index].Get_atk(), _enemies[_target_index].Get_def(), _enemies[_target_index].Get_spd()), _battle_text);
@@ -183,11 +214,13 @@ void Battle::Turn_action()
 
     if (index == -1) // player attack
     {
+        int atk_pow = Get_str_data(level);
         if (_attack_type)
         {
             if (!_status.Mp_change(-5)) { _attack_type = false; }
+            else { atk_pow = Get_int_data(level); }
         }
-        damage = Damage_calculator(Get_str_data(level), Get_weapon_data(_status.Get_weapon()), _enemies[_target_index].Get_def(), 0, Get_int_data(level), _attack_type); // enemy weapon/armor level?
+        damage = Damage_calculator((int)_attack_type, atk_pow, Get_weapon_data(_status.Get_weapon()), _enemies[_target_index].Get_def(), 0);
 
         _text_generator.generate(_enemy_x[_target_index], -30, bn::format<5>("{}", damage), _damage_text);
         for (bn::sprite_ptr& text : _damage_text)
@@ -200,7 +233,7 @@ void Battle::Turn_action()
     }
     else if (!_enemies[index].Is_dead()) // enemy attack
     {
-        damage = Damage_calculator(_enemies[index].Get_atk(), 0, Get_def_data(level), Get_armor_data(_status.Get_armor()), 0, false);
+        damage = Damage_calculator(0, _enemies[index].Get_atk(), 0, Get_def_data(level), Get_armor_data(_status.Get_armor()));
 
         _text_generator.generate(-90, 40, bn::format<5>("{}", damage), _damage_text);
         for (bn::sprite_ptr& text : _damage_text)
@@ -214,16 +247,6 @@ void Battle::Turn_action()
 
     _text_generator.set_left_alignment();
     ++_action_order;
-}
-
-int Battle::Damage_calculator(int str, int weapon, int def, int armor, int inte, bool type)
-{
-    int base = (type) ? inte * 2 : str;
-    int dmg = (base + weapon + 1) / (def + 1);
-    dmg = dmg + (base * base / 3 + weapon + 1) / (def + armor + 1);
-    dmg = dmg + weapon - armor;
-    dmg = bn::max(1, dmg);
-    return dmg;
 }
 
 bool Battle::Effect_action()
@@ -303,7 +326,7 @@ void Battle::Battle_start()
 
     for (int i = 0; i < _num_enemies; i++)
     {
-        _enemies[i].Sprite_create(_enemy_x[i], -12, _enemy_sprite);
+        _enemies[i].Sprite_create(_enemy_x[i], 0, _enemy_sprite);
         //enemy_hpbar;
     }
 }
@@ -317,6 +340,8 @@ void Battle::Battle_end()
         xp += enemy.Get_exp();
         choco += enemy.Get_choco();
     }
+    choco = (choco * _status.Get_multiplier() + 50) / 100;
+
     _text_generator.set_center_alignment();
     _text_generator.generate(0, 10, "Victory!", _battle_text);
     _text_generator.generate(0, 20, bn::format<35>("Gain {} exp, {} chocolates.", xp, choco), _battle_text);
@@ -324,8 +349,6 @@ void Battle::Battle_end()
 
     _status.Exp_earn(xp);
     _status.Choco_earn(choco);
-
-    if (_battle_sq->Get_is_boss()) { /* stratum++; */ }
 }
 
 } // namespace Runa::Scene

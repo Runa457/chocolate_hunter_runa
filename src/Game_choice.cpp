@@ -1,6 +1,6 @@
 #include "Game_choice.h"
 
-#include "bn_sprite_items_cursor_0.h"
+#include "bn_sprite_items_select_battle.h"
 
 #include "bn_format.h"
 
@@ -10,7 +10,7 @@ namespace Runa::Game
 namespace
 {
 static constexpr int CURSOR_X = 60;
-static constexpr int CURSOR_Y = -16;
+static constexpr int CURSOR_Y = -20;
 }
 
 Choice::Choice(bn::sprite_text_generator& text_generator,
@@ -19,17 +19,19 @@ Choice::Choice(bn::sprite_text_generator& text_generator,
                bn::unique_ptr<Battle_Sequence>& battle_sq) :
     _random(random_generator),
     _text_generator(text_generator),
-    _cursor(bn::sprite_items::cursor_0.create_sprite(0, CURSOR_Y)),
+    _status(status),
+    _cursor(bn::sprite_items::select_battle.create_sprite(0, CURSOR_Y)),
     _current_menu(Menu::Center),
     _sequence_option{},
     _next_sequence(battle_sq),
     _scene_start(Effect::Type::Transparency, Effect::Direction::In, TRANSITION_FRAMES),
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES)
 {
-    _sequence_option[0].reset(new Battle_Sequence(_random, status.Get_level(), false));
-    // some condition fulfulled -> [1] = boss
-    _sequence_option[1].reset(new Battle_Sequence(_random, status.Get_level(), true));
-    _sequence_option[2].reset(new Battle_Sequence(_random, status.Get_level(), false));
+    _sequence_option[0].reset(new Battle_Sequence(_random, status.Get_level(), status.Get_stratum(), false));
+    if (_status.Get_multiplier() <= 100)
+        { _sequence_option[1].reset(new Battle_Sequence(_random, status.Get_level(), status.Get_stratum(), true)); }
+    else { _sequence_option[1].reset(new Battle_Sequence(_random, status.Get_level(), status.Get_stratum(), false)); }
+    _sequence_option[2].reset(new Battle_Sequence(_random, status.Get_level(), status.Get_stratum(), false));
 
     Print_text();
 
@@ -79,7 +81,7 @@ void Choice::Print_text()
     {
         if (_sequence_option[i]->Get_is_boss())
         {
-            _text_generator.generate((i-1)*CURSOR_X, -27, "-BOSS-", _text_sprite);
+            _text_generator.generate((i-1)*CURSOR_X, -36, "-BOSS-", _text_sprite);
         }
         _text_generator.generate((i-1)*CURSOR_X, -6, bn::format<5>("S: {}", _sequence_option[i]->Get_num_seq()), _text_sprite);
         _text_generator.generate((i-1)*CURSOR_X, 4, bn::format<6>("E: {}", _sequence_option[i]->Get_total_enemy()), _text_sprite);

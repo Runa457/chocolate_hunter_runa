@@ -20,6 +20,7 @@ struct Save_data
     short Armor_level = 0;
     short stratum = 0;
     int chocolate = 0;
+    int multiplier = 0;
 
     bool Read()
     {
@@ -49,6 +50,7 @@ Status::Status()
         Armor_level = _read_data.Armor_level;
         stratum = _read_data.stratum;
         chocolate = _read_data.chocolate;
+        choco_multiplier = _read_data.multiplier;
     }
     else { Init(); }
 }
@@ -65,6 +67,7 @@ void Status::Init()
     Armor_level = 0;
     stratum = 1;
     chocolate = 0;
+    choco_multiplier = 200;
 
     _value_changed = false;
 }
@@ -80,6 +83,7 @@ void Status::Write()
     _save_data.Armor_level = Armor_level;
     _save_data.stratum = stratum;
     _save_data.chocolate = chocolate;
+    _save_data.multiplier = choco_multiplier;
     _save_data.Write();
 }
 
@@ -90,7 +94,9 @@ int Status::Get_exp() { return exp; }
 short Status::Get_turns() { return left_turns; }
 short Status::Get_weapon() { return Weapon_level; }
 short Status::Get_armor() { return Armor_level; }
+short Status::Get_stratum() { return stratum; }
 short Status::Get_choco() { return chocolate; }
+short Status::Get_multiplier() { return choco_multiplier; }
 
 bool Status::Hp_change(short increment)
 {
@@ -108,17 +114,15 @@ bool Status::Mp_change(short increment)
     if (mp > Get_mp_data(Level)) { mp = Get_mp_data(Level); }
     return true;
 }
-bool Status::Exp_earn(int increment)
+void Status::Exp_earn(int increment)
 {
     _value_changed = true;
     exp += increment;
-    if (exp >= Get_exp_data(Level))
+    while (exp >= Get_exp_data(Level))
     {
-        exp %= Get_exp_data(Level);
+        exp -= Get_exp_data(Level);
         ++Level;
-        return true;
     }
-    else { return false; }
 }
 void Status::Choco_earn(int increment)
 {
@@ -132,6 +136,19 @@ void Status::Life_regain()
 }
 void Status::Weapon_upgrade() { ++Weapon_level; }
 void Status::Armor_upgrade() { ++Armor_level; }
+
+void Status::Next_stratum()
+{
+    _value_changed = true;
+    ++stratum;
+    choco_multiplier = 200;
+}
+void Status::Lower_multiplier()
+{
+    _value_changed = true;
+    choco_multiplier -= 5;
+    if (choco_multiplier < 0) { choco_multiplier = 0; }
+}
 
 bool Status::Value_changed()
 {
