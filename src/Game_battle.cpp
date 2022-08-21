@@ -191,7 +191,7 @@ Battle::State Battle::Target_select()
         } while (_enemies[_target_index].Is_dead());
         Print_enemy_information();
     }
-    _cursor.set_position(_enemy_x[_target_index], -30);
+    _cursor.set_position(_enemy_x[_target_index], -25);
     return State::Target_select;
 }
 void Battle::Print_enemy_information()
@@ -246,13 +246,14 @@ void Battle::Turn_action()
         }
         damage = Damage_calculator((int)_attack_type, atk_pow, Get_weapon_data(_status.Get_weapon()), _enemies[_target_index].Get_def(), 0);
 
-        _text_generator.generate(_enemy_x[_target_index], -30, bn::format<5>("{}", damage), _damage_text);
+        _text_generator.generate(_enemy_x[_target_index], -25, bn::format<5>("{}", damage), _damage_text);
         for (bn::sprite_ptr& text : _damage_text)
         {
             text.set_blending_enabled   (true);
         }
         _text_end.Start();
-        bn::sound_items::sfx_battle_sword.play();
+        if (_attack_type) { bn::sound_items::sfx_battle_magic.play(); }
+        else { bn::sound_items::sfx_battle_sword.play(); }
 
         _enemies[_target_index].Hp_change(-damage);
     }
@@ -327,7 +328,7 @@ void Battle::Enemy_dead(short index)
     if (_enemy_end.Get_state() != Effect::State::Waiting
             || !_enemy_sprite[index].visible()) { return; }
 
-    bn::sound_items::sfx_battle_damage_taken.play(); //<- placeholder
+    bn::sound_items::sfx_battle_enemy_dead.play();
 
     _enemy_sprite[index].set_blending_enabled(true);
     _enemy_sprite[index].set_mosaic_enabled(true);

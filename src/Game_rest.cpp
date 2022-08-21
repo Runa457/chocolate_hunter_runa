@@ -17,7 +17,7 @@ namespace
 static constexpr int CURSOR_X = -60;
 static constexpr int CURSOR_Y = -20;
 static constexpr int CURSOR_X_INT = 40;
-static constexpr int UPGRADE_MULTIPLIER = 40;
+static constexpr int UPGRADE_MULTIPLIER = 50;
 }
 
 Rest::Rest(bn::sprite_text_generator& text_generator,
@@ -28,7 +28,10 @@ Rest::Rest(bn::sprite_text_generator& text_generator,
     _current_menu(Menu::Regain_life),
     _scene_start(Effect::Type::Transparency, Effect::Direction::In, TRANSITION_FRAMES),
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES),
-    _cost{100, 75, Get_weapon_data(_status.Get_weapon()) * UPGRADE_MULTIPLIER, Get_armor_data(_status.Get_armor()) * UPGRADE_MULTIPLIER}
+    _cost{100 + (status.Get_stratum()-1) * 20,
+          50 + status.Get_level() * 5,
+          Get_weapon_data(status.Get_weapon()) * UPGRADE_MULTIPLIER,
+          Get_armor_data(status.Get_armor()) * UPGRADE_MULTIPLIER}
 {
     _icon_sprite.push_back(bn::sprite_ptr(bn::sprite_items::icon_regain_turn.create_sprite(CURSOR_X, 0)));
     _icon_sprite.push_back(bn::sprite_ptr(bn::sprite_items::icon_potion.create_sprite(CURSOR_X+CURSOR_X_INT, 0)));
@@ -131,11 +134,11 @@ void Rest::Menu_selected()
         }
         else
         {
-            bn::sound_items::sfx_menu_move.play(); //<- placeholder
+            bn::sound_items::sfx_menu_denied.play();
         }
         break;
     case Menu::Magic_potion:
-        if (choco >= _cost[1])
+        if (choco >= _cost[1] && _status.Get_turns() > 0)
         {
             bn::sound_items::sfx_menu_selected.play();
 
@@ -146,11 +149,11 @@ void Rest::Menu_selected()
         }
         else
         {
-            bn::sound_items::sfx_menu_move.play(); //<- placeholder
+            bn::sound_items::sfx_menu_denied.play();
         }
         break;
     case Menu::Upgrade_sword:
-        if (choco >= _cost[2])
+        if (choco >= _cost[2] && _status.Get_turns() > 0)
         {
             bn::sound_items::sfx_menu_selected.play();
 
@@ -161,11 +164,11 @@ void Rest::Menu_selected()
         }
         else
         {
-            bn::sound_items::sfx_menu_move.play(); //<- placeholder
+            bn::sound_items::sfx_menu_denied.play();
         }
         break;
     case Menu::Upgrade_armor:
-        if (choco >= _cost[3])
+        if (choco >= _cost[3] && _status.Get_turns() > 0)
         {
             bn::sound_items::sfx_menu_selected.play();
 
@@ -176,7 +179,7 @@ void Rest::Menu_selected()
         }
         else
         {
-            bn::sound_items::sfx_menu_move.play(); //<- placeholder
+            bn::sound_items::sfx_menu_denied.play();
         }
         break;
     default: break;
