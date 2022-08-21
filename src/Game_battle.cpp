@@ -128,6 +128,8 @@ bn::optional<Game_Type> Battle::Update()
     case State::End_battle:
         if (bn::keypad::a_pressed())
         {
+            bn::sound_items::sfx_menu_selected.play();
+
             _battle_text.clear();
             if (_battle_sq->To_next_seq()) { return Game_Type::Battle; }
             else
@@ -148,9 +150,14 @@ bn::optional<Game_Type> Battle::Update()
 
 Battle::State Battle::Action_select()
 {
-    if (bn::keypad::a_pressed()) { return State::Target_select; }
+    if (bn::keypad::a_pressed())
+    {
+        bn::sound_items::sfx_menu_selected.play();
+        return State::Target_select;
+    }
     else if (bn::keypad::up_pressed() || bn::keypad::down_pressed())
     {
+        bn::sound_items::sfx_menu_move.play();
         _attack_type = (_attack_type) ? false : true;
     }
     _cursor.set_position(ATTACK_ICON_X, (_attack_type) ? ATTACK_ICON_Y + 16 : ATTACK_ICON_Y);
@@ -158,10 +165,19 @@ Battle::State Battle::Action_select()
 }
 Battle::State Battle::Target_select()
 {
-    if (bn::keypad::a_pressed()) { return State::Confirm; }
-    if (bn::keypad::b_pressed()) { return State::Action_select; }
+    if (bn::keypad::a_pressed())
+    {
+        bn::sound_items::sfx_menu_selected.play();
+        return State::Confirm;
+    }
+    if (bn::keypad::b_pressed())
+    {
+        bn::sound_items::sfx_menu_cancelled.play();
+        return State::Action_select;
+    }
     else if (bn::keypad::left_pressed())
     {
+        bn::sound_items::sfx_menu_move.play();
         do {
         _target_index = (_target_index + _enemies.size() - 1) % _enemies.size();
         } while (_enemies[_target_index].Is_dead());
@@ -169,6 +185,7 @@ Battle::State Battle::Target_select()
     }
     else if (bn::keypad::right_pressed())
     {
+        bn::sound_items::sfx_menu_move.play();
         do {
         _target_index = (_target_index + 1) % _enemies.size();
         } while (_enemies[_target_index].Is_dead());
@@ -192,6 +209,8 @@ Battle::State Battle::Confirm()
 {
     if (bn::keypad::a_pressed())
     {
+        bn::sound_items::sfx_menu_selected.play();
+
         _attack_order.clear();
         _attack_order.push_back({Get_spd_data(_status.Get_level()), -1});
         for (int i = 0; i < _enemies.size(); i++)
@@ -201,7 +220,12 @@ Battle::State Battle::Confirm()
         bn::sort(_attack_order.rbegin(), _attack_order.rend());
         return State::Turn_action;
     }
-    if (bn::keypad::b_pressed()) { return State::Action_select; }
+    if (bn::keypad::b_pressed())
+    {
+        bn::sound_items::sfx_menu_cancelled.play();
+
+        return State::Action_select;
+    }
     return State::Confirm;//
 }
 void Battle::Turn_action()
@@ -228,6 +252,7 @@ void Battle::Turn_action()
             text.set_blending_enabled   (true);
         }
         _text_end.Start();
+        bn::sound_items::sfx_battle_sword.play();
 
         _enemies[_target_index].Hp_change(-damage);
     }
@@ -241,6 +266,7 @@ void Battle::Turn_action()
             text.set_blending_enabled(true);
         }
         _text_end.Start();
+        bn::sound_items::sfx_battle_damage_taken.play();
 
         _status.Hp_change(-damage);
     }
@@ -261,6 +287,8 @@ bool Battle::Effect_action()
     case Effect::State::Done:
         _damage_text.clear();
 
+        if (!bn::keypad::a_held() && --_effect_cooltime > 0) { return false; }
+
         for (int i = 0; i < _enemies.size(); i++)
         {
             if (_enemies[i].Is_dead()) { Enemy_dead(i); }
@@ -270,6 +298,7 @@ bool Battle::Effect_action()
         {
         case Effect::State::Waiting:
             _text_end.Reset();
+            _effect_cooltime = 10;
             return true;
             break;
         case Effect::State::Ongoing:
@@ -281,6 +310,7 @@ bool Battle::Effect_action()
                 if (_enemies[i].Is_dead()) { _enemy_sprite[i].set_visible(false); }
             }
             _text_end.Reset();
+            _effect_cooltime = 10;
             _enemy_end.Reset();
             break;
         default: break;
@@ -296,6 +326,8 @@ void Battle::Enemy_dead(short index)
 {
     if (_enemy_end.Get_state() != Effect::State::Waiting
             || !_enemy_sprite[index].visible()) { return; }
+
+    bn::sound_items::sfx_battle_damage_taken.play(); //<- placeholder
 
     _enemy_sprite[index].set_blending_enabled(true);
     _enemy_sprite[index].set_mosaic_enabled(true);
@@ -340,15 +372,16 @@ void Battle::Battle_end()
         xp += enemy.Get_exp();
         choco += enemy.Get_choco();
     }
-    choco = (choco * _status.Get_multiplier() + 50) / 100;
+    int total_choco = (choco * _status.Get_multiplier() + 50) / 100;
 
     _text_generator.set_center_alignment();
-    _text_generator.generate(0, 10, "Victory!", _battle_text);
-    _text_generator.generate(0, 20, bn::format<35>("Gain {} exp, {} chocolates.", xp, choco), _battle_text);
+    _text_generator.generate(0, 0, "Victory!", _battle_text);
+    _text_generator.generate(0, 10, bn::format<25>("Gain {} experiences.", xp), _battle_text);
+    _text_generator.generate(0, 20, bn::format<35>("Gain {}x{}% = {} chocolates.", choco, _status.Get_multiplier(), total_choco), _battle_text);
     _text_generator.set_left_alignment();
 
     _status.Exp_earn(xp);
-    _status.Choco_earn(choco);
+    _status.Choco_earn(total_choco);
 }
 
 } // namespace Runa::Scene

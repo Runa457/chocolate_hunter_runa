@@ -31,8 +31,8 @@ const short& Enemy::Get_def() { return def; }
 const short& Enemy::Get_spd() { return spd; }
 int Enemy::Get_exp()
 {
-    // exp = 10% increase per level
-    return (int)_base_data.base_exp * (100 + level * 10) / 100;
+    // exp = 5% increase per level
+    return (int)_base_data.base_exp * (100 + level * 5) / 100;
 }
 short Enemy::Get_choco()
 {

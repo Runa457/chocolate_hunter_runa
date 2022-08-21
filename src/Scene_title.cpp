@@ -44,7 +44,11 @@ bn::optional<Scene_Type> Title::Update()
         {
         case Effect::State::Waiting:
             Press_up_down();
-            if (bn::keypad::a_pressed()) { _scene_end.Start(); }
+            if (bn::keypad::a_pressed())
+            {
+                bn::sound_items::sfx_menu_selected.play();
+                _scene_end.Start();
+            }
             break;
         case Effect::State::Ongoing:
             _scene_end.Update();
@@ -67,6 +71,7 @@ void Title::Press_up_down()
 }
 void Title::Cursor_update(int move_direction)
 {
+    bn::sound_items::sfx_menu_move.play();
     _current_menu = static_cast<Menu>((_current_menu + NUM_MENU_OPTIONS + move_direction) % NUM_MENU_OPTIONS);
     _cursor.set_position(MENU_X-10, MENU_Y + _current_menu * MENU_Y_INT);
 }

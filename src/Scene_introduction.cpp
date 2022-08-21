@@ -155,14 +155,26 @@ bn::optional<Scene_Type> Introduction::Update()
             if (bn::keypad::right_pressed())
             {
                 if (++_current_page == MAX_PAGE) { --_current_page; }
-                else { Print_text(); }
+                else
+                {
+                    bn::sound_items::sfx_menu_move.play();
+                    Print_text();
+                }
             }
             if (bn::keypad::left_pressed())
             {
                 if (--_current_page < 0) { ++_current_page; }
-                else { Print_text(); }
+                else
+                {
+                    bn::sound_items::sfx_menu_move.play();
+                    Print_text();
+                }
             }
-            if (bn::keypad::b_pressed()) { _scene_end.Start(); }
+            if (bn::keypad::b_pressed())
+            {
+                bn::sound_items::sfx_menu_cancelled.play();
+                _scene_end.Start();
+            }
             break;
         case Effect::State::Ongoing:
             _scene_end.Update();
@@ -185,14 +197,18 @@ void Introduction::Print_text()
     {
         _text_generator.generate(INTRO_X, INTRO_Y + INTRO_Y_INT * i, INTRO_LIST[i + 12 * _current_page], _intro_text);
     }
-    for (bn::sprite_ptr& text_sprite : _intro_text)
-    {
-        text_sprite.set_blending_enabled(true);
-    }
     _page_text.clear();
     _text_generator.set_right_alignment();
     _text_generator.generate(112, INTRO_Y + INTRO_Y_INT * 11, bn::format<10>("< {} / {} >", _current_page+1, MAX_PAGE), _page_text);
     _text_generator.set_left_alignment();
+    for (bn::sprite_ptr& text_sprite : _intro_text)
+    {
+        text_sprite.set_blending_enabled(true);
+    }
+    for (bn::sprite_ptr& text_sprite : _page_text)
+    {
+        text_sprite.set_blending_enabled(true);
+    }
 }
 
 } // namespace Runa::Scene

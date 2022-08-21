@@ -57,7 +57,11 @@ bn::optional<Game_Type> Choice::Update()
         {
         case Effect::State::Waiting:
             Press_left_right();
-            if (bn::keypad::a_pressed()) { _scene_end.Start(); }
+            if (bn::keypad::a_pressed())
+            {
+                bn::sound_items::sfx_menu_selected.play(); //<- may different sfx?
+                _scene_end.Start();
+            }
             break;
         case Effect::State::Ongoing:
             _scene_end.Update();
@@ -96,6 +100,7 @@ void Choice::Press_left_right()
 }
 void Choice::Cursor_update(int move_direction)
 {
+    bn::sound_items::sfx_menu_move.play();
     _current_menu = static_cast<Menu>((_current_menu + 3 + move_direction) % 3);
     _cursor.set_position((_current_menu - 1)*CURSOR_X, CURSOR_Y);
 }

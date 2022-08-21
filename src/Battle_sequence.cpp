@@ -21,7 +21,7 @@ Battle_Sequence::Battle_Sequence(bn::random& random_generator,
         _num_sequence = 1;
         _total_enemy = 1;
         _enemies.push_back(bn::vector<Enemy::Enemy, 3>());
-        _enemies[0].push_back(Enemy::Enemy(enemy_index_end, player_level + 2));
+        _enemies[0].push_back(Enemy::Enemy(enemy_index_end, stratum * 10));
         _total_choco = _enemies[0][0].Get_choco();
     }
     else
@@ -34,7 +34,8 @@ Battle_Sequence::Battle_Sequence(bn::random& random_generator,
             for (int j = 0; j < num_enemy; j++)
             {
                 int enemy_index = _random.get_int(enemy_index_start, enemy_index_end);
-                _enemies[i].push_back(Enemy::Enemy(enemy_index, player_level + _random.get_int(4)));
+                int enemy_level = bn::min(bn::max(0, player_level + _random.get_int(-2, 3)), stratum * 10 - 1);
+                _enemies[i].push_back(Enemy::Enemy(enemy_index, enemy_level));
                 _total_choco += _enemies[i][j].Get_choco();
             }
             _total_enemy += num_enemy;

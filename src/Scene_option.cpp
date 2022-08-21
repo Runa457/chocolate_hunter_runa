@@ -62,6 +62,8 @@ bn::optional<Scene_Type> Option::Update()
             {
                 if (bn::keypad::a_pressed())
                 {
+                    bn::sound_items::sfx_menu_selected.play();
+
                     _confirm_text.clear();
                     _text_generator.set_right_alignment();
                     _text_generator.generate(112, OPTION_Y + OPTION_Y_INT * 1, "Save deleted.", _confirm_text);
@@ -73,6 +75,8 @@ bn::optional<Scene_Type> Option::Update()
                 }
                 else if (bn::keypad::b_pressed())
                 {
+                    bn::sound_items::sfx_menu_cancelled.play();
+
                     _confirm_text.clear();
                     _current_option = Options::Delete_save;
                 }
@@ -81,7 +85,11 @@ bn::optional<Scene_Type> Option::Update()
             {
                 Press_up_down();
                 if (bn::keypad::a_pressed()) { Press_a(); }
-                if (bn::keypad::b_pressed()) { _scene_end.Start(); }
+                if (bn::keypad::b_pressed())
+                {
+                    bn::sound_items::sfx_menu_cancelled.play();
+                    _scene_end.Start();
+                }
             }
             break;
         case Effect::State::Ongoing:
@@ -105,6 +113,7 @@ void Option::Press_up_down()
 }
 void Option::Press_a()
 {
+    bn::sound_items::sfx_menu_selected.play();
     switch (_current_option)
     {
     case Delete_save:
@@ -124,6 +133,7 @@ void Option::Press_a()
 }
 void Option::Cursor_update(int move_direction)
 {
+    bn::sound_items::sfx_menu_move.play();
     _current_option = static_cast<Options>((_current_option + 2 + move_direction) % 2);
     _cursor.set_position(OPTION_X, OPTION_Y + OPTION_Y_INT * (_current_option + 3));
 }

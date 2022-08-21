@@ -4,6 +4,8 @@
 #include "bn_sprite_items_enemy_abc_a.h"
 #include "bn_sprite_items_enemy_abc_b.h"
 #include "bn_sprite_items_enemy_abc_c.h"
+#include "bn_sprite_items_enemy_abc_s.h"
+#include "bn_sprite_items_enemy_abc_t.h"
 #include "bn_sprite_items_enemy_abc_boss.h"
 
 namespace Runa::Game::Enemy
@@ -15,10 +17,14 @@ namespace Runa::Game::Enemy
  */
 constexpr Enemy_data Enemy_base_data[] = {
     Enemy_data(bn::sprite_items::cursor_0, "Plc_hldr", 10, 10, 10, 10, 10, 10),
-    Enemy_data(bn::sprite_items::enemy_abc_a, "Choco A", 10, 10, 10, 15, 5, 7),
-    Enemy_data(bn::sprite_items::enemy_abc_b, "Choco B", 10, 10, 10, 5, 15, 7),
-    Enemy_data(bn::sprite_items::enemy_abc_c, "Choco C", 10, 10, 10, 10, 10, 7),
-    Enemy_data(bn::sprite_items::enemy_abc_boss, "The Boss", 200, 60, 150, 25, 25, 15)
+    //1st stratum
+    Enemy_data(bn::sprite_items::enemy_abc_a, "Choco A", 10, 5, 7, 13, 3, 6),
+    Enemy_data(bn::sprite_items::enemy_abc_b, "Choco B", 10, 5, 7, 5, 11, 6),
+    Enemy_data(bn::sprite_items::enemy_abc_c, "Choco C", 10, 5, 7, 9, 7, 6),
+    Enemy_data(bn::sprite_items::enemy_abc_s, "Choco S", 10, 6, 9, 9, 7, 9),
+    Enemy_data(bn::sprite_items::enemy_abc_t, "Choco T", 20, 7, 10, 9, 7, 6),
+    Enemy_data(bn::sprite_items::enemy_abc_boss, "Choco BOSS", 100, 60, 500, 10, 10, 7),
+    //2nd stratum
 };
 
 const Enemy_data& Get_enemy_base_data(int index)

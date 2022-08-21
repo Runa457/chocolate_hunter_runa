@@ -54,7 +54,7 @@ bn::optional<Scene_Type> Game::Update()
             _text_generator.set_left_alignment();
             if (bn::keypad::a_pressed())
             {
-                _status.Init();
+                _status.Read();
                 return Scene_Type::Title;
             }
             break;

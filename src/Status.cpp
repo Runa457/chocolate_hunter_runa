@@ -8,7 +8,7 @@ namespace Runa
 
 struct Save_data
 {
-    constexpr static const char* SAVE_CHECK = "RUNA_0820";
+    constexpr static const char* SAVE_CHECK = "RUNA_0821";
 
     char CHECK[10] = {};
     short level = 0;
@@ -38,21 +38,11 @@ struct Save_data
 
 Status::Status()
 {
-    Save_data _read_data;
-    if (_read_data.Read())
+    if (!Read())
     {
-        Level = _read_data.level;
-        hp = _read_data.hp;
-        mp = _read_data.mp;
-        exp = _read_data.exp;
-        left_turns = _read_data.left_turns;
-        Weapon_level = _read_data.Weapon_level;
-        Armor_level = _read_data.Armor_level;
-        stratum = _read_data.stratum;
-        chocolate = _read_data.chocolate;
-        choco_multiplier = _read_data.multiplier;
+        Init();
+        Write();
     }
-    else { Init(); }
 }
 Status::~Status() {}
 
@@ -85,6 +75,25 @@ void Status::Write()
     _save_data.chocolate = chocolate;
     _save_data.multiplier = choco_multiplier;
     _save_data.Write();
+}
+bool Status::Read()
+{
+    Save_data _read_data;
+    if (_read_data.Read())
+    {
+        Level = _read_data.level;
+        hp = _read_data.hp;
+        mp = _read_data.mp;
+        exp = _read_data.exp;
+        left_turns = _read_data.left_turns;
+        Weapon_level = _read_data.Weapon_level;
+        Armor_level = _read_data.Armor_level;
+        stratum = _read_data.stratum;
+        chocolate = _read_data.chocolate;
+        choco_multiplier = _read_data.multiplier;
+        return true;
+    }
+    else { return false; }
 }
 
 short Status::Get_level() { return Level; }

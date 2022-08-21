@@ -14,6 +14,7 @@ public:
 
     void Init();
     void Write();
+    bool Read();
 
     short Get_level();
     int Get_hp();

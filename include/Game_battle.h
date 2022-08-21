@@ -85,6 +85,7 @@ private:
 
     Effect::Transition _text_end;
     Effect::Transition _enemy_end;
+    int _effect_cooltime = 10;
 };
 
 } // namespace Runa::Game

@@ -10,6 +10,8 @@
 #include "bn_bg_palettes.h"
 #include "bn_sprite_text_generator.h"
 
+#include "bn_sound_items.h"
+
 namespace Runa::Scene
 {
 

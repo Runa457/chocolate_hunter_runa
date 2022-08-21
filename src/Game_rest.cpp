@@ -17,6 +17,7 @@ namespace
 static constexpr int CURSOR_X = -60;
 static constexpr int CURSOR_Y = -20;
 static constexpr int CURSOR_X_INT = 40;
+static constexpr int UPGRADE_MULTIPLIER = 40;
 }
 
 Rest::Rest(bn::sprite_text_generator& text_generator,
@@ -27,7 +28,7 @@ Rest::Rest(bn::sprite_text_generator& text_generator,
     _current_menu(Menu::Regain_life),
     _scene_start(Effect::Type::Transparency, Effect::Direction::In, TRANSITION_FRAMES),
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES),
-    _cost{100, 100, Get_weapon_data(_status.Get_weapon()) * 50, Get_armor_data(_status.Get_armor()) * 50}
+    _cost{100, 75, Get_weapon_data(_status.Get_weapon()) * UPGRADE_MULTIPLIER, Get_armor_data(_status.Get_armor()) * UPGRADE_MULTIPLIER}
 {
     _icon_sprite.push_back(bn::sprite_ptr(bn::sprite_items::icon_regain_turn.create_sprite(CURSOR_X, 0)));
     _icon_sprite.push_back(bn::sprite_ptr(bn::sprite_items::icon_potion.create_sprite(CURSOR_X+CURSOR_X_INT, 0)));
@@ -65,13 +66,19 @@ bn::optional<Game_Type> Rest::Update()
             if (bn::keypad::a_pressed()) { Menu_selected(); }
             if (bn::keypad::r_pressed())
             {
+                bn::sound_items::sfx_menu_selected.play(); // <- save sfx needed
+
                 _status.Write();
                 _save_text.clear();
                 _text_generator.set_center_alignment();
                 _text_generator.generate(0, -30, "Game saved.", _save_text);
                 _text_generator.set_left_alignment();
             }
-            if (bn::keypad::l_pressed()) { _scene_end.Start(); }
+            if (bn::keypad::l_pressed())
+            {
+                bn::sound_items::sfx_menu_selected.play();
+                _scene_end.Start();
+            }
             break;
         case Effect::State::Ongoing:
             _scene_end.Update();
@@ -117,35 +124,59 @@ void Rest::Menu_selected()
     case Menu::Regain_life:
         if (choco >= _cost[0])
         {
+            bn::sound_items::sfx_menu_selected.play();
+
             _status.Choco_earn(-_cost[0]);
             _status.Life_regain();
+        }
+        else
+        {
+            bn::sound_items::sfx_menu_move.play(); //<- placeholder
         }
         break;
     case Menu::Magic_potion:
         if (choco >= _cost[1])
         {
+            bn::sound_items::sfx_menu_selected.play();
+
             _status.Choco_earn(-_cost[1]);
             _status.Hp_change(Get_hp_data(level));
             _status.Mp_change(Get_mp_data(level));
             _status.turn_end();
         }
+        else
+        {
+            bn::sound_items::sfx_menu_move.play(); //<- placeholder
+        }
         break;
     case Menu::Upgrade_sword:
         if (choco >= _cost[2])
         {
+            bn::sound_items::sfx_menu_selected.play();
+
             _status.Choco_earn(-_cost[2]);
             _status.Weapon_upgrade();
             _status.turn_end();
-            _cost[2] = Get_weapon_data(_status.Get_weapon()) * 50;
+            _cost[2] = Get_weapon_data(_status.Get_weapon()) * UPGRADE_MULTIPLIER;
+        }
+        else
+        {
+            bn::sound_items::sfx_menu_move.play(); //<- placeholder
         }
         break;
     case Menu::Upgrade_armor:
         if (choco >= _cost[3])
         {
+            bn::sound_items::sfx_menu_selected.play();
+
             _status.Choco_earn(-_cost[3]);
             _status.Armor_upgrade();
             _status.turn_end();
-            _cost[3] = Get_armor_data(_status.Get_armor()) * 50;
+            _cost[3] = Get_armor_data(_status.Get_armor()) * UPGRADE_MULTIPLIER;
+        }
+        else
+        {
+            bn::sound_items::sfx_menu_move.play(); //<- placeholder
         }
         break;
     default: break;
@@ -154,6 +185,7 @@ void Rest::Menu_selected()
 }
 void Rest::Cursor_update(int move_direction)
 {
+    bn::sound_items::sfx_menu_move.play();
     _current_menu = static_cast<Menu>((_current_menu + 4 + move_direction) % 4);
     _cursor.set_position(CURSOR_X + CURSOR_X_INT * _current_menu, CURSOR_Y);
 }

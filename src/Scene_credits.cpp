@@ -54,7 +54,11 @@ bn::optional<Scene_Type> Credits::Update()
         switch (_scene_end.Get_state())
         {
         case Effect::State::Waiting:
-            if (bn::keypad::b_pressed()) { _scene_end.Start(); }
+            if (bn::keypad::b_pressed())
+            {
+                bn::sound_items::sfx_menu_cancelled.play();
+                _scene_end.Start();
+            }
             break;
         case Effect::State::Ongoing:
             _scene_end.Update();
