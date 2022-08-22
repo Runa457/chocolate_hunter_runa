@@ -31,10 +31,8 @@ Credits::Credits(bn::sprite_text_generator& text_generator) :
     _scene_start(Effect::Type::Transparency, Effect::Direction::In, TRANSITION_FRAMES),
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES)
 {
-    for (int i = 0; i < NUM_CREDITS; i++)
-    {
-        _text_generator.generate(CREDITS_X, CREDITS_Y + CREDITS_Y_INT * i, CREDITS_LIST[i], _credits_text);
-    }
+    Effect::Print_text(_text_generator, true, Effect::Alignment::Left,
+                       CREDITS_X, CREDITS_Y, CREDITS_Y_INT, _credits_text, CREDITS_LIST);
     for (bn::sprite_ptr& text_sprite : _credits_text)
     {
         text_sprite.set_blending_enabled(true);

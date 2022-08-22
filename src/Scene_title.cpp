@@ -96,10 +96,15 @@ bn::optional<Scene_Type> Title::Get_next_scene()
 }
 void Title::Print_text()
 {
+    Effect::Print_text(_text_generator, true, Effect::Alignment::Left,
+                       MENU_X, MENU_Y, MENU_Y_INT, _menu_text,
+                       5, "Start", "Introdunction", "Options", "Credits", "Back to title");
+    /*
     for (int i = 0; i < NUM_MENU_OPTIONS; i++)
     {
         _text_generator.generate(MENU_X, MENU_Y + MENU_Y_INT * i, MENU_LISTS[i], _menu_text);
     }
+    */
 }
 
 } // namespace Runa::Scene

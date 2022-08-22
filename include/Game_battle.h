@@ -4,6 +4,8 @@
 #include "Game.h"
 #include "Battle_sequence.h"
 
+#include "bn_sprite_animate_actions.h"
+
 namespace Runa::Game
 {
 
@@ -66,22 +68,28 @@ private:
     bn::sprite_text_generator& _text_generator;
     bn::vector<bn::sprite_ptr, 30> _battle_text;
     bn::vector<bn::sprite_ptr, 5> _damage_text;
+    bn::vector<bn::sprite_ptr, 6> _turn_text;
+
+    short _current_turn = 0;
 
     bn::unique_ptr<Battle_Sequence>& _battle_sq;
     bn::vector<Enemy::Enemy, 3>& _enemies;
     short _num_enemies;
     bn::vector<bn::sprite_ptr, 3> _enemy_sprite;
-    bn::vector<bn::sprite_ptr, 3> _enemy_hp_sprite;
+    //bn::vector<bn::sprite_ptr, 3> _enemy_hp_sprite;
 
     bn::sprite_ptr _sword_attack_sprite;
     bn::sprite_ptr _magic_attack_sprite;
     bn::sprite_ptr _cursor;
+    short _enemy_x[3] = {-60, 0, 60};
     /**
      * @brief false : melee type, true : magic type
      */
-    short _enemy_x[3] = {-60, 0, 60};
     bool _attack_type;
     short _target_index;
+
+    bn::sprite_ptr _attack_effect_sprite;
+    bn::sprite_animate_action<9> _attack_effect;
 
     Effect::Transition _text_end;
     Effect::Transition _enemy_end;

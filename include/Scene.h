@@ -2,6 +2,7 @@
 #define SCENE_H
 
 #include "Scene_type.h"
+#include "Effect_text.h"
 
 #include "bn_optional.h"
 #include "bn_keypad.h"

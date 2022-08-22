@@ -35,14 +35,12 @@ Option::Option(bn::sprite_text_generator& text_generator, Status& status) :
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES),
     _cursor(bn::sprite_items::cursor_0.create_sprite(OPTION_X, OPTION_Y + OPTION_Y_INT * 3))
 {
-    for (int i = 0; i < NUM_OPTION; i++)
-    {
-        _text_generator.generate(OPTION_X, OPTION_Y + OPTION_Y_INT * i, OPTION_LIST[i], _option_text);
-    }
+    Effect::Print_text(_text_generator, true, Effect::Alignment::Left, OPTION_X, OPTION_Y, OPTION_Y_INT, _option_text, OPTION_LIST);
     for (bn::sprite_ptr& text_sprite : _option_text)
     {
         text_sprite.set_blending_enabled(true);
     }
+    _cursor.set_blending_enabled(true);
     _scene_start.Start();
 }
 Option::~Option() {}
@@ -64,10 +62,13 @@ bn::optional<Scene_Type> Option::Update()
                 {
                     bn::sound_items::sfx_menu_selected.play();
 
-                    _confirm_text.clear();
-                    _text_generator.set_right_alignment();
-                    _text_generator.generate(112, OPTION_Y + OPTION_Y_INT * 1, "Save deleted.", _confirm_text);
-                    _text_generator.set_left_alignment();
+                    Effect::Print_text(_text_generator, true, Effect::Alignment::Right,
+                                       112, OPTION_Y + OPTION_Y_INT, 0, _confirm_text,
+                                       1, "Save deleted.");
+                    for (bn::sprite_ptr& text_sprite : _confirm_text)
+                    {
+                        text_sprite.set_blending_enabled(true);
+                    }
 
                     _status.Init();
                     _status.Write();
@@ -117,11 +118,9 @@ void Option::Press_a()
     switch (_current_option)
     {
     case Delete_save:
-        _confirm_text.clear();
-        _text_generator.set_right_alignment();
-        _text_generator.generate(112, OPTION_Y + OPTION_Y_INT * 1, "Are you sure to delete save file?", _confirm_text);
-        _text_generator.generate(112, OPTION_Y + OPTION_Y_INT * 2, "A: YES B: NO", _confirm_text);
-        _text_generator.set_left_alignment();
+        Effect::Print_text(_text_generator, true, Effect::Alignment::Right,
+                           112, OPTION_Y + OPTION_Y_INT, OPTION_Y_INT, _confirm_text,
+                           2, "Are you sure to delete save file?", "A: YES B: NO");
 
         _current_option = Options::Confirm_delete_save;
         break;

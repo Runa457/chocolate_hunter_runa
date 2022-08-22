@@ -72,10 +72,7 @@ bn::optional<Game_Type> Rest::Update()
                 bn::sound_items::sfx_menu_selected.play(); // <- save sfx needed
 
                 _status.Write();
-                _save_text.clear();
-                _text_generator.set_center_alignment();
-                _text_generator.generate(0, -30, "Game saved.", _save_text);
-                _text_generator.set_left_alignment();
+                Effect::Print_text(_text_generator, true, Effect::Alignment::Center, 0, -30, 0, _save_text, 1, "Game saved.");
             }
             if (bn::keypad::l_pressed())
             {
@@ -100,17 +97,14 @@ bn::optional<Game_Type> Rest::Update()
 void Rest::Print_text()
 {
     _save_text.clear();
-    _text_sprite.clear();
+
+    Effect::Print_text(_text_generator, true, Effect::Alignment::Center, 0, -60, 14, _text_sprite, 2, "Camp", "Press L to proceed, R to save");
 
     _text_generator.set_center_alignment();
-    _text_generator.generate(0, -60, "Camp", _text_sprite);
-    _text_generator.generate(0, -46, "Press L to proceed, R to save", _text_sprite);
-
     _text_generator.generate(CURSOR_X, 16, bn::format<5>("{}", _cost[0]), _text_sprite);
     _text_generator.generate(CURSOR_X+CURSOR_X_INT, 16, bn::format<5>("{}", _cost[1]), _text_sprite);
     _text_generator.generate(CURSOR_X+CURSOR_X_INT*2, 16, bn::format<5>("{}", _cost[2]), _text_sprite);
     _text_generator.generate(CURSOR_X+CURSOR_X_INT*3, 16, bn::format<5>("{}", _cost[3]), _text_sprite);
-    _text_generator.set_left_alignment();
 }
 void Rest::Press_left_right()
 {

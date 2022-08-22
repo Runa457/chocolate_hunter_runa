@@ -91,7 +91,6 @@ void Choice::Print_text()
         _text_generator.generate((i-1)*CURSOR_X, 4, bn::format<6>("E: {}", _sequence_option[i]->Get_total_enemy()), _text_sprite);
         _text_generator.generate((i-1)*CURSOR_X, 14, bn::format<10>("C: {}", _sequence_option[i]->Get_total_choco()), _text_sprite);
     }
-    _text_generator.set_left_alignment();
 }
 void Choice::Press_left_right()
 {

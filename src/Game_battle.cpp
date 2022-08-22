@@ -9,6 +9,7 @@
 #include "bn_sprite_items_select_cursor_down.h"
 #include "bn_sprite_items_icon_sword_attack.h"
 #include "bn_sprite_items_icon_magic_attack.h"
+#include "bn_sprite_items_effect_sword.h"
 
 namespace Runa::Game
 {
@@ -17,6 +18,7 @@ namespace
 {
 constexpr int ATTACK_ICON_X = 104;
 constexpr int ATTACK_ICON_Y = 40;
+constexpr int ENEMY_Y = 0;
 }
 
 Battle::Battle(bn::sprite_text_generator& text_generator,
@@ -36,11 +38,16 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
     _target_index(0),
     _enemy_end(static_cast<Effect::Type>(Effect::Type::Transparency | Effect::Type::Sprite_mosaic),
                Effect::Direction::Out, 20),
-    _text_end(Effect::Type::Transparency, Effect::Direction::Out, 15)
+    _text_end(Effect::Type::Transparency, Effect::Direction::Out, 15),
+    _attack_effect_sprite(bn::sprite_items::effect_sword.create_sprite(0, 0)),
+    _attack_effect(bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, bn::sprite_items::effect_sword.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8))
 {
     _cursor.set_visible(false);
+    _attack_effect_sprite.set_z_order(-10);
+    _attack_effect_sprite.set_visible(false);
     _sword_attack_sprite.set_visible(false);
     _magic_attack_sprite.set_visible(false);
+
     Battle_start();
 }
 Battle::~Battle() {}
@@ -50,6 +57,9 @@ bn::optional<Game_Type> Battle::Update()
     switch (_state)
     {
     case State::Start_turn:
+        _turn_text.clear();
+        _text_generator.set_center_alignment();
+        _text_generator.generate(0, -72, bn::format<8>("Turn {}", ++_current_turn), _turn_text);
         _state = State::Action_select;
         break;
     case State::Action_select:
@@ -77,11 +87,9 @@ bn::optional<Game_Type> Battle::Update()
             break;
         case State::Confirm:
             _cursor.set_visible(false);
-            _battle_text.clear();
-            _text_generator.set_center_alignment();
-            _text_generator.generate(0, 15, "Confirm?", _battle_text);
-            _text_generator.generate(0, 25, "A: YES B: NO", _battle_text);
-            _text_generator.set_left_alignment();
+            Effect::Print_text(_text_generator, true, Effect::Alignment::Center,
+                               0, 15, 10, _battle_text,
+                               2, "Confirm?", "A: YES B: NO");
             break;
         default:
             break;
@@ -202,7 +210,6 @@ void Battle::Print_enemy_information()
     _text_generator.generate(0, -50, bn::format<10>("Hp {}", _enemies[_target_index].Get_hp()), _battle_text);
     // debug line ; stats
     _text_generator.generate(0, -40, bn::format<20>("A {} D {} S {}", _enemies[_target_index].Get_atk(), _enemies[_target_index].Get_def(), _enemies[_target_index].Get_spd()), _battle_text);
-    _text_generator.set_left_alignment();
 }
 
 Battle::State Battle::Confirm()
@@ -246,7 +253,11 @@ void Battle::Turn_action()
         }
         damage = Damage_calculator((int)_attack_type, atk_pow, Get_weapon_data(_status.Get_weapon()), _enemies[_target_index].Get_def(), 0);
 
-        _text_generator.generate(_enemy_x[_target_index], -25, bn::format<5>("{}", damage), _damage_text);
+        _attack_effect_sprite.set_position(_enemy_x[_target_index], ENEMY_Y);
+        _attack_effect_sprite.set_visible(true);
+        _attack_effect = bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, bn::sprite_items::effect_sword.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
+
+        _text_generator.generate(_enemy_x[_target_index], ENEMY_Y-25, bn::format<5>("{}", damage), _damage_text);
         for (bn::sprite_ptr& text : _damage_text)
         {
             text.set_blending_enabled   (true);
@@ -261,6 +272,10 @@ void Battle::Turn_action()
     {
         damage = Damage_calculator(0, _enemies[index].Get_atk(), 0, Get_def_data(level), Get_armor_data(_status.Get_armor()));
 
+        _attack_effect_sprite.set_position(-90, 60);
+        _attack_effect_sprite.set_visible(true);
+        _attack_effect = bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, bn::sprite_items::effect_sword.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
+
         _text_generator.generate(-90, 40, bn::format<5>("{}", damage), _damage_text);
         for (bn::sprite_ptr& text : _damage_text)
         {
@@ -271,13 +286,16 @@ void Battle::Turn_action()
 
         _status.Hp_change(-damage);
     }
-
-    _text_generator.set_left_alignment();
     ++_action_order;
 }
 
 bool Battle::Effect_action()
 {
+    if (!_attack_effect.done())
+    {
+        _attack_effect.update();
+        return false;
+    }
     switch (_text_end.Get_state())
     {
     case Effect::State::Waiting:
@@ -359,7 +377,7 @@ void Battle::Battle_start()
 
     for (int i = 0; i < _num_enemies; i++)
     {
-        _enemies[i].Sprite_create(_enemy_x[i], 0, _enemy_sprite);
+        _enemies[i].Sprite_create(_enemy_x[i], ENEMY_Y, _enemy_sprite);
         //enemy_hpbar;
     }
 }
@@ -379,7 +397,6 @@ void Battle::Battle_end()
     _text_generator.generate(0, 0, "Victory!", _battle_text);
     _text_generator.generate(0, 10, bn::format<25>("Gain {} experiences.", xp), _battle_text);
     _text_generator.generate(0, 20, bn::format<35>("Gain {}x{}% = {} chocolates.", choco, _status.Get_multiplier(), total_choco), _battle_text);
-    _text_generator.set_left_alignment();
 
     _status.Exp_earn(xp);
     _status.Choco_earn(total_choco);

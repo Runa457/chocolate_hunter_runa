@@ -35,6 +35,9 @@ private:
     bn::vector<bn::sprite_ptr, 2> _choco_icon;
 
     bn::unique_ptr<Runa::Game::Battle_Sequence> _battle_sq;
+
+    Effect::Transition _scene_end;
+    static constexpr int TRANSITION_FRAMES = 10;
 };
 
 } // namespace Runa::Scene

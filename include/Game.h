@@ -4,6 +4,7 @@
 #include "Game_type.h"
 #include "Status.h"
 #include "Effect_transition.h"
+#include "Effect_text.h"
 
 #include "bn_optional.h"
 #include "bn_keypad.h"

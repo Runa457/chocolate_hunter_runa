@@ -29,8 +29,6 @@ private:
     };
 
     static constexpr int NUM_MENU_OPTIONS = static_cast<int>(Menu::Num_menu);
-    static constexpr bn::string_view MENU_LISTS[NUM_MENU_OPTIONS] =
-        {"Start", "Introdunction", "Options", "Credits", "Back to title"};
 
     bn::sprite_text_generator& _text_generator;
     bn::vector<bn::sprite_ptr, 15> _menu_text;
