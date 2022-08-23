@@ -8,6 +8,17 @@
 namespace Runa::Game::Enemy
 {
 
+enum class Status_effect : char
+{
+    None,
+    Attack_up,
+    Attack_down,
+    Defence_up,
+    Defence_down,
+    Speed_up,
+    Speed_down,
+};
+
 class Enemy
 {
 public:
@@ -24,6 +35,7 @@ public:
     const short& Get_spd();
     int Get_exp();
     short Get_choco();
+    Status_effect Get_status();
 
     /**
      * @brief Change hp and check if hp is below 0
@@ -53,6 +65,7 @@ private:
     short level;
     int hp, maxhp;
     short atk, def, spd;
+    Status_effect _status_effect;
 
 };
 

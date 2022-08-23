@@ -88,6 +88,7 @@ int main()
             const int iwramFree = IWRAM_BYTES - bn::memory::used_static_iwram() - bn::memory::used_stack_iwram();
             const int ewramFree = bn::memory::available_alloc_ewram();
 
+            text_generator.set_left_alignment();
             text_generator.generate({-120, -58}, bn::format<20>("IW: {}% {}", iwramUsedPercent, iwramFree),
                               resourceUsageSprites);
             text_generator.generate({-120, -46},

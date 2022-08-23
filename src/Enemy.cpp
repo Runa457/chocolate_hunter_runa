@@ -6,7 +6,8 @@ namespace Runa::Game::Enemy
 
 Enemy::Enemy(int _index, short _level) :
     _base_data(Get_enemy_base_data(_index)),
-    level(_level)
+    level(_level),
+    _status_effect(Status_effect::None)
 {
     Init();
 }
@@ -37,6 +38,10 @@ int Enemy::Get_exp()
 short Enemy::Get_choco()
 {
     return _base_data.base_choco;
+}
+Status_effect Enemy::Get_status()
+{
+    return _status_effect;
 }
 
 bool Enemy::Hp_change(short increment)

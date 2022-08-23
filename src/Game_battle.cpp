@@ -35,6 +35,7 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
     _sword_attack_sprite(bn::sprite_items::icon_sword_attack.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y)),
     _magic_attack_sprite(bn::sprite_items::icon_magic_attack.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y+16)),
     _attack_type(false),
+    _attack_type_final(Attack_type::None),
     _target_index(0),
     _enemy_end(static_cast<Effect::Type>(Effect::Type::Transparency | Effect::Type::Sprite_mosaic),
                Effect::Direction::Out, 20),
@@ -74,6 +75,34 @@ bn::optional<Game_Type> Battle::Update()
             Print_enemy_information();
             _sword_attack_sprite.set_visible(false);
             _magic_attack_sprite.set_visible(false);
+            _attack_type_final = Attack_type::Sword_attack;
+        }
+        if (_state == State::Magic_select)
+        {
+            Print_magic_information();
+            _sword_attack_sprite.set_visible(false);
+            _cursor.set_visible(false);
+        }
+        break;
+    case State::Magic_select:
+        _state = Magic_select();
+        switch (_state)
+        {
+        case State::Action_select:
+            _battle_text.clear();
+            break;
+        case State::Target_select:
+            Print_enemy_information();
+            _magic_attack_sprite.set_visible(false);
+            _cursor.set_visible(true);
+            break;
+        case State::Confirm:
+            _magic_attack_sprite.set_visible(false);
+            Effect::Print_text(_text_generator, true, Effect::Alignment::Center,
+                               0, 15, 10, _battle_text,
+                               2, "Confirm?", "A: YES B: NO");
+            break;
+        default: break;
         }
         break;
     case State::Target_select:
@@ -91,8 +120,7 @@ bn::optional<Game_Type> Battle::Update()
                                0, 15, 10, _battle_text,
                                2, "Confirm?", "A: YES B: NO");
             break;
-        default:
-            break;
+        default: break;
         }
         break;
     case State::Confirm:
@@ -114,6 +142,10 @@ bn::optional<Game_Type> Battle::Update()
     case State::Effect_action:
         if (Effect_action())
         {
+            _effect_cooltime = 1; //10;
+            _damage_text_cooltime = 10;
+            _enemy_dead_cooltime = 10;
+
             if (_action_order == _enemies.size() + 1)
             {
                 _action_order = 0;
@@ -161,15 +193,44 @@ Battle::State Battle::Action_select()
     if (bn::keypad::a_pressed())
     {
         bn::sound_items::sfx_menu_selected.play();
-        return State::Target_select;
+        return (_attack_type) ? State::Magic_select : State::Target_select;
     }
-    else if (bn::keypad::up_pressed() || bn::keypad::down_pressed())
+    if (bn::keypad::up_pressed() || bn::keypad::down_pressed())
     {
         bn::sound_items::sfx_menu_move.play();
         _attack_type = (_attack_type) ? false : true;
     }
     _cursor.set_position(ATTACK_ICON_X, (_attack_type) ? ATTACK_ICON_Y + 16 : ATTACK_ICON_Y);
     return State::Action_select;
+}
+Battle::State Battle::Magic_select()
+{
+    if (bn::keypad::a_pressed()) // <---WIP
+    {
+        bn::sound_items::sfx_menu_selected.play();
+        _attack_type_final = Attack_type::Magic_fire;
+        return State::Target_select;
+    }
+    if (bn::keypad::b_pressed())
+    {
+        bn::sound_items::sfx_menu_cancelled.play();
+        return State::Action_select;
+    }
+    if (bn::keypad::left_pressed())
+    {
+        bn::sound_items::sfx_menu_move.play();
+        Print_magic_information();
+    }
+    else if (bn::keypad::right_pressed())
+    {
+        bn::sound_items::sfx_menu_move.play();
+        Print_magic_information();
+    }
+    return State::Magic_select;
+}
+void Battle::Print_magic_information()
+{
+    Effect::Print_text(_text_generator, true, Effect::Alignment::Right, ATTACK_ICON_X, ATTACK_ICON_Y, 0, _battle_text, 1, "");
 }
 Battle::State Battle::Target_select()
 {
@@ -183,7 +244,7 @@ Battle::State Battle::Target_select()
         bn::sound_items::sfx_menu_cancelled.play();
         return State::Action_select;
     }
-    else if (bn::keypad::left_pressed())
+    if (bn::keypad::left_pressed())
     {
         bn::sound_items::sfx_menu_move.play();
         do {
@@ -237,54 +298,23 @@ Battle::State Battle::Confirm()
 }
 void Battle::Turn_action()
 {
-    int level = _status.Get_level();
-    int damage;
     short index = _attack_order[_action_order].second;
 
     _text_generator.set_center_alignment();
 
     if (index == -1) // player attack
     {
-        int atk_pow = Get_str_data(level);
-        if (_attack_type)
-        {
-            if (!_status.Mp_change(-5)) { _attack_type = false; }
-            else { atk_pow = Get_int_data(level); }
-        }
-        damage = Damage_calculator((int)_attack_type, atk_pow, Get_weapon_data(_status.Get_weapon()), _enemies[_target_index].Get_def(), 0);
-
-        _attack_effect_sprite.set_position(_enemy_x[_target_index], ENEMY_Y);
-        _attack_effect_sprite.set_visible(true);
-        _attack_effect = bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, bn::sprite_items::effect_sword.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
-
-        _text_generator.generate(_enemy_x[_target_index], ENEMY_Y-25, bn::format<5>("{}", damage), _damage_text);
-        for (bn::sprite_ptr& text : _damage_text)
-        {
-            text.set_blending_enabled   (true);
-        }
-        _text_end.Start();
-        if (_attack_type) { bn::sound_items::sfx_battle_magic.play(); }
-        else { bn::sound_items::sfx_battle_sword.play(); }
-
-        _enemies[_target_index].Hp_change(-damage);
+        int damage = attack_function(_status, _attack_type_final, nullptr, &_enemies[_target_index]);
+        attack_effect(_text_generator, _enemy_x[_target_index], ENEMY_Y, damage,
+                      _attack_type_final,
+                      _damage_text, _attack_effect_sprite, _attack_effect);
     }
     else if (!_enemies[index].Is_dead()) // enemy attack
     {
-        damage = Damage_calculator(0, _enemies[index].Get_atk(), 0, Get_def_data(level), Get_armor_data(_status.Get_armor()));
-
-        _attack_effect_sprite.set_position(-90, 60);
-        _attack_effect_sprite.set_visible(true);
-        _attack_effect = bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, bn::sprite_items::effect_sword.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
-
-        _text_generator.generate(-90, 40, bn::format<5>("{}", damage), _damage_text);
-        for (bn::sprite_ptr& text : _damage_text)
-        {
-            text.set_blending_enabled(true);
-        }
-        _text_end.Start();
-        bn::sound_items::sfx_battle_damage_taken.play();
-
-        _status.Hp_change(-damage);
+        int damage = attack_function(_status, Attack_type::Enemy_normal_attack, &_enemies[index], nullptr);
+        attack_effect(_text_generator, -90, 60, damage,
+                      Attack_type::Enemy_normal_attack,
+                      _damage_text, _attack_effect_sprite, _attack_effect);
     }
     ++_action_order;
 }
@@ -296,45 +326,54 @@ bool Battle::Effect_action()
         _attack_effect.update();
         return false;
     }
+    if (bn::keypad::a_held()) { _effect_cooltime = 0; }
+    else if (--_effect_cooltime > 0) { return false; }
+
     switch (_text_end.Get_state())
     {
     case Effect::State::Waiting:
-        return true;
+        if (_damage_text.empty()) { return true; }
+        else
+        {
+            for (bn::sprite_ptr& text : _damage_text) { text.set_visible(true); }
+            //bn::sound_items::sfx_battle_sword.play();
+            _text_end.Start();
+        }
     case Effect::State::Ongoing:
         _text_end.Update();
-        break;
+        return false;
     case Effect::State::Done:
         _damage_text.clear();
+        break;
+    default: break;
+    }
+    if (bn::keypad::a_held()) { _damage_text_cooltime = 0; }
+    else if (--_damage_text_cooltime > 0) { return false; }
 
-        if (!bn::keypad::a_held() && --_effect_cooltime > 0) { return false; }
+    for (int i = 0; i < _enemies.size(); i++)
+    {
+        if (_enemies[i].Is_dead()) { Enemy_dead(i); }
+    }
 
+    switch (_enemy_end.Get_state())
+    {
+    case Effect::State::Waiting:
+        _text_end.Reset();
+        return true;
+        break;
+    case Effect::State::Ongoing:
+        _enemy_end.Update();
+        break;
+    case Effect::State::Done:
         for (int i = 0; i < _enemies.size(); i++)
         {
-            if (_enemies[i].Is_dead()) { Enemy_dead(i); }
+            if (_enemies[i].Is_dead()) { _enemy_sprite[i].set_visible(false); }
         }
+        if (bn::keypad::a_held()) { _enemy_dead_cooltime = 0; }
+        else if (--_enemy_dead_cooltime > 0) { return false; }
 
-        switch (_enemy_end.Get_state())
-        {
-        case Effect::State::Waiting:
-            _text_end.Reset();
-            _effect_cooltime = 10;
-            return true;
-            break;
-        case Effect::State::Ongoing:
-            _enemy_end.Update();
-            break;
-        case Effect::State::Done:
-            for (int i = 0; i < _enemies.size(); i++)
-            {
-                if (_enemies[i].Is_dead()) { _enemy_sprite[i].set_visible(false); }
-            }
-            _text_end.Reset();
-            _effect_cooltime = 10;
-            _enemy_end.Reset();
-            break;
-        default: break;
-        }
-
+        _text_end.Reset();
+        _enemy_end.Reset();
         break;
     default: break;
     }

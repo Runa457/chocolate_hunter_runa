@@ -4,7 +4,7 @@
 namespace Runa::Game
 {
 
-int Damage_calculator(int type, int str, int weapon, int def, int armor);
+int Damage_calculator(int str, int weapon, int def, int armor);
 
 } // namespace Runa::Game
 

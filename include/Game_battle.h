@@ -3,6 +3,7 @@
 
 #include "Game.h"
 #include "Battle_sequence.h"
+#include "Game_battle_function.h"
 
 #include "bn_sprite_animate_actions.h"
 
@@ -23,6 +24,7 @@ private:
     {
         Start_turn,
         Action_select,
+        Magic_select,
         Target_select,
         Confirm,
         Turn_action,
@@ -38,6 +40,7 @@ private:
     void Battle_start();
     State Action_select();
     State Target_select();
+    State Magic_select();
 
     /**
      * @brief Confirm current action.
@@ -49,6 +52,7 @@ private:
     bool Effect_action();
     void Enemy_dead(short index);
 
+    void Print_magic_information();
     /**
      * @brief Prints enemy level, name and stats.
      */
@@ -86,6 +90,7 @@ private:
      * @brief false : melee type, true : magic type
      */
     bool _attack_type;
+    Attack_type _attack_type_final;
     short _target_index;
 
     bn::sprite_ptr _attack_effect_sprite;
@@ -93,7 +98,9 @@ private:
 
     Effect::Transition _text_end;
     Effect::Transition _enemy_end;
-    int _effect_cooltime = 10;
+    int _effect_cooltime = 1; //10;
+    int _damage_text_cooltime = 10;
+    int _enemy_dead_cooltime = 10;
 };
 
 } // namespace Runa::Game
