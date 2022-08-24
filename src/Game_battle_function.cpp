@@ -1,74 +1,66 @@
 #include "Game_battle_function.h"
 #include "Damage_formula.h"
-#include "Stats_data.h"
 
 #include "bn_format.h"
-#include "bn_sound_items.h"
-#include "bn_sprite_items_effect_sword.h"
+//#include "bn_log.h"
 
 namespace Runa::Game
 {
+/*
+namespace
+{
 
-int attack_function(Status& status, Attack_type attack_type,
-                    Enemy::Enemy* attacker, Enemy::Enemy* defender)
+const bn::span<const uint16_t> graphics_indexes(int num_frames)
+{
+    bn::span<const uint16_t> out;
+    for (int i = 0; i < num_frames; i++)
+    {}
+    return out;
+}
+
+} // namespace
+*/
+int attack_function(const Action::Action* action,
+                    ActorStats* attacker, ActorStats* defender)
 {
     int atk_pow;
-    int weapon = 0;
-    int def_pow;
-    int armor = 0;
-    if (attacker == nullptr)
-    {
-        if (attack_type == Attack_type::Sword_attack) { atk_pow = Get_str_data(status.Get_level()); }
-        else { atk_pow = Get_int_data(status.Get_level()) * 2; }
-        weapon = Get_weapon_data(status.Get_weapon());
-    }
-    else { atk_pow = attacker->Get_atk(); }
-    if (defender == nullptr)
-    {
-        def_pow = Get_def_data(status.Get_level());
-        armor = Get_armor_data(status.Get_armor());
-    }
-    else { def_pow = defender->Get_def(); }
+    int weapon = attacker->Get_weapon();
+    int def_pow = defender->Get_def();
+    int armor = defender->Get_armor();
+
+    if (action->_action == Action::Action_type::Normal_attack)
+        { atk_pow = attacker->Get_atk(); }
+    else { atk_pow = attacker->Get_int(); }
 
     int damage = Damage_calculator(atk_pow, weapon, def_pow, armor);
+    //BN_LOG(damage, " ", atk_pow, " ", weapon, " ", def_pow, " ", armor);
 
-    if (defender == nullptr) { status.Hp_change(-damage); }
-    else { defender->Hp_change(-damage); }
+    damage = damage * action->_multiplier / 100;
 
+    if ((attacker->Get_status_effect() & Status_effect::Charge) != 0)
+    {
+        damage = damage * 150 / 100;
+    }
+    if ((defender->Get_status_effect() & Status_effect::Guard) != 0)
+    {
+        damage = damage / 2;
+    }
     return damage;
 }
 
 void attack_effect(bn::sprite_text_generator& _text_generator,
                    int x, int y, int damage,
-                   Attack_type attack_type,
+                   const Action::Action* action,
                    bn::ivector<bn::sprite_ptr>& _damage_text,
                    bn::sprite_ptr& _attack_effect_sprite,
                    bn::sprite_animate_action<9>& _attack_effect)
 {
     _attack_effect_sprite.set_position(x, y);
     _attack_effect_sprite.set_visible(true);
+    _attack_effect = bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, action->_action_effect.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
 
-    switch (attack_type)
-    {
-    case Attack_type::Enemy_normal_attack:
-        _attack_effect = bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, bn::sprite_items::effect_sword.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
-        bn::sound_items::sfx_battle_damage_taken.play();
-        break;
-    case Attack_type::Sword_attack:
-        _attack_effect = bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, bn::sprite_items::effect_sword.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
-        bn::sound_items::sfx_battle_sword.play();
-        break;
-    case Attack_type::Magic_fire:
-        _attack_effect = bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, bn::sprite_items::effect_sword.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
-        bn::sound_items::sfx_battle_magic.play();
-        break;
-    case Attack_type::Defence:
-        return;
-    default:
-        _attack_effect = bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, bn::sprite_items::effect_sword.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
-        bn::sound_items::sfx_battle_sword.play();
-        break;
-    }
+    action->_action_sound.play();
+
     _text_generator.generate(x, y-25, bn::format<5>("{}", damage), _damage_text);
     for (bn::sprite_ptr& text : _damage_text)
     {

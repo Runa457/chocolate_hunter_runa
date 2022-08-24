@@ -43,6 +43,7 @@ Status::Status()
         Init();
         Write();
     }
+    _stats_update();
 }
 Status::~Status() {}
 
@@ -131,6 +132,7 @@ void Status::Exp_earn(int increment)
     {
         exp -= Get_exp_data(Level);
         ++Level;
+        _stats_update();
     }
 }
 void Status::Choco_earn(int increment)
@@ -143,8 +145,16 @@ void Status::Life_regain()
     _value_changed = true;
     left_turns = 100;
 }
-void Status::Weapon_upgrade() { ++Weapon_level; }
-void Status::Armor_upgrade() { ++Armor_level; }
+void Status::Weapon_upgrade()
+{
+    ++Weapon_level;
+    _stats_update();
+}
+void Status::Armor_upgrade()
+{
+    ++Armor_level;
+    _stats_update();
+}
 
 void Status::Next_stratum()
 {
@@ -169,6 +179,13 @@ bool Status::turn_end()
 {
     _value_changed = true;
     return --left_turns <= 0;
+}
+
+void Status::_stats_update()
+{
+    _stats = Game::ActorStats(Get_str_data(Level), Get_weapon_data(Weapon_level),
+                              Get_def_data(Level), Get_armor_data(Armor_level),
+                              Get_int_data(Level), Game::Status_effect::None);
 }
 
 } // namespace Runa

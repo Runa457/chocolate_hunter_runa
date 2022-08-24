@@ -49,6 +49,12 @@ private:
      */
     State Confirm();
     void Turn_action();
+    /**
+     * @brief Action_execute
+     * @param -1 if attacker is player
+     * @param -1 if defender is player
+     */
+    void Action_execute(int attacker_idx, int defender_idx);
     bool Effect_action();
     void Enemy_dead(short index);
 
@@ -82,15 +88,15 @@ private:
     bn::vector<bn::sprite_ptr, 3> _enemy_sprite;
     //bn::vector<bn::sprite_ptr, 3> _enemy_hp_sprite;
 
-    bn::sprite_ptr _sword_attack_sprite;
-    bn::sprite_ptr _magic_attack_sprite;
+    bn::sprite_ptr _sword_attack_icon;
+    bn::sprite_ptr _magic_attack_icon;
     bn::sprite_ptr _cursor;
     short _enemy_x[3] = {-60, 0, 60};
     /**
      * @brief false : melee type, true : magic type
      */
     bool _attack_type;
-    Attack_type _attack_type_final;
+    const Action::Action* _action_type;
     short _target_index;
 
     bn::sprite_ptr _attack_effect_sprite;

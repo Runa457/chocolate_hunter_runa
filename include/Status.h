@@ -1,6 +1,8 @@
 #ifndef STATUS_H
 #define STATUS_H
 
+#include "Game_battle_actorstats.h"
+
 #include "bn_sram.h"
 
 namespace Runa
@@ -66,6 +68,7 @@ public:
      */
     bool turn_end();
 
+    Game::ActorStats _stats;
 private:
     /**
      * @brief Player (Runa) status.
@@ -87,6 +90,8 @@ private:
      * After value checked, value will be returned to false.
      */
     bool _value_changed = false;
+
+    void _stats_update();
 };
 
 } // namespace Runa
