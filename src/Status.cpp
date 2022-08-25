@@ -185,7 +185,8 @@ void Status::_stats_update()
 {
     _stats = Game::ActorStats(Get_str_data(Level), Get_weapon_data(Weapon_level),
                               Get_def_data(Level), Get_armor_data(Armor_level),
-                              Get_int_data(Level), Game::Status_effect::None);
+                              Get_int_data(Level), Get_spd_data(Level),
+                              Game::Status_effect::None);
 }
 
 } // namespace Runa

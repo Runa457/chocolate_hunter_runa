@@ -20,9 +20,10 @@ const bn::span<const uint16_t> graphics_indexes(int num_frames)
 
 } // namespace
 */
-int attack_function(const Action::Action* action,
-                    ActorStats* attacker, ActorStats* defender)
+int attack_function(ActorStats* attacker, ActorStats* defender,
+                    bn::random& random)
 {
+    const Action::Action* action = attacker->Get_action_type();
     int atk_pow;
     int weapon = attacker->Get_weapon();
     int def_pow = defender->Get_def();
@@ -39,12 +40,20 @@ int attack_function(const Action::Action* action,
 
     if ((attacker->Get_status_effect() & Status_effect::Charge) != 0)
     {
-        damage = damage * 150 / 100;
+        damage = damage * 15 / 10;
     }
     if ((defender->Get_status_effect() & Status_effect::Guard) != 0)
     {
         damage = damage / 2;
     }
+
+    int chance = random.get_int(100);
+    if (chance < action->_status_chance)
+    {
+        defender->Set_status_effect(action->_status_effect);
+    }
+    //BN_LOG(chance, " ", action->_status_chance, " ", defender->Get_status_effect());
+
     return damage;
 }
 
@@ -61,7 +70,16 @@ void attack_effect(bn::sprite_text_generator& _text_generator,
 
     action->_action_sound.play();
 
-    _text_generator.generate(x, y-25, bn::format<5>("{}", damage), _damage_text);
+    _text_generator.set_center_alignment();
+    if (damage == 0) { return; }
+    else if (damage > 0)
+    {
+        _text_generator.generate(x, y-25, bn::format<5>("{}", damage), _damage_text);
+    }
+    else if (damage < 0)
+    {
+        _text_generator.generate(x, y-25, bn::format<6>("+{}", -damage), _damage_text);
+    }
     for (bn::sprite_ptr& text : _damage_text)
     {
         text.set_visible(false);

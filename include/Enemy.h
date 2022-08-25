@@ -20,7 +20,6 @@ public:
     const bn::string_view& Get_name();
     const short& Get_level();
     int Get_hp();
-    const int& Get_spd();
     int Get_exp();
     short Get_choco();
 
@@ -52,7 +51,6 @@ private:
     Enemy_data _base_data;
     short level;
     int hp, maxhp;
-    int spd;
 
 };
 

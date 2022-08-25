@@ -4,6 +4,7 @@
 #include "Game_battle_actorstats.h"
 #include "Game_battle_action.h"
 
+#include "bn_random.h"
 #include "bn_sprite_animate_actions.h"
 #include "bn_sprite_text_generator.h"
 
@@ -18,8 +19,8 @@ namespace Runa::Game
  * @param nullopt if defender is player
  * @return Damage for effects
  */
-int attack_function(const Action::Action* action,
-                    ActorStats* attacker, ActorStats* defender);
+int attack_function(ActorStats* attacker, ActorStats* defender,
+                    bn::random& random_generator);
 
 /**
  * @brief Handles attack effects.

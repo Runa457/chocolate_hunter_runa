@@ -10,37 +10,36 @@
 #include "bn_sprite_items_icon_magic_attack.h"
 #include "bn_sprite_items_effect_sword.h"
 
+#include "bn_log.h"
+
 namespace Runa::Game
 {
 
 namespace
 {
 constexpr int ATTACK_ICON_X = 104;
-constexpr int ATTACK_ICON_Y = 40;
+constexpr int ATTACK_ICON_Y = 42;
 constexpr int ENEMY_Y = 0;
 }
 
 Battle::Battle(bn::sprite_text_generator& text_generator,
+               bn::random& random_generator,
                Status& status,
                bn::unique_ptr<Battle_Sequence>& battle_sq) :
     _text_generator(text_generator),
+    _random(random_generator),
     _status(status),
     _state(State::Start_turn),
-    _action_order(0),
     _battle_sq(battle_sq),
     _enemies(battle_sq->Get_current_enemies()),
-    _num_enemies(3),
     _cursor(bn::sprite_items::select_cursor_square.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y)),
     _sword_attack_icon(bn::sprite_items::icon_sword_attack.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y)),
     _magic_attack_icon(bn::sprite_items::icon_magic_attack.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y+16)),
-    _attack_type(false),
-    _target_index(0),
     _enemy_end(static_cast<Effect::Type>(Effect::Type::Transparency | Effect::Type::Sprite_mosaic),
                Effect::Direction::Out, 20),
     _text_end(Effect::Type::Transparency, Effect::Direction::Out, 15),
     _attack_effect_sprite(bn::sprite_items::effect_sword.create_sprite(0, 0)),
-    _attack_effect(bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, bn::sprite_items::effect_sword.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8)),
-    _action_type(nullptr)
+    _attack_effect(bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, bn::sprite_items::effect_sword.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8))
 {
     _cursor.set_visible(false);
     _attack_effect_sprite.set_z_order(-10);
@@ -54,6 +53,7 @@ Battle::~Battle() {}
 
 bn::optional<Game_Type> Battle::Update()
 {
+    BN_LOG((int)_state);
     switch (_state)
     {
     case State::Start_turn:
@@ -74,13 +74,24 @@ bn::optional<Game_Type> Battle::Update()
             Print_enemy_information();
             _sword_attack_icon.set_visible(false);
             _magic_attack_icon.set_visible(false);
-            _action_type = &Action::Get_action_data(0);
+            _status._stats.Set_action_type(&Action::Get_action_data(Action::Action_index::Slash));
         }
         if (_state == State::Magic_select)
         {
+            _status._stats.Set_action_type(&Action::Get_magic_data(static_cast<Action::Magic_index>(_magic_index)));
             Print_magic_information();
             _sword_attack_icon.set_visible(false);
             _cursor.set_visible(false);
+        }
+        if (_state == State::Confirm)
+        {
+            _sword_attack_icon.set_visible(false);
+            _magic_attack_icon.set_visible(false);
+            _cursor.set_visible(false);
+            Effect::Print_text(_text_generator, true, Effect::Alignment::Center,
+                               0, 15, 10, _battle_text,
+                               2, "Confirm?", "A: YES B: NO");
+            _status._stats.Set_action_type(&Action::Get_action_data(Action::Action_index::Guard));
         }
         break;
     case State::Magic_select:
@@ -145,9 +156,9 @@ bn::optional<Game_Type> Battle::Update()
             _damage_text_cooltime = 10;
             _enemy_dead_cooltime = 10;
 
-            if (_action_order == _enemies.size() + 1)
+            if (_action_order_index >= _enemies.size() + 1)
             {
-                _action_order = 0;
+                _action_order_index = 0;
                 _state = State::End_turn;
             }
             else { _state = State::Turn_action; }
@@ -204,11 +215,19 @@ Battle::State Battle::Action_select()
 }
 Battle::State Battle::Magic_select()
 {
-    if (bn::keypad::a_pressed()) // <---WIP
+    if (bn::keypad::a_pressed())
     {
+        if (_status.Get_mp() < _status._stats.Get_action_type()->_cost)
+        {
+            bn::sound_items::sfx_menu_denied.play();
+            return State::Magic_select;
+        }
         bn::sound_items::sfx_menu_selected.play();
-        _action_type = &Action::Get_magic_data(0);
-        return State::Target_select;
+        if (_status._stats.Get_action_type()->_target == Action::Target_type::Single_target)
+        {
+            return State::Target_select;
+        }
+        else { return State::Confirm; }
     }
     if (bn::keypad::b_pressed())
     {
@@ -217,22 +236,58 @@ Battle::State Battle::Magic_select()
     }
     if (bn::keypad::left_pressed())
     {
-        bn::sound_items::sfx_menu_move.play();
-        Print_magic_information();
+        if (_magic_index != 0)
+        {
+            --_magic_index;
+            _status._stats.Set_action_type(&Action::Get_magic_data(static_cast<Action::Magic_index>(_magic_index)));
+            bn::sound_items::sfx_menu_move.play();
+            Print_magic_information();
+        }
     }
     else if (bn::keypad::right_pressed())
     {
-        bn::sound_items::sfx_menu_move.play();
-        Print_magic_information();
+        if (static_cast<Action::Magic_index>(++_magic_index) == Action::Magic_index::END_OF_INDEX) { --_magic_index; }
+        else
+        {
+            _status._stats.Set_action_type(&Action::Get_magic_data(static_cast<Action::Magic_index>(_magic_index)));
+            bn::sound_items::sfx_menu_move.play();
+            Print_magic_information();
+        }
     }
     return State::Magic_select;
 }
 void Battle::Print_magic_information()
 {
+    const Action::Action* _action_type = _status._stats.Get_action_type();
+
     //Effect::Print_text(_text_generator, true, Effect::Alignment::Right, ATTACK_ICON_X, ATTACK_ICON_Y, 0, _battle_text, 1, "");
     _battle_text.clear();
     _text_generator.set_right_alignment();
-    _text_generator.generate(ATTACK_ICON_X, ATTACK_ICON_Y, bn::format<15>("{} ({})"), _battle_text);
+    _text_generator.generate(ATTACK_ICON_X+8, ATTACK_ICON_Y, bn::format<20>("{} ({})", _action_type->_name, _action_type->_cost), _battle_text);
+
+    bn::string_view target_type = "";
+    switch (_action_type->_target)
+    {
+    case Action::Target_type::Self_target:
+        target_type = "Self";
+        break;
+    case Action::Target_type::Single_target:
+        target_type = "Single";
+        break;
+    case Action::Target_type::Multi_hit:
+        target_type = "Multi";
+        break;
+    case Action::Target_type::Every_enemy_target:
+        target_type = "Enemies";
+        break;
+    case Action::Target_type::Entire_target:
+        target_type = "Entire";
+        break;
+    default:
+        BN_ERROR();
+        break;
+    }
+    _text_generator.generate(ATTACK_ICON_X-8, ATTACK_ICON_Y+12, bn::format<7>("{}", target_type), _battle_text);
 }
 Battle::State Battle::Target_select()
 {
@@ -272,7 +327,7 @@ void Battle::Print_enemy_information()
     _text_generator.generate(0, -60, bn::format<20>("Lv {} {}", _enemies[_target_index].Get_level(), _enemies[_target_index].Get_name()), _battle_text);
     _text_generator.generate(0, -50, bn::format<10>("Hp {}", _enemies[_target_index].Get_hp()), _battle_text);
     // debug line ; stats
-    _text_generator.generate(0, -40, bn::format<20>("A {} D {} S {}", _enemies[_target_index]._stats.Get_atk(), _enemies[_target_index]._stats.Get_def(), _enemies[_target_index].Get_spd()), _battle_text);
+    _text_generator.generate(0, -40, bn::format<20>("A {} D {} S {}", _enemies[_target_index]._stats.Get_atk(), _enemies[_target_index]._stats.Get_def(), _enemies[_target_index]._stats.Get_spd()), _battle_text);
 }
 
 Battle::State Battle::Confirm()
@@ -280,14 +335,7 @@ Battle::State Battle::Confirm()
     if (bn::keypad::a_pressed())
     {
         bn::sound_items::sfx_menu_selected.play();
-
-        _attack_order.clear();
-        _attack_order.push_back({Get_spd_data(_status.Get_level()), -1});
-        for (int i = 0; i < _enemies.size(); i++)
-        {
-            _attack_order.push_back({_enemies[i].Get_spd(), i});
-        }
-        bn::sort(_attack_order.rbegin(), _attack_order.rend());
+        Action_order_decision();
         return State::Turn_action;
     }
     if (bn::keypad::b_pressed())
@@ -298,42 +346,75 @@ Battle::State Battle::Confirm()
     }
     return State::Confirm;//
 }
+void Battle::Action_order_decision()
+{
+    _action_order.clear();
+    _action_order.push_back({_status._stats.Get_spd(), -1});
+    for (int i = 0; i < _enemies.size(); i++)
+    {
+        _action_order.push_back({_enemies[i]._stats.Get_spd(), i});
+    }
+    bn::sort(_action_order.rbegin(), _action_order.rend());
+}
 void Battle::Turn_action()
 {
-    short index = _attack_order[_action_order].second;
+    short index = _action_order[_action_order_index].second;
+    ActorStats* attacker = nullptr;
 
-    _text_generator.set_center_alignment();
-
-    if (index == -1) // player attack
+    if (index == -1)
     {
-        switch (_action_type->_target)
+        attacker = &_status._stats;
+        if (_left_hit == 0) { _status.Mp_change(-attacker->Get_action_type()->_cost); }
+    }
+    else if (!_enemies[index].Is_dead()) { attacker = &_enemies[index]._stats; }
+    else { ++_action_order_index; return; }
+
+    switch (attacker->Get_action_type()->_target)
+    {
+    case Action::Target_type::Self_target:
+        Action_execute(index, index);
+        break;
+    case Action::Target_type::Single_target:
+        int j;
+        j = (index == -1) ? _target_index : -1;
+        Action_execute(index, j);
+        break;
+    case Action::Target_type::Multi_hit:
+        if (_left_hit == 0) { _left_hit = 3; }
+        if (index == -1)
         {
-        case Action::Target_type::Self_target:
-            break;
-        case Action::Target_type::Single_target:
-            Action_execute(-1, _target_index);
-            break;
-        case Action::Target_type::Multi_hit:
-            break;
-        case Action::Target_type::Every_enemy_target:
-            break;
-        case Action::Target_type::Entire_target:
-            break;
-        default: break;
+            if (_num_enemies == 0) { break; }
+            int j = 0;
+            do { j = _random.get_int(_enemies.size()); } while (_enemies[j].Is_dead());
+            Action_execute(index, j);
         }
+        else { Action_execute(index, -1); }
+        if (--_left_hit > 0) { return; }
+        break;
+    case Action::Target_type::Every_enemy_target:
+        if (_left_hit == 0) { _left_hit = 3; }
+        if (_left_hit <= _enemies.size() && !_enemies[_left_hit-1].Is_dead())
+        {
+            Action_execute(index, _left_hit-1);
+        }
+        if (--_left_hit > 0) { return; }
+        break;
+    case Action::Target_type::Entire_target:
+        if (_left_hit == 0) { _left_hit = 4; }
+        if (_left_hit == 4) { Action_execute(index, -1); }
+        else if (_left_hit <= _enemies.size() && !_enemies[_left_hit-1].Is_dead())
+        {
+            Action_execute(index, _left_hit-1);
+        }
+        if (--_left_hit > 0) { return; }
+        break;
+        break;
+    default:
+        BN_ERROR();
+        break;
     }
-    else if (!_enemies[index].Is_dead()) // enemy attack
-    {
-        Action_execute(index, -1);
-        /*
-        int damage = attack_function(_action_type, &_enemies[index]._stats, &_status._stats);//action_type -> enemy attack type
-        _status.Hp_change(-damage);
-        attack_effect(_text_generator, -90, 60, damage,
-                      _action_type,//to enemy attack type
-                      _damage_text, _attack_effect_sprite, _attack_effect);
-        */
-    }
-    ++_action_order;
+    _left_hit = 0;
+    ++_action_order_index;
 }
 void Battle::Action_execute(int attacker_idx, int defender_idx)
 {
@@ -346,20 +427,20 @@ void Battle::Action_execute(int attacker_idx, int defender_idx)
     if (defender_idx == -1) { defender = &_status._stats; }
     else { defender = &_enemies[defender_idx]._stats; }
 
-    int damage = attack_function(_action_type, attacker, defender);
+    int damage = attack_function(attacker, defender, _random);
 
     if (defender_idx == -1)
     {
         _status.Hp_change(-damage);
         attack_effect(_text_generator, -90, 60, damage,
-                      _action_type,//to enemy attack type
+                      attacker->Get_action_type(),
                       _damage_text, _attack_effect_sprite, _attack_effect);
     }
     else
     {
         _enemies[defender_idx].Hp_change(-damage);
         attack_effect(_text_generator, _enemy_x[defender_idx], ENEMY_Y, damage,
-                      _action_type,
+                      attacker->Get_action_type(),
                       _damage_text, _attack_effect_sprite, _attack_effect);
     }
 }
