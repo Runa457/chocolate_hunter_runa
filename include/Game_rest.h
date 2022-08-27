@@ -36,12 +36,12 @@ private:
     bn::vector<bn::sprite_ptr, 4> _icon_sprite;
     bn::sprite_ptr _cursor;
 
-    Menu _current_menu;
-    int _cost[4];
-
     Effect::Transition _scene_start;
     Effect::Transition _scene_end;
     static constexpr int TRANSITION_FRAMES = 10;
+
+    Menu _current_menu;
+    int _cost[4];
 
 };
 

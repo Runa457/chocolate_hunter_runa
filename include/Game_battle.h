@@ -1,6 +1,7 @@
 #ifndef GAME_BATTLE_H
 #define GAME_BATTLE_H
 
+#include "Effect_camera.h"
 #include "Game.h"
 #include "Battle_sequence.h"
 #include "Game_battle_function.h"
@@ -70,6 +71,11 @@ private:
     void Attack_effect(int x, int y, int damage,
                        const Action::Action* action);
     bool Effect_action();
+    void Camera_action();
+    /**
+     * @brief Handles enemy dead effect and move target index to next.
+     * @param index
+     */
     void Enemy_dead(short index);
 
     void Print_magic_information();
@@ -102,6 +108,7 @@ private:
     bn::vector<Enemy::Enemy, 3>& _enemies;
     short _num_enemies = 3;
     bn::vector<bn::sprite_ptr, 3> _enemy_sprite;
+    //bn::sprite_ptr _player_sprite;
     //bn::vector<bn::sprite_ptr, 3> _enemy_hp_sprite;
 
     bn::sprite_ptr _sword_attack_icon;
@@ -121,9 +128,11 @@ private:
 
     Effect::Transition _text_end;
     Effect::Transition _enemy_end;
-    int _effect_cooltime = 1; //10;
+    int _effect_cooltime = 10;
     int _damage_text_cooltime = 10;
     int _enemy_dead_cooltime = 10;
+
+    Effect::Camera _camera;
 };
 
 } // namespace Runa::Game

@@ -29,11 +29,11 @@ constexpr int OPTION_Y_INT = 12;
 } // namespace
 
 Option::Option(bn::sprite_text_generator& text_generator, Status& status) :
-    _text_generator(text_generator),
     _status(status),
+    _text_generator(text_generator),
+    _cursor(bn::sprite_items::cursor_0.create_sprite(OPTION_X, OPTION_Y + OPTION_Y_INT * 3)),
     _scene_start(Effect::Type::Transparency, Effect::Direction::In, TRANSITION_FRAMES),
-    _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES),
-    _cursor(bn::sprite_items::cursor_0.create_sprite(OPTION_X, OPTION_Y + OPTION_Y_INT * 3))
+    _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES)
 {
     Effect::Print_text(_text_generator, true, Effect::Alignment::Left, OPTION_X, OPTION_Y, OPTION_Y_INT, _option_text, OPTION_LIST);
     for (bn::sprite_ptr& text_sprite : _option_text)

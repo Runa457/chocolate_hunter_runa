@@ -29,16 +29,16 @@ private:
     void Press_left_right();
     void Cursor_update(int move_direction);
 
-    bn::array<bn::unique_ptr<Battle_Sequence>, 3> _sequence_option;
+    bn::random& _random;
+    Status& _status;
+
     bn::sprite_text_generator& _text_generator;
     bn::vector<bn::sprite_ptr, 20> _text_sprite;
     bn::sprite_ptr _cursor;
 
-    bn::random& _random;
-    bn::unique_ptr<Battle_Sequence>& _next_sequence;
-    Status& _status;
-
     Menu _current_menu;
+    bn::array<bn::unique_ptr<Battle_Sequence>, 3> _sequence_option;
+    bn::unique_ptr<Battle_Sequence>& _next_sequence;
 
     Effect::Transition _scene_start;
     Effect::Transition _scene_end;

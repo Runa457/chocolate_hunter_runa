@@ -56,7 +56,7 @@ bool Enemy::Is_dead() { return hp <= 0; }
 
 void Enemy::Sprite_create(short x, short y, bn::ivector<bn::sprite_ptr>& sprite)
 {
-    sprite.push_back(bn::sprite_ptr(_base_data.sprite_item.create_sprite(x, y)));
+    sprite.push_back(_base_data.sprite_item.create_sprite(x, y));
 }
 
 void Enemy::Set_action_type(int turn)

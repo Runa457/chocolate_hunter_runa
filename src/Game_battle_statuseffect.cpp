@@ -4,7 +4,6 @@ namespace Runa::Game
 {
 
 Status_effect::Status_effect() :
-    _index(Status_effect_index::None),
     _inner_index{Status_effect_index::None},
     _duration{0}
 {
@@ -13,7 +12,15 @@ Status_effect::Status_effect() :
 
 Status_effect::~Status_effect() {}
 
-Status_effect_index Status_effect::Get_status_effect() { return _index; }
+Status_effect_index Status_effect::Get_status_effect()
+{
+    Status_effect_index _index = Status_effect_index::None;
+    for (int i = 0; i < MAX_STATUS_NUMBER; i++)
+    {
+        _index = static_cast<Status_effect_index>(_index | _inner_index[0]);
+    }
+    return _index;
+}
 
 void Status_effect::Set_status_effect(Status_effect_index next_status, int turns)
 {
@@ -44,9 +51,9 @@ void Status_effect::Set_status_effect(Status_effect_index next_status, int turns
         {
             _inner_index[i] = next_status;
             _duration[i] = turns;
+            return;
         }
     }
-    _index = static_cast<Status_effect_index>(_inner_index[0] | _inner_index[1] | _inner_index[2]);
 }
 void Status_effect::Remove_status_effect()
 {
@@ -55,7 +62,6 @@ void Status_effect::Remove_status_effect()
         _inner_index[i] = Status_effect_index::None;
         _duration[i] = 0;
     }
-    _index = Status_effect_index::None;
 }
 void Status_effect::Turn_passed()
 {
@@ -63,11 +69,9 @@ void Status_effect::Turn_passed()
     {
         if (--_duration[i] <= 0)
         {
-            _index = static_cast<Status_effect_index>(_index - _inner_index[i]);
             _inner_index[i] = Status_effect_index::None;
         }
     }
-    _index = static_cast<Status_effect_index>(_inner_index[0] | _inner_index[1] | _inner_index[2]);
 }
 
 } // namespace Runa::Game

@@ -44,7 +44,6 @@ public:
     void Turn_passed();
 
 private:
-    Status_effect_index _index;
     Status_effect_index _inner_index[MAX_STATUS_NUMBER];
     int _duration[MAX_STATUS_NUMBER];
 

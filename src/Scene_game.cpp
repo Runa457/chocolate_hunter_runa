@@ -16,8 +16,8 @@ Game::Game(bn::sprite_text_generator& text_generator,
            Status& status) :
     _random(random_generator),
     _status(status),
-    _text_generator(text_generator),
     _subscene(new Runa::Game::Choice(text_generator, random_generator, status, _battle_sq)),
+    _text_generator(text_generator),
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES)
 {
     _choco_icon.push_back(bn::sprite_items::icon_choco.create_sprite(112, -72));

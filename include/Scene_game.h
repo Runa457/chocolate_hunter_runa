@@ -25,10 +25,11 @@ public:
 private:
     void Print_text();
 
+    bn::random& _random;
+    Status& _status;
+
     bn::unique_ptr<Runa::Game::Game_Root> _subscene;
     bn::optional<Runa::Game::Game_Type> _game_mode;
-    Status& _status;
-    bn::random& _random;
 
     bn::sprite_text_generator& _text_generator;
     bn::vector<bn::sprite_ptr, 60> _status_text;
