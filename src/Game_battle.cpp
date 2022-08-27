@@ -6,18 +6,19 @@
 #include "bn_sprite_items_select_cursor_square.h"
 #include "bn_sprite_items_select_cursor_down.h"
 #include "bn_sprite_items_icon_sword_attack.h"
+#include "bn_sprite_items_icon_shield.h"
 #include "bn_sprite_items_icon_magic_attack.h"
 #include "bn_sprite_items_effect_sword.h"
 
-#include "bn_log.h"
+//#include "bn_log.h"
 
 namespace Runa::Game
 {
 
 namespace
 {
-constexpr int ATTACK_ICON_X = 104;
-constexpr int ATTACK_ICON_Y = 42;
+constexpr int ATTACK_ICON_X = 72;
+constexpr int ATTACK_ICON_Y = 58;
 constexpr int ENEMY_Y = 0;
 }
 
@@ -32,7 +33,8 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
     _battle_sq(battle_sq),
     _enemies(battle_sq->Get_current_enemies()),
     _sword_attack_icon(bn::sprite_items::icon_sword_attack.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y)),
-    _magic_attack_icon(bn::sprite_items::icon_magic_attack.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y+16)),
+    _shield_icon(bn::sprite_items::icon_shield.create_sprite(ATTACK_ICON_X+16, ATTACK_ICON_Y)),
+    _magic_attack_icon(bn::sprite_items::icon_magic_attack.create_sprite(ATTACK_ICON_X+32, ATTACK_ICON_Y)),
     _cursor(bn::sprite_items::select_cursor_square.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y)),
     _attack_effect_sprite(bn::sprite_items::effect_sword.create_sprite(0, 0)),
     _attack_effect(bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, bn::sprite_items::effect_sword.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8)),
@@ -44,6 +46,7 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
     _attack_effect_sprite.set_z_order(-10);
     _attack_effect_sprite.set_visible(false);
     _sword_attack_icon.set_visible(false);
+    _shield_icon.set_visible(false);
     _magic_attack_icon.set_visible(false);
 
     Battle_start();
@@ -65,6 +68,7 @@ bn::optional<Game_Type> Battle::Update()
         _cursor.set_item(bn::sprite_items::select_cursor_square);
         _cursor.set_visible(true);
         _sword_attack_icon.set_visible(true);
+        _shield_icon.set_visible(true);
         _magic_attack_icon.set_visible(true);
 
         _state = Action_select();
@@ -72,6 +76,7 @@ bn::optional<Game_Type> Battle::Update()
         {
             Print_enemy_information();
             _sword_attack_icon.set_visible(false);
+            _shield_icon.set_visible(false);
             _magic_attack_icon.set_visible(false);
             _status._stats.Set_action_type(&Action::Get_action_data(Action::Action_index::Slash));
         }
@@ -80,11 +85,13 @@ bn::optional<Game_Type> Battle::Update()
             _status._stats.Set_action_type(&Action::Get_magic_data(static_cast<Action::Magic_index>(_magic_index)));
             Print_magic_information();
             _sword_attack_icon.set_visible(false);
+            _shield_icon.set_visible(false);
             _cursor.set_visible(false);
         }
         if (_state == State::Confirm)
         {
             _sword_attack_icon.set_visible(false);
+            _shield_icon.set_visible(false);
             _magic_attack_icon.set_visible(false);
             _cursor.set_visible(false);
             Effect::Print_text(_text_generator, true, Effect::Alignment::Center,
@@ -215,14 +222,30 @@ Battle::State Battle::Action_select()
     if (bn::keypad::a_pressed())
     {
         bn::sound_items::sfx_menu_selected.play();
-        return (_attack_type) ? State::Magic_select : State::Target_select;
+        switch (_attack_type)
+        {
+        case Next_action::Slash:
+            return State::Target_select;
+        case Next_action::Guard:
+            return State::Confirm;
+        case Next_action::Magic:
+            return State::Magic_select;
+        default:
+            BN_ERROR();
+            break;
+        }
     }
-    if (bn::keypad::up_pressed() || bn::keypad::down_pressed())
+    if (bn::keypad::left_pressed())
     {
         bn::sound_items::sfx_menu_move.play();
-        _attack_type = (_attack_type) ? false : true;
+        _attack_type = static_cast<Next_action>((_attack_type + 2) % 3);
     }
-    _cursor.set_position(ATTACK_ICON_X, (_attack_type) ? ATTACK_ICON_Y + 16 : ATTACK_ICON_Y);
+    else if (bn::keypad::right_pressed())
+    {
+        bn::sound_items::sfx_menu_move.play();
+        _attack_type = static_cast<Next_action>((_attack_type + 1) % 3);
+    }
+    _cursor.set_position(ATTACK_ICON_X + 16 * (int)_attack_type, ATTACK_ICON_Y);
     return State::Action_select;
 }
 Battle::State Battle::Magic_select()
@@ -275,7 +298,7 @@ void Battle::Print_magic_information()
     //Effect::Print_text(_text_generator, true, Effect::Alignment::Right, ATTACK_ICON_X, ATTACK_ICON_Y, 0, _battle_text, 1, "");
     _battle_text.clear();
     _text_generator.set_right_alignment();
-    _text_generator.generate(ATTACK_ICON_X+8, ATTACK_ICON_Y, bn::format<20>("{} ({})", _action_type->_name, _action_type->_cost), _battle_text);
+    _text_generator.generate(ATTACK_ICON_X+40, ATTACK_ICON_Y-16, bn::format<20>("{} ({})", _action_type->_name, _action_type->_cost), _battle_text);
 
     bn::string_view target_type = "";
     switch (_action_type->_target)
@@ -299,7 +322,7 @@ void Battle::Print_magic_information()
         BN_ERROR();
         break;
     }
-    _text_generator.generate(ATTACK_ICON_X-8, ATTACK_ICON_Y+12, bn::format<7>("{}", target_type), _battle_text);
+    _text_generator.generate(ATTACK_ICON_X+22, ATTACK_ICON_Y-4, bn::format<7>("{}", target_type), _battle_text);
 }
 Battle::State Battle::Target_select()
 {

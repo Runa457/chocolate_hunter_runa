@@ -10,15 +10,18 @@
 namespace Runa::Game::Action
 {
 
-enum Action_index : short
+enum class Action_index : short
 {
     // Self target
     Guard,
+    Charge,
+    Heal_I,
     // Single target
     Slash,
     Bash,
     // Multi hit
     // Every enemy target
+    Area_Heal_I,
     // Entire target
 };
 enum Magic_index : short
@@ -27,7 +30,7 @@ enum Magic_index : short
     Fire_II,
     Fire_III,
     Fire_IV,
-    Heal,
+    Heal_I,
     END_OF_INDEX
 };
 

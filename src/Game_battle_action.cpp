@@ -13,6 +13,14 @@ constexpr Action Action_data[] = {
     0, 0, 500, Status_effect_index::Guard, 100, 1,
     bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_sword),//
 
+    Action("Charge", Target_type::Self_target, Action_type::Normal_attack,
+    0, 0, 150, Status_effect_index::Charge, 100, 2,
+    bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_sword),//
+
+    Action("Heal I", Target_type::Self_target, Action_type::Magic_attack,
+    15, -100, 100, Status_effect_index::None, 0, 0,
+    bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_magic),//
+
     // Single target
     Action("Slash", Target_type::Single_target, Action_type::Normal_attack,
     0, 100, 100, Status_effect_index::None, 0, 0,
@@ -24,6 +32,10 @@ constexpr Action Action_data[] = {
 
     // Multi hit
     // Every enemy target
+    Action("Area Heal I", Target_type::Every_enemy_target, Action_type::Magic_attack,
+    30, -100, 80, Status_effect_index::None, 0, 0,
+    bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_magic),//
+
     // Entire target
 };
 

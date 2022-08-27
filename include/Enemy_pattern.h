@@ -6,11 +6,14 @@
 namespace Runa::Game::Enemy
 {
 
-enum Pattern_index : short
+enum class Pattern_index : short
 {
     Bash,
     Guard,
+    Heal,
     Bash_Guard,
+    Charge_Bash,
+    Bash_Heal,
     Boss_1,
 };
 
@@ -23,7 +26,7 @@ public:
 
     const Action::Action_index& Get_action(int turn)const
     {
-        return _actions[turn % _length];
+        return _actions[(turn-1) % _length];
     }
 
 protected:

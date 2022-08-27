@@ -35,6 +35,13 @@ private:
         End_battle
     };
 
+    enum Next_action : char
+    {
+        Slash,
+        Guard,
+        Magic
+    };
+
     /**
      * @brief Called at start of battle.
      * Create sprite of enemies.
@@ -112,13 +119,12 @@ private:
     //bn::vector<bn::sprite_ptr, 3> _enemy_hp_sprite;
 
     bn::sprite_ptr _sword_attack_icon;
+    bn::sprite_ptr _shield_icon;
     bn::sprite_ptr _magic_attack_icon;
     bn::sprite_ptr _cursor;
     short _enemy_x[3] = {-60, 0, 60};
-    /**
-     * @brief false : melee type, true : magic type
-     */
-    bool _attack_type = false; //<-int
+
+    Next_action _attack_type = Next_action::Slash;
     int _magic_index = 0;
     short _target_index = 0;
     int _left_hit = 0;

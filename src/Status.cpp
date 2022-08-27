@@ -43,7 +43,6 @@ Status::Status()
         Init();
         Write();
     }
-    _stats_update();
 }
 Status::~Status() {}
 
@@ -61,6 +60,8 @@ void Status::Init()
     choco_multiplier = 200;
 
     _value_changed = false;
+
+    _stats_update();
 }
 void Status::Write()
 {
@@ -92,6 +93,8 @@ bool Status::Read()
         stratum = _read_data.stratum;
         chocolate = _read_data.chocolate;
         choco_multiplier = _read_data.multiplier;
+
+        _stats_update();
         return true;
     }
     else { return false; }
