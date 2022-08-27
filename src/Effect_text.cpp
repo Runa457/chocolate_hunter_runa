@@ -35,6 +35,7 @@ void Print_text(bn::sprite_text_generator& _text_generator,
         bn::string_view line = va_arg(_text, const char*);
         _text_generator.generate(x, y + i*spacing, line, _text_sprite);
     }
+    va_end(_text);
 }
 
 void Print_text(bn::sprite_text_generator& _text_generator,

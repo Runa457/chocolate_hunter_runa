@@ -4,6 +4,8 @@
 namespace Runa::Game
 {
 
+constexpr int MAX_STATUS_NUMBER = 3;
+
 enum Status_effect_index : int
 {
     None = 0,
@@ -43,8 +45,8 @@ public:
 
 private:
     Status_effect_index _index;
-    Status_effect_index _inner_index[3];
-    int _duration[3];
+    Status_effect_index _inner_index[MAX_STATUS_NUMBER];
+    int _duration[MAX_STATUS_NUMBER];
 
 };
 

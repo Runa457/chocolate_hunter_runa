@@ -87,14 +87,14 @@ public:
      */
     int _speed;
     /**
+     * @brief Index of status effect caused by action
+     */
+    Status_effect_index _status_effect;
+    /**
      * @brief Chance to induce status effect.
      * 0 ~ 100 (%)
      */
     int _status_chance;
-    /**
-     * @brief Index of status effect caused by action
-     */
-    Status_effect_index _status_effect;
     /**
      * @brief Turns needed to end status effect.
      */

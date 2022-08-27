@@ -5,9 +5,11 @@ namespace Runa::Game
 
 Status_effect::Status_effect() :
     _index(Status_effect_index::None),
-    _inner_index{Status_effect_index::None, Status_effect_index::None, Status_effect_index::None},
-    _duration{0, 0, 0}
-{}
+    _inner_index{Status_effect_index::None},
+    _duration{0}
+{
+    Remove_status_effect();
+}
 
 Status_effect::~Status_effect() {}
 
@@ -16,7 +18,7 @@ Status_effect_index Status_effect::Get_status_effect() { return _index; }
 void Status_effect::Set_status_effect(Status_effect_index next_status, int turns)
 {
     // check if status effect is already active
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < MAX_STATUS_NUMBER; i++)
     {
         if (_inner_index[i] == next_status)
         {
@@ -25,7 +27,7 @@ void Status_effect::Set_status_effect(Status_effect_index next_status, int turns
         }
     }
     // check if status effect could be cancelled
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < MAX_STATUS_NUMBER; i++)
     {
         int temp = _inner_index[i] + next_status;
         if ((temp == 3) || (temp == 12) || (temp == 48))
@@ -36,7 +38,7 @@ void Status_effect::Set_status_effect(Status_effect_index next_status, int turns
         }
     }
     // check if there is room for new status effect
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < MAX_STATUS_NUMBER; i++)
     {
         if (_inner_index[i] == Status_effect_index::None)
         {
@@ -48,7 +50,7 @@ void Status_effect::Set_status_effect(Status_effect_index next_status, int turns
 }
 void Status_effect::Remove_status_effect()
 {
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < MAX_STATUS_NUMBER; i++)
     {
         _inner_index[i] = Status_effect_index::None;
         _duration[i] = 0;
@@ -57,7 +59,7 @@ void Status_effect::Remove_status_effect()
 }
 void Status_effect::Turn_passed()
 {
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < MAX_STATUS_NUMBER; i++)
     {
         if (--_duration[i] <= 0)
         {

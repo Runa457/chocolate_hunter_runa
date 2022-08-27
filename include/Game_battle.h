@@ -60,6 +60,15 @@ private:
      * @param -1 if defender is player
      */
     void Action_execute(int attacker_idx, int defender_idx);
+    /**
+     * @brief Handles attack effects.
+     * @param x coordinate of defender.
+     * @param y coordinate of defender.
+     * @param damage
+     * @param Action
+     */
+    void Attack_effect(int x, int y, int damage,
+                       const Action::Action* action);
     bool Effect_action();
     void Enemy_dead(short index);
 

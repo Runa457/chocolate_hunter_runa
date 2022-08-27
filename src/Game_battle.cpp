@@ -9,7 +9,7 @@
 #include "bn_sprite_items_icon_magic_attack.h"
 #include "bn_sprite_items_effect_sword.h"
 
-#include "bn_log.h"
+//#include "bn_log.h"
 
 namespace Runa::Game
 {
@@ -25,20 +25,19 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
                bn::random& random_generator,
                Status& status,
                bn::unique_ptr<Battle_Sequence>& battle_sq) :
-    _text_generator(text_generator),
-    _random(random_generator),
     _status(status),
+    _random(random_generator),
     _state(State::Start_turn),
+    _text_generator(text_generator),
     _battle_sq(battle_sq),
     _enemies(battle_sq->Get_current_enemies()),
-    _cursor(bn::sprite_items::select_cursor_square.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y)),
     _sword_attack_icon(bn::sprite_items::icon_sword_attack.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y)),
     _magic_attack_icon(bn::sprite_items::icon_magic_attack.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y+16)),
-    _enemy_end(static_cast<Effect::Type>(Effect::Type::Transparency | Effect::Type::Sprite_mosaic),
-               Effect::Direction::Out, 20),
-    _text_end(Effect::Type::Transparency, Effect::Direction::Out, 15),
+    _cursor(bn::sprite_items::select_cursor_square.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y)),
     _attack_effect_sprite(bn::sprite_items::effect_sword.create_sprite(0, 0)),
-    _attack_effect(bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, bn::sprite_items::effect_sword.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8))
+    _attack_effect(bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, bn::sprite_items::effect_sword.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8)),
+    _text_end(Effect::Type::Transparency, Effect::Direction::Out, 15),
+    _enemy_end(static_cast<Effect::Type>(Effect::Type::Transparency | Effect::Type::Sprite_mosaic), Effect::Direction::Out, 20)
 {
     _cursor.set_visible(false);
     _attack_effect_sprite.set_z_order(-10);
@@ -397,9 +396,9 @@ void Battle::Turn_action()
         if (index == -1)
         {
             if (_num_enemies == 0) { break; }
-            int j = 0;
-            do { j = _random.get_int(_enemies.size()); } while (_enemies[j].Is_dead());
-            Action_execute(index, j);
+            int k = 0;
+            do { k = _random.get_int(_enemies.size()); } while (_enemies[k].Is_dead());
+            Action_execute(index, k);
         }
         else { Action_execute(index, -1); }
         if (--_left_hit > 0) { return; }
@@ -456,21 +455,42 @@ void Battle::Action_execute(int attacker_idx, int defender_idx)
     if (defender_idx == -1)
     {
         _status.Hp_change(-damage);
-        attack_effect(_text_generator, -90, 57, damage,
-                      attacker->Get_action_type(),
-                      _damage_text, _attack_effect_sprite, _attack_effect);
+        Attack_effect(-90, 57, damage, attacker->Get_action_type());
     }
     else
     {
         _enemies[defender_idx].Hp_change(-damage);
-        attack_effect(_text_generator, _enemy_x[defender_idx], ENEMY_Y, damage,
-                      attacker->Get_action_type(),
-                      _damage_text, _attack_effect_sprite, _attack_effect);
+        Attack_effect(_enemy_x[defender_idx], ENEMY_Y, damage, attacker->Get_action_type());
     }
 }
+void Battle::Attack_effect(int x, int y, int damage,
+                           const Action::Action* action)
+{
+    _attack_effect_sprite.set_position(x, y);
+    _attack_effect_sprite.set_visible(true);
+    _attack_effect = bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, action->_action_effect.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
 
+    action->_action_sound.play();
+
+    _text_generator.set_center_alignment();
+    if (damage == 0) { return; }
+    else if (damage > 0)
+    {
+        _text_generator.generate(x, y-25, bn::format<5>("{}", damage), _damage_text);
+    }
+    else if (damage < 0)
+    {
+        _text_generator.generate(x, y-25, bn::format<6>("+{}", -damage), _damage_text);
+    }
+    for (bn::sprite_ptr& text : _damage_text)
+    {
+        text.set_visible(false);
+        text.set_blending_enabled(true);
+    }
+}
 bool Battle::Effect_action()
 {
+    //
     if (!_attack_effect.done())
     {
         _attack_effect.update();
@@ -478,7 +498,9 @@ bool Battle::Effect_action()
     }
     if (bn::keypad::a_held()) { _effect_cooltime = 0; }
     else if (--_effect_cooltime > 0) { return false; }
+    //
 
+    //
     switch (_text_end.Get_state())
     {
     case Effect::State::Waiting:
@@ -489,6 +511,7 @@ bool Battle::Effect_action()
             //bn::sound_items::sfx_battle_sword.play();
             _text_end.Start();
         }
+        return false;
     case Effect::State::Ongoing:
         _text_end.Update();
         return false;
@@ -497,6 +520,8 @@ bool Battle::Effect_action()
         break;
     default: break;
     }
+    //
+
     if (bn::keypad::a_held()) { _damage_text_cooltime = 0; }
     else if (--_damage_text_cooltime > 0) { return false; }
 
@@ -505,6 +530,7 @@ bool Battle::Effect_action()
         if (_enemies[i].Is_dead()) { Enemy_dead(i); }
     }
 
+    //
     switch (_enemy_end.Get_state())
     {
     case Effect::State::Waiting:
@@ -527,6 +553,7 @@ bool Battle::Effect_action()
         break;
     default: break;
     }
+    //
     return false;
 }
 
