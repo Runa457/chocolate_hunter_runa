@@ -33,24 +33,30 @@ int attack_function(ActorStats* attacker, ActorStats* defender,
         { atk_pow = attacker->Get_atk(); }
     else { atk_pow = attacker->Get_int(); }
 
+    if (action->_multiplier < 0) { def_pow = atk_pow; armor = 0; }
+
     int damage = Damage_calculator(atk_pow, weapon, def_pow, armor);
     //BN_LOG(damage, " ", atk_pow, " ", weapon, " ", def_pow, " ", armor);
 
     damage = damage * action->_multiplier / 100;
 
-    if ((attacker->Get_status_effect() & Status_effect::Charge) != 0)
+    if ((attacker->Get_status_effect() & Status_effect_index::Charge) != 0)
     {
         damage = damage * 15 / 10;
     }
-    if ((defender->Get_status_effect() & Status_effect::Guard) != 0)
+    if ((defender->Get_status_effect() & Status_effect_index::Guard) != 0)
     {
         damage = damage / 2;
+    }
+    if ((defender->Get_status_effect() & Status_effect_index::Bleeding) != 0)
+    {
+        damage = damage * 15 / 10;
     }
 
     int chance = random.get_int(100);
     if (chance < action->_status_chance)
     {
-        defender->Set_status_effect(action->_status_effect);
+        defender->Set_status_effect(action->_status_effect, action->_status_duration);
     }
     //BN_LOG(chance, " ", action->_status_chance, " ", defender->Get_status_effect());
 

@@ -1,8 +1,6 @@
 #ifndef STATS_DATA_H
 #define STATS_DATA_H
 
-#include "bn_fixed.h"
-
 namespace Runa
 {
 

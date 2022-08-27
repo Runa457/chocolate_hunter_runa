@@ -16,14 +16,14 @@ namespace Runa::Game::Enemy
  * Real Hp, Exp, Chocolate, Atk, Def value will be calculated in runtime.
  */
 constexpr Enemy_data Enemy_base_data[] = {
-    Enemy_data(bn::sprite_items::cursor_0, "Plc_hldr", 10, 10, 10, 10, 10, 10),
+    Enemy_data(bn::sprite_items::cursor_0, "Plc_hldr", 10, 10, 10, 10, 10, 10, Pattern_index::Bash),
     // 1st stratum : alphabet land
-    Enemy_data(bn::sprite_items::enemy_abc_a, "Choco A", 10, 5, 7, 13, 3, 6),
-    Enemy_data(bn::sprite_items::enemy_abc_b, "Choco B", 10, 5, 7, 5, 11, 6),
-    Enemy_data(bn::sprite_items::enemy_abc_c, "Choco C", 10, 5, 7, 9, 7, 6),
-    Enemy_data(bn::sprite_items::enemy_abc_s, "Choco S", 10, 6, 9, 9, 7, 9),
-    Enemy_data(bn::sprite_items::enemy_abc_t, "Choco T", 20, 7, 10, 9, 7, 6),
-    Enemy_data(bn::sprite_items::enemy_abc_boss, "Choco BOSS", 100, 60, 500, 12, 12, 7),
+    Enemy_data(bn::sprite_items::enemy_abc_a, "Choco A", 10, 5, 7, 13, 3, 6, Pattern_index::Bash),
+    Enemy_data(bn::sprite_items::enemy_abc_b, "Choco B", 10, 5, 7, 5, 11, 6, Pattern_index::Guard),
+    Enemy_data(bn::sprite_items::enemy_abc_c, "Choco C", 10, 5, 7, 9, 7, 6, Pattern_index::Bash),
+    Enemy_data(bn::sprite_items::enemy_abc_s, "Choco S", 10, 6, 9, 9, 7, 9, Pattern_index::Bash),
+    Enemy_data(bn::sprite_items::enemy_abc_t, "Choco T", 20, 7, 10, 9, 7, 6, Pattern_index::Bash_Guard),
+    Enemy_data(bn::sprite_items::enemy_abc_boss, "Choco BOSS", 100, 60, 500, 12, 12, 7, Pattern_index::Boss_1),
     // 2nd stratum : cookie land
     // 3rd stratum : chess land
 };

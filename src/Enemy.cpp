@@ -1,4 +1,5 @@
 #include "Enemy.h"
+
 #include "bn_sprite_ptr.h"
 
 namespace Runa::Game::Enemy
@@ -24,7 +25,7 @@ void Enemy::Init()
     // spd = 3% increase per level
     int spd = _base_data.base_spd * (100 + level * 3) / 100;
 
-    _stats = ActorStats(atk, 0, def, 0, inteligence, spd, Status_effect::None);
+    _stats = ActorStats(atk, 0, def, 0, inteligence, spd);
 }
 
 const bn::string_view& Enemy::Get_name() { return _base_data.name; }
@@ -42,7 +43,12 @@ bool Enemy::Hp_change(short increment)
 {
     hp += increment;
     if (hp > maxhp) { hp = maxhp; }
-    else if (hp <= 0) { hp = 0; return true; }
+    else if (hp <= 0)
+    {
+        _stats.Remove_status_effect();
+        hp = 0;
+        return true;
+    }
     return false;
 }
 
@@ -51,6 +57,15 @@ bool Enemy::Is_dead() { return hp <= 0; }
 void Enemy::Sprite_create(short x, short y, bn::ivector<bn::sprite_ptr>& sprite)
 {
     sprite.push_back(bn::sprite_ptr(_base_data.sprite_item.create_sprite(x, y)));
+}
+
+void Enemy::Set_action_type(int turn)
+{
+    const Enemy_pattern& _enemy_pattern = Get_enemy_pattern_data(_base_data.pattern_index);
+    const Action::Action_index& _action_index = _enemy_pattern.Get_action(turn);
+    const Action::Action& _action_type = Action::Get_action_data(_action_index);
+
+    _stats.Set_action_type(&_action_type);
 }
 
 } // namespace Runa::Game::Enemy

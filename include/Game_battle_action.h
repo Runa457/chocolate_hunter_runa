@@ -52,8 +52,8 @@ class Action
 {
 public:
     constexpr Action(bn::string_view name, Target_type target, Action_type action,
-                     int cost, int multiplier,
-                     int status_chance, Status_effect status_effect, int status_duration,
+                     int cost, int multiplier, int speed_multi,
+                     Status_effect_index status_effect, int status_chance, int status_duration,
                      const bn::sprite_item& action_effect, int frames,
                      const bn::sound_item& action_sound) :
         _name(name),
@@ -61,8 +61,9 @@ public:
         _action(action),
         _cost(cost),
         _multiplier(multiplier),
-        _status_chance(status_chance),
+        _speed(speed_multi),
         _status_effect(status_effect),
+        _status_chance(status_chance),
         _status_duration(status_duration),
         _action_effect(action_effect),
         _frames(frames),
@@ -82,14 +83,18 @@ public:
      */
     int _multiplier;
     /**
+     * @brief Speed multiplier %
+     */
+    int _speed;
+    /**
      * @brief Chance to induce status effect.
      * 0 ~ 100 (%)
      */
     int _status_chance;
     /**
-     * @brief _status_effect
+     * @brief Index of status effect caused by action
      */
-    Status_effect _status_effect;
+    Status_effect_index _status_effect;
     /**
      * @brief Turns needed to end status effect.
      */

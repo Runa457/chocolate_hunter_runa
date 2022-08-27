@@ -12,7 +12,7 @@ class ActorStats
 public:
     ActorStats();
     ActorStats(int atk, int weapon, int def, int armor,
-               int intelligence, int spd, Status_effect status_effect);
+               int intelligence, int spd);
     ~ActorStats();
 
     int Get_atk();
@@ -21,10 +21,12 @@ public:
     int Get_armor();
     int Get_int();
     int Get_spd();
-    Status_effect Get_status_effect();
+    Status_effect_index Get_status_effect();
     const Action::Action* Get_action_type();
 
-    void Set_status_effect(Status_effect next_status);
+    void Set_status_effect(Status_effect_index next_status, int turns);
+    void Remove_status_effect();
+    void Turn_passed();
     void Set_action_type(const Action::Action* action);
 
 private:

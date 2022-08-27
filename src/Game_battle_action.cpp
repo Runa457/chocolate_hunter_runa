@@ -10,16 +10,16 @@ namespace Runa::Game::Action
 constexpr Action Action_data[] = {
     // Self target
     Action("Guard", Target_type::Self_target, Action_type::Normal_attack,
-    0, 0, 100, Status_effect::Guard, 1,
+    0, 0, 500, Status_effect_index::Guard, 100, 1,
     bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_sword),//
 
     // Single target
     Action("Slash", Target_type::Single_target, Action_type::Normal_attack,
-    0, 100, 0, Status_effect::None, 0,
+    0, 100, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_sword),
 
     Action("Bash", Target_type::Single_target, Action_type::Normal_attack,
-    0, 100, 0, Status_effect::None, 0,
+    0, 100, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_damage_taken),//
 
     // Multi hit
@@ -29,23 +29,23 @@ constexpr Action Action_data[] = {
 
 constexpr Action Magic_data[] = {
     Action("Fire I", Target_type::Single_target, Action_type::Magic_attack,
-    5, 100, 0, Status_effect::None, 0,
+    5, 100, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_magic),//
 
     Action("Fire II", Target_type::Multi_hit, Action_type::Magic_attack,
-    15, 150, 0, Status_effect::None, 0,
+    15, 150, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_magic),//
 
     Action("Fire III", Target_type::Every_enemy_target, Action_type::Magic_attack,
-    20, 200, 0, Status_effect::None, 0,
+    20, 200, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_magic),//
 
     Action("Fire IV", Target_type::Entire_target, Action_type::Magic_attack,
-    15, 200, 10, Status_effect::Attack_down, 3,
+    15, 200, 100, Status_effect_index::Attack_down, 10, 3,
     bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_magic),//
 
     Action("Heal I", Target_type::Self_target, Action_type::Magic_attack,
-    15, -50, 0, Status_effect::None, 0,
+    15, -100, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_magic),//
 };
 

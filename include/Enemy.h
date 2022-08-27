@@ -46,6 +46,8 @@ public:
      */
     void Sprite_create(short x, short y, bn::ivector<bn::sprite_ptr>& sprite);
 
+    void Set_action_type(int turn);
+
     ActorStats _stats;
 private:
     Enemy_data _base_data;

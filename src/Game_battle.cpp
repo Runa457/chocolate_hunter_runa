@@ -1,5 +1,4 @@
 #include "Game_battle.h"
-#include "Stats_data.h"
 
 #include "bn_format.h"
 #include "bn_algorithm.h"
@@ -53,7 +52,7 @@ Battle::~Battle() {}
 
 bn::optional<Game_Type> Battle::Update()
 {
-    BN_LOG((int)_state);
+    //BN_LOG((int)_state);
     switch (_state)
     {
     case State::Start_turn:
@@ -104,7 +103,6 @@ bn::optional<Game_Type> Battle::Update()
         case State::Target_select:
             Print_enemy_information();
             _magic_attack_icon.set_visible(false);
-            _cursor.set_visible(true);
             break;
         case State::Confirm:
             _magic_attack_icon.set_visible(false);
@@ -117,6 +115,7 @@ bn::optional<Game_Type> Battle::Update()
         break;
     case State::Target_select:
         _cursor.set_item(bn::sprite_items::select_cursor_down);
+        _cursor.set_visible(true);
 
         _state = Target_select();
         switch (_state)
@@ -152,6 +151,8 @@ bn::optional<Game_Type> Battle::Update()
     case State::Effect_action:
         if (Effect_action())
         {
+            _battle_text.clear();
+
             _effect_cooltime = 1; //10;
             _damage_text_cooltime = 10;
             _enemy_dead_cooltime = 10;
@@ -173,7 +174,18 @@ bn::optional<Game_Type> Battle::Update()
             Battle_end();
             _state = State::End_battle;
         }
-        else { _state = State::Start_turn; }
+        else
+        {
+            for (int i = 0; i < _enemies.size(); i++)
+            {
+                if (!_enemies[i].Is_dead())
+                {
+                    _enemies[i]._stats.Turn_passed();
+                }
+            }
+            _status._stats.Turn_passed();
+            _state = State::Start_turn;
+        }
         break;
     case State::End_battle:
         if (bn::keypad::a_pressed())
@@ -352,6 +364,7 @@ void Battle::Action_order_decision()
     _action_order.push_back({_status._stats.Get_spd(), -1});
     for (int i = 0; i < _enemies.size(); i++)
     {
+        _enemies[i].Set_action_type(_current_turn);
         _action_order.push_back({_enemies[i]._stats.Get_spd(), i});
     }
     bn::sort(_action_order.rbegin(), _action_order.rend());
@@ -408,7 +421,6 @@ void Battle::Turn_action()
         }
         if (--_left_hit > 0) { return; }
         break;
-        break;
     default:
         BN_ERROR();
         break;
@@ -421,8 +433,20 @@ void Battle::Action_execute(int attacker_idx, int defender_idx)
     ActorStats* attacker = nullptr;
     ActorStats* defender = nullptr;
 
-    if (attacker_idx == -1) { attacker = &_status._stats; }
-    else { attacker = &_enemies[attacker_idx]._stats; }
+    if (attacker_idx == -1)
+    {
+        attacker = &_status._stats;
+        //BN_LOG(attacker->Get_action_type()->_name);
+        Effect::Print_text(_text_generator, false, Effect::Alignment::Center, -90, 72, 0,
+                           _battle_text, 1, attacker->Get_action_type()->_name);
+    }
+    else
+    {
+        attacker = &_enemies[attacker_idx]._stats;
+        //BN_LOG(attacker->Get_action_type()->_name);
+        Effect::Print_text(_text_generator, false, Effect::Alignment::Center, _enemy_x[attacker_idx], ENEMY_Y+20, 0,
+                           _battle_text, 1, attacker->Get_action_type()->_name);
+    }
 
     if (defender_idx == -1) { defender = &_status._stats; }
     else { defender = &_enemies[defender_idx]._stats; }
@@ -432,7 +456,7 @@ void Battle::Action_execute(int attacker_idx, int defender_idx)
     if (defender_idx == -1)
     {
         _status.Hp_change(-damage);
-        attack_effect(_text_generator, -90, 60, damage,
+        attack_effect(_text_generator, -90, 57, damage,
                       attacker->Get_action_type(),
                       _damage_text, _attack_effect_sprite, _attack_effect);
     }
@@ -548,6 +572,8 @@ void Battle::Battle_start()
 }
 void Battle::Battle_end()
 {
+    _status._stats.Remove_status_effect();
+
     int xp = 0;
     int choco = 0;
 
