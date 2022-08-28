@@ -31,6 +31,10 @@ constexpr Action Action_data[] = {
     bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_damage_taken),//
 
     // Multi hit
+    Action("Triple Slash", Target_type::Multi_hit, Action_type::Normal_attack,
+    0, 80, 150, Status_effect_index::None, 0, 0,
+    bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_sword),
+
     // Every enemy target
     Action("Area Heal I", Target_type::Every_enemy_target, Action_type::Magic_attack,
     30, -100, 80, Status_effect_index::None, 0, 0,

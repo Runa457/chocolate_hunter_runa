@@ -37,7 +37,9 @@ int attack_function(ActorStats* attacker, ActorStats* defender,
     int damage = Damage_calculator(atk_pow, weapon, def_pow, armor);
     //BN_LOG(damage, " ", atk_pow, " ", weapon, " ", def_pow, " ", armor);
 
-    damage = damage * action->_multiplier / 100;
+    damage *= action->_multiplier;
+    damage += (damage > 0) ? 50 : -50;
+    damage /= 100;
 
     if ((attacker->Get_status_effect() & Status_effect_index::Charge) != 0)
     {
@@ -47,7 +49,7 @@ int attack_function(ActorStats* attacker, ActorStats* defender,
     {
         damage = damage / 2;
     }
-    if ((defender->Get_status_effect() & Status_effect_index::Bleeding) != 0)
+    if (damage > 0 && (defender->Get_status_effect() & Status_effect_index::Bleeding) != 0)
     {
         damage = damage * 15 / 10;
     }

@@ -20,6 +20,7 @@ enum class Action_index : short
     Slash,
     Bash,
     // Multi hit
+    Triple_Slash,
     // Every enemy target
     Area_Heal_I,
     // Entire target
