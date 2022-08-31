@@ -23,6 +23,7 @@ int ActorStats::Get_atk()
     else if (Get_status_effect() & Status_effect_index::Attack_down) { return _atk * 7 / 10; }
     else { return _atk; }
 }
+int ActorStats::Get_base_atk() { return _atk; }
 int ActorStats::Get_weapon() { return _weapon; }
 int ActorStats::Get_def()
 {
@@ -30,6 +31,7 @@ int ActorStats::Get_def()
     else if (Get_status_effect() & Status_effect_index::Defence_down) { return _def * 7 / 10; }
     else { return _def; }
 }
+int ActorStats::Get_base_def() { return _def; }
 int ActorStats::Get_armor() { return _armor; }
 int ActorStats::Get_int() { return _intelligence; }
 int ActorStats::Get_spd()
@@ -39,6 +41,7 @@ int ActorStats::Get_spd()
     else if (Get_status_effect() & Status_effect_index::Speed_down) { spd = spd * 7 / 10; }
     return spd / 100;
 }
+int ActorStats::Get_base_spd() { return _spd; }
 Status_effect_index ActorStats::Get_status_effect() { return _status_effect.Get_status_effect(); }
 const Action::Action* ActorStats::Get_action_type() { return _action_type; }
 

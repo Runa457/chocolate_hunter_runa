@@ -17,7 +17,7 @@ namespace Runa::Game
 
 namespace
 {
-constexpr int ATTACK_ICON_X = 72;
+constexpr int ATTACK_ICON_X = 76;
 constexpr int ATTACK_ICON_Y = 58;
 constexpr int ENEMY_Y = 0;
 }
@@ -61,7 +61,7 @@ bn::optional<Game_Type> Battle::Update()
     case State::Start_turn:
         _turn_text.clear();
         _text_generator.set_center_alignment();
-        _text_generator.generate(0, -72, bn::format<8>("Turn {}", ++_current_turn), _turn_text);
+        _text_generator.generate(0, -73, bn::format<8>("Turn {}", ++_current_turn), _turn_text);
         _state = State::Action_select;
         break;
     case State::Action_select:
@@ -173,8 +173,7 @@ bn::optional<Game_Type> Battle::Update()
         }
         break;
     case State::End_turn:
-        if (_status.turn_end()) { return Game_Type::Exit; }
-        if (_status.Get_hp() <= 0) { return Game_Type::Exit; }
+        if (_status.turn_end() || _status.Get_hp() <= 0) { return Game_Type::Exit; }
 
         if (_num_enemies <= 0)
         {
@@ -362,7 +361,7 @@ void Battle::Print_enemy_information()
     _text_generator.generate(0, -60, bn::format<20>("Lv {} {}", _enemies[_target_index].Get_level(), _enemies[_target_index].Get_name()), _battle_text);
     _text_generator.generate(0, -50, bn::format<10>("Hp {}", _enemies[_target_index].Get_hp()), _battle_text);
     // debug line ; stats
-    _text_generator.generate(0, -40, bn::format<20>("A {} D {} S {}", _enemies[_target_index]._stats.Get_atk(), _enemies[_target_index]._stats.Get_def(), _enemies[_target_index]._stats.Get_spd()), _battle_text);
+    _text_generator.generate(0, -40, bn::format<20>("A {} D {} S {}", _enemies[_target_index]._stats.Get_base_atk(), _enemies[_target_index]._stats.Get_base_def(), _enemies[_target_index]._stats.Get_base_spd()), _battle_text);
 }
 
 Battle::State Battle::Confirm()
@@ -478,6 +477,9 @@ void Battle::Action_execute(int attacker_idx, int defender_idx)
 
     int damage = attack_function(attacker, defender, _random);
 
+    if (attacker_idx == -1) { /*_camera.Set_attacker(_player_sprite);*/ }
+    else { _camera.Set_attacker(_enemy_sprite[attacker_idx]); }
+
     if (defender_idx == -1)
     {
         _status.Hp_change(-damage);
@@ -488,8 +490,9 @@ void Battle::Action_execute(int attacker_idx, int defender_idx)
     {
         _enemies[defender_idx].Hp_change(-damage);
         Attack_effect(_enemy_x[defender_idx], ENEMY_Y, damage, attacker->Get_action_type());
-        if (damage > 0) { _camera.Start_movement(_enemy_sprite[defender_idx]); }
+        if (damage > 0) { _camera.Set_defender(_enemy_sprite[defender_idx]); }
     }
+    _camera.Start_movement();
 }
 void Battle::Attack_effect(int x, int y, int damage,
                            const Action::Action* action)

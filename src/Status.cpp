@@ -6,6 +6,9 @@
 namespace Runa
 {
 
+constexpr int LIFESPAN = 30;
+constexpr int MULTIPLIER_DEFAULT = 200;
+
 struct Save_data
 {
     constexpr static const char* SAVE_CHECK = "RUNA_0821";
@@ -52,12 +55,12 @@ void Status::Init()
     hp = Get_hp_data(0);
     mp = Get_mp_data(0);
     exp = 0;
-    left_turns = 100;
+    left_turns = LIFESPAN;
     Weapon_level = 0;
     Armor_level = 0;
     stratum = 1;
     chocolate = 0;
-    choco_multiplier = 200;
+    choco_multiplier = MULTIPLIER_DEFAULT;
 
     _value_changed = false;
 
@@ -146,7 +149,7 @@ void Status::Choco_earn(int increment)
 void Status::Life_regain()
 {
     _value_changed = true;
-    left_turns = 100;
+    left_turns = LIFESPAN;
 }
 void Status::Weapon_upgrade()
 {
@@ -163,7 +166,7 @@ void Status::Next_stratum()
 {
     _value_changed = true;
     ++stratum;
-    choco_multiplier = 200;
+    choco_multiplier = MULTIPLIER_DEFAULT;
 }
 void Status::Lower_multiplier()
 {

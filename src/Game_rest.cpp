@@ -28,7 +28,7 @@ Rest::Rest(bn::sprite_text_generator& text_generator,
     _scene_start(Effect::Type::Transparency, Effect::Direction::In, TRANSITION_FRAMES),
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES),
     _current_menu(Menu::Regain_life),
-    _cost{100 + (status.Get_stratum()-1) * 20,
+    _cost{30 + (status.Get_stratum()-1) * 5,
           50 + status.Get_level() * 5,
           Get_weapon_data(status.Get_weapon()) * UPGRADE_MULTIPLIER,
           Get_armor_data(status.Get_armor()) * UPGRADE_MULTIPLIER}
@@ -98,7 +98,7 @@ void Rest::Print_text()
 {
     _save_text.clear();
 
-    Effect::Print_text(_text_generator, true, Effect::Alignment::Center, 0, -60, 14, _text_sprite, 2, "Camp", "Press L to proceed, R to save");
+    Effect::Print_text(_text_generator, true, Effect::Alignment::Center, 0, -58, 12, _text_sprite, 2, "Camp", "Press L to proceed, R to save");
 
     _text_generator.set_center_alignment();
     _text_generator.generate(CURSOR_X, 16, bn::format<5>("{}", _cost[0]), _text_sprite);

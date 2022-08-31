@@ -1,6 +1,7 @@
 #include "Scene_title.h"
 
 #include "bn_sprite_items_cursor_0.h"
+#include "bn_regular_bg_items_bg_title.h"
 
 namespace Runa::Scene
 {
@@ -15,12 +16,14 @@ static constexpr int MENU_Y_INT = 12;
 Title::Title(bn::sprite_text_generator& text_generator) :
     _text_generator(text_generator),
     _cursor(bn::sprite_items::cursor_0.create_sprite(MENU_X-10, MENU_Y)),
+    _bg_title(bn::regular_bg_items::bg_title.create_bg(0, 0)),
     _scene_start(Effect::Type::Transparency, Effect::Direction::In, TRANSITION_FRAMES),
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES)
     //bg(bn::regular_bg_items::bg_title.create_bg(0, 0))
 {
     Print_text();
     bn::bg_palettes::set_transparent_color(bn::color(16, 16, 16));
+    _bg_title.set_blending_enabled(true);
 
     _cursor.set_blending_enabled(true);
     for (bn::sprite_ptr& text_sprite : _menu_text)

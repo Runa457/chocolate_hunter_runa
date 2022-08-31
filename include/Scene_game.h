@@ -8,6 +8,7 @@
 #include "Battle_sequence.h"
 #include "Effect_transition.h"
 
+#include "bn_regular_bg_ptr.h"
 #include "bn_sprite_ptr.h"
 
 namespace Runa::Scene
@@ -27,6 +28,8 @@ private:
 
     bn::random& _random;
     Status& _status;
+    bn::regular_bg_ptr _bg_interface;
+    bn::regular_bg_ptr _bg_stratum;
 
     bn::unique_ptr<Runa::Game::Game_Root> _subscene;
     bn::optional<Runa::Game::Game_Type> _game_mode;
@@ -37,6 +40,7 @@ private:
 
     bn::unique_ptr<Runa::Game::Battle_Sequence> _battle_sq;
 
+    Effect::Transition _scene_begin;
     Effect::Transition _scene_end;
     static constexpr int TRANSITION_FRAMES = 10;
 };

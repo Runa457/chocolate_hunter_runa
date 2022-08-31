@@ -16,11 +16,14 @@ public:
     ~ActorStats();
 
     int Get_atk();
+    int Get_base_atk();
     int Get_weapon();
     int Get_def();
+    int Get_base_def();
     int Get_armor();
     int Get_int();
     int Get_spd();
+    int Get_base_spd();
     Status_effect_index Get_status_effect();
     const Action::Action* Get_action_type();
 

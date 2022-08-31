@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "Effect_transition.h"
 
+#include "bn_regular_bg_ptr.h"
 #include "bn_sprite_ptr.h"
 #include "bn_vector.h"
 
@@ -34,7 +35,7 @@ private:
     bn::vector<bn::sprite_ptr, 15> _menu_text;
 
     bn::sprite_ptr _cursor;
-    //bn::regular_bg_ptr bg;
+    bn::regular_bg_ptr _bg_title;
 
     Menu _current_menu = Menu::Main_game_start;
 

@@ -45,7 +45,7 @@ int attack_function(ActorStats* attacker, ActorStats* defender,
     {
         damage = damage * 15 / 10;
     }
-    if ((defender->Get_status_effect() & Status_effect_index::Guard) != 0)
+    if (damage > 0 && (defender->Get_status_effect() & Status_effect_index::Guard) != 0)
     {
         damage = damage / 2;
     }
