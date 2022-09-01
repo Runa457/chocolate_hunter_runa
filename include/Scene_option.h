@@ -20,8 +20,10 @@ public:
 private:
     enum Options : char
     {
+        Enemy_list,
+        //Attack_list,
+        Magic_list,
         Delete_save,
-        Placeholder,
         Confirm_delete_save = 255
     };
 
@@ -32,7 +34,8 @@ private:
     bn::vector<bn::sprite_ptr, 10> _confirm_text;
 
     bn::sprite_ptr _cursor;
-    Options _current_option = Options::Delete_save;
+    Options _current_option = Options::Enemy_list;
+    bn::optional<Scene::Scene_Type> _nextscene;
 
     Effect::Transition _scene_start;
     Effect::Transition _scene_end;
@@ -45,7 +48,7 @@ private:
     /**
      * @brief Handles when option is selected.
      */
-    void Press_a();
+    bn::optional<Scene_Type> Press_a();
 
     /**
      * @brief Updates cursor position.

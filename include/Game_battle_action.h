@@ -16,6 +16,8 @@ enum class Action_index : short
     Guard,
     Charge,
     Heal_I,
+    Attack_Up,
+    Defence_Up,
     // Single target
     Slash,
     Bash,

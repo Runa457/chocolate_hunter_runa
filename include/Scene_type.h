@@ -11,7 +11,9 @@ enum class Scene_Type : char
     Introduction,
     Options,
     Main_game,
-    Credits
+    Credits,
+    Enemy_list,
+    Magic_list
 };
 
 } // namespace Runa::Scene

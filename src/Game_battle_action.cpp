@@ -21,6 +21,14 @@ constexpr Action Action_data[] = {
     15, -100, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_magic),//
 
+    Action("Attack Up", Target_type::Self_target, Action_type::Magic_attack,
+    15, 0, 100, Status_effect_index::Attack_up, 100, 5,
+    bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_magic),//
+
+    Action("Defence Up", Target_type::Self_target, Action_type::Magic_attack,
+    15, 0, 100, Status_effect_index::Defence_up, 100, 5,
+    bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_magic),//
+
     // Single target
     Action("Slash", Target_type::Single_target, Action_type::Normal_attack,
     0, 100, 100, Status_effect_index::None, 0, 0,
@@ -49,11 +57,11 @@ constexpr Action Magic_data[] = {
     bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_magic),//
 
     Action("Fire II", Target_type::Multi_hit, Action_type::Magic_attack,
-    15, 150, 100, Status_effect_index::None, 0, 0,
+    15, 100, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_magic),//
 
     Action("Fire III", Target_type::Every_enemy_target, Action_type::Magic_attack,
-    20, 200, 100, Status_effect_index::None, 0, 0,
+    20, 150, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_sword, 9, bn::sound_items::sfx_battle_magic),//
 
     Action("Fire IV", Target_type::Entire_target, Action_type::Magic_attack,

@@ -27,11 +27,11 @@ constexpr Action::Action_index ChargeAreaHeal[] = {
 };
 
 constexpr Action::Action_index Boss_1[] = {
-    Action::Action_index::Bash,
+    Action::Action_index::Guard,
+    Action::Action_index::Defence_Up,
     Action::Action_index::Bash,
     Action::Action_index::Charge,
     Action::Action_index::Bash,
-    Action::Action_index::Guard,
 };
 
 constexpr Enemy_pattern Enemy_pattern_data[] = {

@@ -130,6 +130,12 @@ int main()
             case Scene::Scene_Type::Credits:
                 scene.reset(new Scene::Credits(text_generator));
                 break;
+            case Scene::Scene_Type::Enemy_list:
+                scene.reset(new Scene::Credits(text_generator));
+                break;
+            case Scene::Scene_Type::Magic_list:
+                scene.reset(new Scene::Credits(text_generator));
+                break;
             default:
                 BN_ERROR("Unknown Scene type: ", (int)*nextscene);
             }

@@ -158,6 +158,7 @@ bn::optional<Game_Type> Battle::Update()
     case State::Effect_action:
         if (Effect_action())
         {
+            if (_status.Get_hp() <= 0) { return Game_Type::Exit; }
             _battle_text.clear();
 
             _effect_cooltime = 10;
@@ -173,7 +174,7 @@ bn::optional<Game_Type> Battle::Update()
         }
         break;
     case State::End_turn:
-        if (_status.turn_end() || _status.Get_hp() <= 0) { return Game_Type::Exit; }
+        if (_status.turn_end()) { return Game_Type::Exit; }
 
         if (_num_enemies <= 0)
         {

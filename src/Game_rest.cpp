@@ -31,7 +31,7 @@ Rest::Rest(bn::sprite_text_generator& text_generator,
     _cost{30 + (status.Get_stratum()-1) * 5,
           50 + status.Get_level() * 5,
           Get_weapon_data(status.Get_weapon()) * UPGRADE_MULTIPLIER,
-          Get_armor_data(status.Get_armor()) * UPGRADE_MULTIPLIER}
+          Get_armor_data(status.Get_armor()) * UPGRADE_MULTIPLIER * 2}
 {
     _icon_sprite.push_back(bn::sprite_items::icon_regain_turn.create_sprite(CURSOR_X, 0));
     _icon_sprite.push_back(bn::sprite_items::icon_potion.create_sprite(CURSOR_X+CURSOR_X_INT, 0));
@@ -169,7 +169,7 @@ void Rest::Menu_selected()
             _status.Choco_earn(-_cost[3]);
             _status.Armor_upgrade();
             _status.turn_end();
-            _cost[3] = Get_armor_data(_status.Get_armor()) * UPGRADE_MULTIPLIER;
+            _cost[3] = Get_armor_data(_status.Get_armor()) * UPGRADE_MULTIPLIER * 2;
         }
         else
         {

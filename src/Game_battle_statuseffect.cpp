@@ -17,7 +17,7 @@ Status_effect_index Status_effect::Get_status_effect()
     Status_effect_index _index = Status_effect_index::None;
     for (int i = 0; i < MAX_STATUS_NUMBER; i++)
     {
-        _index = static_cast<Status_effect_index>(_index | _inner_index[0]);
+        _index = static_cast<Status_effect_index>(_index | _inner_index[i]);
     }
     return _index;
 }
