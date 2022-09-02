@@ -9,9 +9,9 @@ namespace Runa
 constexpr int LIFESPAN = 30;
 constexpr int MULTIPLIER_DEFAULT = 200;
 
-struct Save_data
+struct Game_data
 {
-    constexpr static const char* SAVE_CHECK = "RUNA_0821";
+    constexpr static const char* SAVE_CHECK = "RUNA_0902";
 
     char CHECK[10] = {};
     short level = 0;
@@ -24,6 +24,7 @@ struct Save_data
     short stratum = 0;
     int chocolate = 0;
     int multiplier = 0;
+    int total_turn = 0;
 
     bool Read()
     {
@@ -39,17 +40,46 @@ struct Save_data
     }
 };
 
+struct Global_data
+{
+    constexpr static const char* SAVE_CHECK = "RUNA_0902";
+
+    char CHECK[10] = {};
+    int Max_level = 0;
+    int Max_turn = 0;
+    int Enemy_codex[NUM_ENEMY] = {0};
+
+    bool Read()
+    {
+        bn::sram::read_offset(*this, sizeof(Game_data));
+        return bn::string_view(CHECK) == SAVE_CHECK;
+    }
+    void Write()
+    {
+        bn::istring_base label_istring(CHECK);
+        bn::ostringstream label_stream(label_istring);
+        label_stream.append(SAVE_CHECK);
+        bn::sram::write_offset(*this, sizeof(Game_data));
+    }
+};
+
 Status::Status()
 {
+    Global_data _global_data;
+    _global_data.Read();
+    Max_level = _global_data.Max_level;
+    Max_turn = _global_data.Max_turn;
+    for (int i = 0; i < NUM_ENEMY; i++) { Enemy_codex[i] = _global_data.Enemy_codex[i]; }
+
     if (!Read())
     {
-        Init();
+        Game_init();
         Write();
     }
 }
 Status::~Status() {}
 
-void Status::Init()
+void Status::Game_init()
 {
     Level = 0;
     hp = Get_hp_data(0);
@@ -61,29 +91,53 @@ void Status::Init()
     stratum = 1;
     chocolate = 0;
     choco_multiplier = MULTIPLIER_DEFAULT;
+    total_turn = 0;
 
     _value_changed = false;
 
     _stats_update();
 }
+void Status::Reset()
+{
+    Game_init();
+
+    Max_level = 0;
+    for (int i = 0; i < NUM_ENEMY; i++) { Enemy_codex[i] = 0; }
+
+    Write();
+}
 void Status::Write()
 {
-    Save_data _save_data;
-    _save_data.level = Level;
-    _save_data.hp = hp;
-    _save_data.mp = mp;
-    _save_data.exp = exp;
-    _save_data.left_turns = left_turns;
-    _save_data.Weapon_level = Weapon_level;
-    _save_data.Armor_level = Armor_level;
-    _save_data.stratum = stratum;
-    _save_data.chocolate = chocolate;
-    _save_data.multiplier = choco_multiplier;
-    _save_data.Write();
+    WriteGame();
+    WriteGlobal();
+}
+void Status::WriteGame()
+{
+    Game_data _game_data;
+    _game_data.level = Level;
+    _game_data.hp = hp;
+    _game_data.mp = mp;
+    _game_data.exp = exp;
+    _game_data.left_turns = left_turns;
+    _game_data.Weapon_level = Weapon_level;
+    _game_data.Armor_level = Armor_level;
+    _game_data.stratum = stratum;
+    _game_data.chocolate = chocolate;
+    _game_data.multiplier = choco_multiplier;
+    _game_data.total_turn = total_turn;
+    _game_data.Write();
+}
+void Status::WriteGlobal()
+{
+    Global_data _global_data;
+    _global_data.Max_level = Max_level;
+    _global_data.Max_turn = Max_turn;
+    for (int i = 0; i < NUM_ENEMY; i++) { _global_data.Enemy_codex[i] = Enemy_codex[i]; }
+    _global_data.Write();
 }
 bool Status::Read()
 {
-    Save_data _read_data;
+    Game_data _read_data;
     if (_read_data.Read())
     {
         Level = _read_data.level;
@@ -96,6 +150,7 @@ bool Status::Read()
         stratum = _read_data.stratum;
         chocolate = _read_data.chocolate;
         choco_multiplier = _read_data.multiplier;
+        total_turn = _read_data.total_turn;
 
         _stats_update();
         return true;
@@ -113,6 +168,17 @@ short Status::Get_armor() { return Armor_level; }
 short Status::Get_stratum() { return stratum; }
 short Status::Get_choco() { return chocolate; }
 short Status::Get_multiplier() { return choco_multiplier; }
+int Status::Get_Max_level() { return Max_level; }
+int Status::Get_Max_turn() { return Max_turn; }
+int Status::Get_Enemy_codex(int index)
+{
+    return Enemy_codex[index];
+}
+
+void Status::Defeat_enemy(int index)
+{
+    ++Enemy_codex[index];
+}
 
 bool Status::Hp_change(short increment)
 {
@@ -183,8 +249,16 @@ bool Status::Value_changed()
 
 bool Status::turn_end()
 {
+    ++total_turn;
     _value_changed = true;
     return --left_turns <= 0;
+}
+
+void Status::Game_over()
+{
+    Max_level = Level;
+    Max_turn = total_turn;
+    WriteGlobal();
 }
 
 void Status::_stats_update()

@@ -14,7 +14,7 @@ constexpr bn::string_view OPTION_LIST[NUM_OPTION] = {
     "",
     "  Cookbook for Beginners",
     "  Grimoire of Runa",
-    "  Delete save data",
+    "  Start new game",
     "  ",
     "",
     "",
@@ -83,7 +83,7 @@ bn::optional<Scene_Type> Option::Update()
                 text_sprite.set_blending_enabled(true);
             }
 
-            _status.Init();
+            _status.Game_init();
             _status.Write();
 
             _nextscene = Scene_Type::Title;
@@ -127,8 +127,8 @@ bn::optional<Scene_Type> Option::Press_a()
     {
     case Delete_save:
         Effect::Print_text(_text_generator, true, Effect::Alignment::Right,
-                           112, OPTION_Y + OPTION_Y_INT, OPTION_Y_INT, _confirm_text,
-                           2, "Are you sure to delete save file?", "A: YES B: NO");
+                           112, OPTION_Y + OPTION_Y_INT * 7, OPTION_Y_INT, _confirm_text,
+                           3, "Are you sure to delete save file?", "Unlocked data will not be deleted.", "A: YES B: NO");
 
         _current_option = Options::Confirm_delete_save;
         break;

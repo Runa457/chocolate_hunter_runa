@@ -161,7 +161,7 @@ bn::optional<Scene_Type> Introduction::Update()
                     Print_text();
                 }
             }
-            if (bn::keypad::left_pressed())
+            else if (bn::keypad::left_pressed())
             {
                 if (--_current_page < 0) { ++_current_page; }
                 else
@@ -170,7 +170,7 @@ bn::optional<Scene_Type> Introduction::Update()
                     Print_text();
                 }
             }
-            if (bn::keypad::b_pressed())
+            else if (bn::keypad::b_pressed())
             {
                 bn::sound_items::sfx_menu_cancelled.play();
                 _scene_end.Start();

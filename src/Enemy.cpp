@@ -5,9 +5,10 @@
 namespace Runa::Game::Enemy
 {
 
-Enemy::Enemy(int _index, short _level) :
-    _base_data(Get_enemy_base_data(_index)),
-    level(_level)
+Enemy::Enemy(int index, short level) :
+    _base_data(Get_enemy_base_data(index)),
+    _level(level),
+    _index(index)
 {
     Init();
 }
@@ -16,28 +17,29 @@ Enemy::~Enemy() {}
 void Enemy::Init()
 {
     // hp = 10% increase per level
-    maxhp = hp = _base_data.base_maxhp * (100 + level * 10) / 100;
+    maxhp = hp = _base_data.base_maxhp * (100 + _level * 10) / 100;
     // atk, def = 5% increase per level
-    int atk = _base_data.base_atk * (100 + level * 5) / 100;
-    int def = _base_data.base_def * (100 + level * 5) / 100;
+    int atk = _base_data.base_atk * (100 + _level * 5) / 100;
+    int def = _base_data.base_def * (100 + _level * 5) / 100;
     // int = 50% of atk
     int inteligence = atk / 2;
     // spd = 3% increase per level
-    int spd = _base_data.base_spd * (100 + level * 3) / 100;
+    int spd = _base_data.base_spd * (100 + _level * 3) / 100;
 
     _stats = ActorStats(atk, 0, def, 0, inteligence, spd);
 }
 
 const bn::string_view& Enemy::Get_name() { return _base_data.name; }
-const short& Enemy::Get_level() { return level; }
+const short& Enemy::Get_level() { return _level; }
 int Enemy::Get_hp() { return hp; }
 
 int Enemy::Get_exp()
 {
     // exp = 5% increase per level
-    return (int)_base_data.base_exp * (100 + level * 5) / 100;
+    return (int)_base_data.base_exp * (100 + _level * 5) / 100;
 }
 short Enemy::Get_choco() { return _base_data.base_choco; }
+int Enemy::Get_index() { return _index; }
 
 bool Enemy::Hp_change(short increment)
 {

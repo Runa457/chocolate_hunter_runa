@@ -122,6 +122,7 @@ bn::optional<Scene_Type> Game::Update()
             break;
         case Runa::Game::Game_Type::Exit:
             _subscene.reset();
+            _status.Game_over();
             _status.Value_changed();
             Print_text();
             Effect::Print_text(_text_generator, false, Effect::Alignment::Center, 0, 0, 0, _status_text, 1, "Game over");

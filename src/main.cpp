@@ -6,6 +6,7 @@
 #include "Scene_game.h"
 #include "Scene_option.h"
 #include "Scene_credits.h"
+#include "Scene_enemylist.h"
 #include "Scene_introduction.h"
 
 #include "Status.h"
@@ -131,7 +132,7 @@ int main()
                 scene.reset(new Scene::Credits(text_generator));
                 break;
             case Scene::Scene_Type::Enemy_list:
-                scene.reset(new Scene::Credits(text_generator));
+                scene.reset(new Scene::Enemy_list(text_generator, status));
                 break;
             case Scene::Scene_Type::Magic_list:
                 scene.reset(new Scene::Credits(text_generator));

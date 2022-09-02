@@ -596,6 +596,8 @@ void Battle::Enemy_dead(short index)
     if (_enemy_end.Get_state() != Effect::State::Waiting
             || !_enemy_sprite[index].visible()) { return; }
 
+    _status.Defeat_enemy(_enemies[index].Get_index());
+
     bn::sound_items::sfx_battle_enemy_dead.play();
 
     _enemy_sprite[index].set_blending_enabled(true);

@@ -31,7 +31,7 @@ private:
 
     bn::sprite_text_generator& _text_generator;
     bn::vector<bn::sprite_ptr, 50> _option_text;
-    bn::vector<bn::sprite_ptr, 10> _confirm_text;
+    bn::vector<bn::sprite_ptr, 20> _confirm_text;
 
     bn::sprite_ptr _cursor;
     Options _current_option = Options::Enemy_list;

@@ -8,15 +8,20 @@
 namespace Runa
 {
 
+constexpr int NUM_ENEMY = 128;
+
 class Status
 {
 public:
     Status();
     ~Status();
 
-    void Init();
+    void Game_init();
     void Write();
+    void WriteGame();
+    void WriteGlobal();
     bool Read();
+    void Reset();
 
     short Get_level();
     int Get_hp();
@@ -28,6 +33,15 @@ public:
     short Get_stratum();
     short Get_choco();
     short Get_multiplier();
+    int Get_Max_level();
+    int Get_Max_turn();
+    int Get_Enemy_codex(int index);
+
+    /**
+     * @brief Increase enemy defeat counter.
+     * @param Enemy index
+     */
+    void Defeat_enemy(int index);
 
     /**
      * @brief Change hp and check if hp is below 0
@@ -68,6 +82,8 @@ public:
      */
     bool turn_end();
 
+    void Game_over();
+
     Game::ActorStats _stats;
 private:
     /**
@@ -83,6 +99,11 @@ private:
     short stratum;
     int chocolate;
     int choco_multiplier;
+    int total_turn;
+
+    int Max_level;
+    int Max_turn;
+    int Enemy_codex[NUM_ENEMY];
 
     /**
      * @brief For interface update.

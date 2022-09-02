@@ -22,6 +22,7 @@ public:
     int Get_hp();
     int Get_exp();
     short Get_choco();
+    int Get_index();
 
     /**
      * @brief Change hp and check if hp is below 0
@@ -51,8 +52,9 @@ public:
     ActorStats _stats;
 private:
     Enemy_data _base_data;
-    short level;
+    short _level;
     int hp, maxhp;
+    int _index;
 
 };
 

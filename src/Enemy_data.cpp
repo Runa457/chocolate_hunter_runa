@@ -30,7 +30,7 @@ constexpr Enemy_data Enemy_base_data[] = {
     Enemy_data(bn::sprite_items::enemy_abc_s, "Choco Speedy",   7, 10,     10, 9, 7, 9, Pattern_index::TripleSlash), // Speed
     Enemy_data(bn::sprite_items::enemy_abc_t, "Choco Tanker",   7, 10,     20, 9, 7, 6, Pattern_index::Guard_Slash), // Tanker
     Enemy_data(bn::sprite_items::enemy_abc_w, "Choco White",    5, 8,      10, 14, 7, 6, Pattern_index::Charge_AreaHeal), // White
-    Enemy_data(bn::sprite_items::enemy_abc_boss, "Choco BOSS", 60, 500,     100, 12, 12, 8, Pattern_index::Boss_1), // Actual 200, 90, 500, 18, 18, 10
+    Enemy_data(bn::sprite_items::enemy_abc_boss, "Choco BOSS", 60, 500,    100, 12, 12, 8, Pattern_index::Boss_1), // Actual 200, 90, 500, 18, 18, 10
     // 2nd stratum : cookie bakery
     // 3rd stratum : chess kingdom
 };
