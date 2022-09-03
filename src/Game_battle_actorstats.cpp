@@ -6,12 +6,21 @@ namespace Runa::Game
 ActorStats::ActorStats() :
     _atk(0), _weapon(0), _def(0), _armor(0),
     _intelligence(0), _status_effect(),
+    _element_weak(&Enemy::Get_enemy_base_data(0).element_weak),
     _action_type(&Action::Get_action_data(Action::Action_index::Bash))
 {}
 ActorStats::ActorStats(int atk, int weapon, int def, int armor,
                        int intelligence, int spd):
     _atk(atk), _weapon(weapon), _def(def), _armor(armor),
     _intelligence(intelligence), _spd(spd), _status_effect(),
+    _element_weak(&Enemy::Get_enemy_base_data(0).element_weak),
+    _action_type(&Action::Get_action_data(Action::Action_index::Bash))
+{}
+ActorStats::ActorStats(int atk, int def, int intelligence, int spd,
+                       const Enemy::Enemy_data &base_data):
+    _atk(atk), _weapon(0), _def(def), _armor(0),
+    _intelligence(intelligence), _spd(spd), _status_effect(),
+    _element_weak(&base_data.element_weak),
     _action_type(&Action::Get_action_data(Action::Action_index::Bash))
 {}
 
@@ -33,7 +42,12 @@ int ActorStats::Get_def()
 }
 int ActorStats::Get_base_def() { return _def; }
 int ActorStats::Get_armor() { return _armor; }
-int ActorStats::Get_int() { return _intelligence; }
+int ActorStats::Get_int()
+{
+    if (Get_status_effect() & Status_effect_index::Attack_up) { return _intelligence * 13 / 10; }
+    else if (Get_status_effect() & Status_effect_index::Attack_down) { return _intelligence * 7 / 10; }
+    else { return _intelligence; }
+}
 int ActorStats::Get_spd()
 {
     int spd = _spd * _action_type->_speed;
@@ -43,6 +57,7 @@ int ActorStats::Get_spd()
 }
 int ActorStats::Get_base_spd() { return _spd; }
 Status_effect_index ActorStats::Get_status_effect() { return _status_effect.Get_status_effect(); }
+int ActorStats::Get_weakness(int index) { return _element_weak->Get_weakness(index); }
 const Action::Action* ActorStats::Get_action_type() { return _action_type; }
 
 void ActorStats::Set_status_effect(Status_effect_index next_status, int turns)

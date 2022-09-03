@@ -23,8 +23,8 @@ private:
     Status& _status;
 
     bn::vector<bn::sprite_ptr, 70> _description_text;
-    bn::vector<bn::sprite_ptr, 15> _sub_text;
     bn::vector<bn::sprite_ptr, 5> _page_text;
+    bn::sprite_ptr _enemy_graphic;
 
     Effect::Transition _scene_start;
     Effect::Transition _scene_end;

@@ -1,6 +1,7 @@
 #ifndef GAME_BATTLE_ACTORSTATS_H
 #define GAME_BATTLE_ACTORSTATS_H
 
+#include "Enemy_data.h"
 #include "Game_battle_action.h"
 #include "Game_battle_statuseffect.h"
 
@@ -13,6 +14,8 @@ public:
     ActorStats();
     ActorStats(int atk, int weapon, int def, int armor,
                int intelligence, int spd);
+    ActorStats(int atk, int def, int intelligence, int spd,
+               const Enemy::Enemy_data& base_data);
     ~ActorStats();
 
     int Get_atk();
@@ -25,6 +28,7 @@ public:
     int Get_spd();
     int Get_base_spd();
     Status_effect_index Get_status_effect();
+    int Get_weakness(int index);
     const Action::Action* Get_action_type();
 
     void Set_status_effect(Status_effect_index next_status, int turns);
@@ -40,6 +44,7 @@ private:
     int _intelligence;
     int _spd;
     Status_effect _status_effect;
+    const Enemy::Element_weakness* _element_weak = nullptr;
     const Action::Action* _action_type;
 };
 

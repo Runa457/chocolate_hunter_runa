@@ -51,7 +51,7 @@ public:
 
     ActorStats _stats;
 private:
-    Enemy_data _base_data;
+    const Enemy_data& _base_data;
     short _level;
     int hp, maxhp;
     int _index;

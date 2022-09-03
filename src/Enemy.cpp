@@ -26,7 +26,7 @@ void Enemy::Init()
     // spd = 3% increase per level
     int spd = _base_data.base_spd * (100 + _level * 3) / 100;
 
-    _stats = ActorStats(atk, 0, def, 0, inteligence, spd);
+    _stats = ActorStats(atk, def, inteligence, spd, _base_data);
 }
 
 const bn::string_view& Enemy::Get_name() { return _base_data.name; }

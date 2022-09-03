@@ -131,6 +131,6 @@ const short& Get_int_data(int level) { return INT_table[level]; }
 const short& Get_spd_data(int level) { return SPD_table[level]; }
 const short& Get_weapon_data(int level) { return Weapon_table[level]; }
 const short& Get_armor_data(int level) { return Armor_table[level]; }
-const short& Get_enemy_index(int level) { return Enemy_index_table[level]; }
+const short& Get_enemy_index(int stratum) { return Enemy_index_table[stratum]; }
 
 } // namespace Runa

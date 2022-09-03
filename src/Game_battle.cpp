@@ -25,6 +25,7 @@ constexpr int ENEMY_Y = 0;
 Battle::Battle(bn::sprite_text_generator& text_generator,
                bn::random& random_generator,
                Status& status,
+               bn::sprite_ptr& player_sprite,
                bn::unique_ptr<Battle_Sequence>& battle_sq) :
     _status(status),
     _random(random_generator),
@@ -32,6 +33,7 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
     _text_generator(text_generator),
     _battle_sq(battle_sq),
     _enemies(battle_sq->Get_current_enemies()),
+    _player_sprite(player_sprite),
     _sword_attack_icon(bn::sprite_items::icon_sword_attack.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y)),
     _shield_icon(bn::sprite_items::icon_shield.create_sprite(ATTACK_ICON_X+16, ATTACK_ICON_Y)),
     _magic_attack_icon(bn::sprite_items::icon_magic_attack.create_sprite(ATTACK_ICON_X+32, ATTACK_ICON_Y)),
@@ -42,11 +44,19 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
     _enemy_end(static_cast<Effect::Type>(Effect::Type::Transparency | Effect::Type::Sprite_mosaic), Effect::Direction::Out, 20),
     _camera()
 {
+    _cursor.set_z_order(-10);
+    _cursor.set_bg_priority(0);
     _cursor.set_visible(false);
+
     _attack_effect_sprite.set_z_order(-10);
+    _attack_effect_sprite.set_bg_priority(0);
     _attack_effect_sprite.set_visible(false);
+
+    _sword_attack_icon.set_bg_priority(0);
     _sword_attack_icon.set_visible(false);
+    _shield_icon.set_bg_priority(0);
     _shield_icon.set_visible(false);
+    _magic_attack_icon.set_bg_priority(0);
     _magic_attack_icon.set_visible(false);
 
     Battle_start();
@@ -281,7 +291,9 @@ Battle::State Battle::Magic_select()
     }
     else if (bn::keypad::right_pressed())
     {
-        if (static_cast<Action::Magic_index>(++_magic_index) == Action::Magic_index::END_OF_INDEX) { --_magic_index; }
+        ++_magic_index;
+        if (_magic_index > _status.Get_level() ||
+                static_cast<Action::Magic_index>(_magic_index) == Action::Magic_index::END_OF_INDEX) { --_magic_index; }
         else
         {
             _status._stats.Set_action_type(&Action::Get_magic_data(static_cast<Action::Magic_index>(_magic_index)));
@@ -478,14 +490,14 @@ void Battle::Action_execute(int attacker_idx, int defender_idx)
 
     int damage = attack_function(attacker, defender, _random);
 
-    if (attacker_idx == -1) { /*_camera.Set_attacker(_player_sprite);*/ }
+    if (attacker_idx == -1) { /* _camera.Set_attacker(_player_sprite); */ }
     else { _camera.Set_attacker(_enemy_sprite[attacker_idx]); }
 
     if (defender_idx == -1)
     {
         _status.Hp_change(-damage);
         Attack_effect(-90, 57, damage, attacker->Get_action_type());
-        //if (damage > 0) { _camera.Start_movement(_player_sprite); }
+        if (damage > 0) { _camera.Set_defender(_player_sprite); }
     }
     else
     {
@@ -502,6 +514,7 @@ void Battle::Attack_effect(int x, int y, int damage,
 
     _attack_effect_sprite.set_position(x, y);
     _attack_effect_sprite.set_visible(true);
+    _attack_effect_sprite.set_palette(action->_action_effect.palette_item());
     _attack_effect = bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, action->_action_effect.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
 
     action->_action_sound.play();

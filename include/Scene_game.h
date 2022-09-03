@@ -30,6 +30,7 @@ private:
     Status& _status;
     bn::regular_bg_ptr _bg_interface;
     bn::regular_bg_ptr _bg_stratum;
+    bn::sprite_ptr _player_sprite;
 
     bn::unique_ptr<Runa::Game::Game_Root> _subscene;
     bn::optional<Runa::Game::Game_Type> _game_mode;

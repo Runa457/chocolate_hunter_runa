@@ -30,7 +30,15 @@ enum class Action_index : short
 enum Magic_index : short
 {
     Fire_I,
+    Ice_I,
+    Lightning_I,
+    Defense_Up,
+    Attack_Up,
+
+    Barrier,
+    Charge,
     Fire_II,
+    Sword_Dance,
     Fire_III,
     Fire_IV,
     Heal_I,
@@ -50,14 +58,23 @@ enum class Target_type : char
 enum class Action_type : char
 {
     None,
-    Normal_attack,
-    Magic_attack,
+    Normal_attack, // Use STR
+    Magic_attack, // Use INT
+};
+
+enum class Element_type : char
+{
+    None,
+    Physical,
+    Fire,
+    Ice,
+    Lightning,
 };
 
 class Action
 {
 public:
-    constexpr Action(bn::string_view name, Target_type target, Action_type action,
+    constexpr Action(bn::string_view name, Target_type target, Action_type action, Element_type element,
                      int cost, int multiplier, int speed_multi,
                      Status_effect_index status_effect, int status_chance, int status_duration,
                      const bn::sprite_item& action_effect, int frames,
@@ -65,6 +82,7 @@ public:
         _name(name),
         _target(target),
         _action(action),
+        _element(element),
         _cost(cost),
         _multiplier(multiplier),
         _speed(speed_multi),
@@ -79,6 +97,7 @@ public:
     bn::string_view _name;
     Target_type _target;
     Action_type _action;
+    Element_type _element;
 
     /**
      * @brief Mana cost for magic attack

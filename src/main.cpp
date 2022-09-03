@@ -33,7 +33,7 @@ int main()
     bn::core::init();
 
     bn::sprite_text_generator text_generator(common::variable_8x16_sprite_font);
-    text_generator.set_bg_priority(1);
+    text_generator.set_bg_priority(0);
     bn::random random_generator;
 
     /**

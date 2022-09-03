@@ -9,6 +9,7 @@
 #include "bn_sprite_items_icon_choco.h"
 #include "bn_regular_bg_items_bg_interface.h"
 #include "bn_regular_bg_items_bg_stratum_1.h"
+#include "bn_sprite_items_portrait_default.h"
 
 namespace Runa::Scene
 {
@@ -20,6 +21,7 @@ Game::Game(bn::sprite_text_generator& text_generator,
     _status(status),
     _bg_interface(bn::regular_bg_items::bg_interface.create_bg(0, 0)),
     _bg_stratum(bn::regular_bg_items::bg_stratum_1.create_bg(0, 0)),
+    _player_sprite(bn::sprite_items::portrait_default.create_sprite(-90, 57)),
     _subscene(),
     _game_mode(Runa::Game::Game_Type::Rest),
     _text_generator(text_generator),
@@ -31,6 +33,10 @@ Game::Game(bn::sprite_text_generator& text_generator,
 
     _choco_icon[0].set_bg_priority(0);
     _choco_icon[1].set_bg_priority(0);
+
+    _player_sprite.set_z_order(1);
+    _player_sprite.set_bg_priority(0);
+    _player_sprite.set_blending_enabled(true);
 
     _bg_stratum.set_priority(3);
     _bg_interface.set_priority(2);
@@ -60,6 +66,7 @@ bn::optional<Scene_Type> Game::Update()
         _scene_begin.Update();
         return bn::nullopt;
     case Effect::State::Done:
+        _player_sprite.set_blending_enabled(false);
         _bg_stratum.set_blending_enabled(false);
         _bg_interface.set_blending_enabled(false);
         for (bn::sprite_ptr& icon_sprite : _choco_icon)
@@ -94,13 +101,14 @@ bn::optional<Scene_Type> Game::Update()
         switch (*_game_mode)
         {
         case Runa::Game::Game_Type::Battle:
-            _subscene.reset(new Runa::Game::Battle(_text_generator, _random, _status, _battle_sq));
+            _subscene.reset(new Runa::Game::Battle(_text_generator, _random, _status, _player_sprite, _battle_sq));
             break;
         case Runa::Game::Game_Type::Result: //unused
             if (bn::keypad::a_pressed())
             {
                 _status.Read();
 
+                _player_sprite.set_blending_enabled(true);
                 _bg_stratum.set_blending_enabled(true);
                 _bg_interface.set_blending_enabled(true);
                 for (bn::sprite_ptr& icon_sprite : _choco_icon)
@@ -142,7 +150,7 @@ void Game::Print_text()
     _status_text.clear();
     _text_generator.set_left_alignment();
     _text_generator.generate(-116, -73, bn::format<10>("Stratum {}", _status.Get_stratum()), _status_text);
-    _text_generator.generate(-60, 42, bn::format<17>("Level: {} - {}%", level, _status.Get_exp()*100/Get_exp_data(level)), _status_text);
+    _text_generator.generate(-60, 42, bn::format<17>("Lv: {} - {}%", level, _status.Get_exp()*100/Get_exp_data(level)), _status_text);
     _text_generator.generate(-60, 52, bn::format<17>("Hp: {}/ {}", _status.Get_hp(), Get_hp_data(level)), _status_text);
     _text_generator.generate(-60, 62, bn::format<17>("Mp: {}/ {}", _status.Get_mp(), Get_mp_data(level)), _status_text);
     _text_generator.generate(-60, 72, bn::format<17>("Left turns: {}", _status.Get_turns()), _status_text);

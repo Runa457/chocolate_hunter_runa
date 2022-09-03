@@ -15,7 +15,7 @@ enum Status_effect_index : int
     Defence_down = 8, // 0.7x def
     Speed_up = 16,    // 1.3x spd
     Speed_down = 32,  // 0.7x spd
-    Charge = 64,      // 1.5x damage given
+    Charge = 64,      // 2.0x damage given
     Guard = 128,      // 0.5x damage taken
     Bleeding = 256,   // 1.5x damage taken
     Poison = 512,

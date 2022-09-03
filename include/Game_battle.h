@@ -17,6 +17,7 @@ public:
     Battle(bn::sprite_text_generator& text_generator,
            bn::random& random_generator,
            Status& status,
+           bn::sprite_ptr& player_sprite,
            bn::unique_ptr<Battle_Sequence>& battle_sq);
     ~Battle();
     bn::optional<Game_Type> Update();
@@ -115,7 +116,7 @@ private:
     bn::vector<Enemy::Enemy, 3>& _enemies;
     short _num_enemies = 3;
     bn::vector<bn::sprite_ptr, 3> _enemy_sprite;
-    //bn::sprite_ptr _player_sprite;
+    bn::sprite_ptr& _player_sprite;
     //bn::vector<bn::sprite_ptr, 3> _enemy_hp_sprite;
 
     bn::sprite_ptr _sword_attack_icon;

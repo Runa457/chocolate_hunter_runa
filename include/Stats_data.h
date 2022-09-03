@@ -13,7 +13,7 @@ const short& Get_int_data(int level);
 const short& Get_spd_data(int level);
 const short& Get_weapon_data(int level);
 const short& Get_armor_data(int level);
-const short& Get_enemy_index(int level);
+const short& Get_enemy_index(int stratum);
 
 } // namespace Runa
 
