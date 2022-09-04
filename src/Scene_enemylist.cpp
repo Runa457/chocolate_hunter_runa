@@ -1,6 +1,7 @@
 #include "Scene_enemylist.h"
 
 #include "bn_format.h"
+#include "bn_regular_bg_items_bg_codex1.h"
 
 namespace Runa::Scene
 {
@@ -50,11 +51,11 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "",
 
     "Powerful gatekeeper", // choco boss * 1st stratum boss
-    "who protects the gateway between",
-    "Alphabetic Grassland",
+    "who protects the gateway",
+    "between Alphabetic Grassland",
     "and Bakery Street.",
 };
-constexpr int TEXT_X = -110;
+constexpr int TEXT_X = -102;
 constexpr int TEXT_Y = -64;
 constexpr int TEXT_Y_INT = 12;
 
@@ -66,10 +67,17 @@ constexpr int GRAPHIC_Y = -40;
 Enemy_list::Enemy_list(bn::sprite_text_generator& text_generator, Status& status) :
     _text_generator(text_generator),
     _status(status),
+    _bg_codex(bn::regular_bg_items::bg_codex1.create_bg(0, 0)),
     _enemy_graphic(Game::Enemy::Get_enemy_base_data(0).sprite_item.create_sprite(GRAPHIC_X, GRAPHIC_Y)),
     _scene_start(Effect::Type::Transparency, Effect::Direction::In, TRANSITION_FRAMES),
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES)
 {
+    bn::bg_palettes::set_transparent_color(bn::color(16, 16, 16));
+    _bg_codex.set_blending_enabled(true);
+    _bg_codex.set_priority(2);
+
+    _enemy_graphic.set_bg_priority(3);
+
     Print_enemy_codex();
     _scene_start.Start();
 }
@@ -145,7 +153,7 @@ void Enemy_list::Print_enemy_codex()
         _enemy_graphic.set_blending_enabled(true);
 
         _text_generator.set_left_alignment();
-        _text_generator.generate(TEXT_X, TEXT_Y, _enemy_data->name, _description_text);
+        _text_generator.generate(TEXT_X + 16, TEXT_Y, _enemy_data->name, _description_text);
         _text_generator.generate(TEXT_X, TEXT_Y + TEXT_Y_INT * 2, bn::format<15>("{} eaten", _status.Get_Enemy_codex(_current_page+1)), _description_text);
         _text_generator.generate(TEXT_X, TEXT_Y + TEXT_Y_INT * 3, bn::format<12>("HP {}", _enemy_data->base_maxhp), _description_text);
         _text_generator.generate(TEXT_X, TEXT_Y + TEXT_Y_INT * 4, bn::format<12>("Choco {}", _enemy_data->base_choco), _description_text);
@@ -160,7 +168,7 @@ void Enemy_list::Print_enemy_codex()
     }
     _page_text.clear();
     _text_generator.set_right_alignment();
-    _text_generator.generate(112, TEXT_Y + TEXT_Y_INT * 11, bn::format<10>("< {} / {} >", _current_page+1, MAX_PAGE), _page_text);
+    _text_generator.generate(112, TEXT_Y + TEXT_Y_INT * 11, bn::format<14>("< {} / {} >", _current_page+1, MAX_PAGE), _page_text);
 
     for (bn::sprite_ptr& text_sprite : _description_text) { text_sprite.set_blending_enabled(true); }
     for (bn::sprite_ptr& text_sprite : _page_text) { text_sprite.set_blending_enabled(true); }

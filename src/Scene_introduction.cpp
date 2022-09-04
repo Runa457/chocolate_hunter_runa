@@ -200,7 +200,7 @@ void Introduction::Print_text()
     }
     _page_text.clear();
     _text_generator.set_right_alignment();
-    _text_generator.generate(112, INTRO_Y + INTRO_Y_INT * 11, bn::format<10>("< {} / {} >", _current_page+1, MAX_PAGE), _page_text);
+    _text_generator.generate(112, INTRO_Y + INTRO_Y_INT * 11, bn::format<14>("< {} / {} >", _current_page+1, MAX_PAGE), _page_text);
     for (bn::sprite_ptr& text_sprite : _intro_text)
     {
         text_sprite.set_blending_enabled(true);

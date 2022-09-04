@@ -31,16 +31,18 @@ int attack_function(ActorStats* attacker, ActorStats* defender,
     {
         damage = damage * 2;
     }
-    if (damage > 0 && (defender->Get_status_effect() & Status_effect_index::Guard) != 0)
-    {
-        damage = damage / 2;
-    }
     if (damage > 0 && (defender->Get_status_effect() & Status_effect_index::Bleeding) != 0)
     {
         damage = damage * 3 / 2;
     }
 
     damage += (damage > 0) ? 5000 : -5000;
+
+    if (damage > 0 && (defender->Get_status_effect() & Status_effect_index::Guard) != 0)
+    {
+        damage = damage / 2;
+    }
+
     damage /= 10000; // multiplier 100%, weakness 100%
 
     int chance = random.get_int(100);

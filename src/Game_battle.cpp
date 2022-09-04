@@ -311,30 +311,7 @@ void Battle::Print_magic_information()
     _battle_text.clear();
     _text_generator.set_right_alignment();
     _text_generator.generate(ATTACK_ICON_X+40, ATTACK_ICON_Y-16, bn::format<20>("{} ({})", _action_type->_name, _action_type->_cost), _battle_text);
-
-    bn::string_view target_type = "";
-    switch (_action_type->_target)
-    {
-    case Action::Target_type::Self_target:
-        target_type = "Self";
-        break;
-    case Action::Target_type::Single_target:
-        target_type = "Single";
-        break;
-    case Action::Target_type::Multi_hit:
-        target_type = "Multi";
-        break;
-    case Action::Target_type::Every_enemy_target:
-        target_type = "Enemies";
-        break;
-    case Action::Target_type::Entire_target:
-        target_type = "Entire";
-        break;
-    default:
-        BN_ERROR();
-        break;
-    }
-    _text_generator.generate(ATTACK_ICON_X+22, ATTACK_ICON_Y-4, bn::format<7>("{}", target_type), _battle_text);
+    _text_generator.generate(ATTACK_ICON_X+22, ATTACK_ICON_Y-4, Action::Print_target_type(_action_type->_target), _battle_text);
 }
 Battle::State Battle::Target_select()
 {
@@ -515,7 +492,7 @@ void Battle::Attack_effect(int x, int y, int damage,
     _attack_effect_sprite.set_position(x, y);
     _attack_effect_sprite.set_visible(true);
     _attack_effect_sprite.set_palette(action->_action_effect.palette_item());
-    _attack_effect = bn::create_sprite_animate_action_once(_attack_effect_sprite, 1, action->_action_effect.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
+    _attack_effect = bn::create_sprite_animate_action_once(_attack_effect_sprite, action->_frames, action->_action_effect.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
 
     action->_action_sound.play();
 

@@ -7,6 +7,7 @@
 #include "Scene_option.h"
 #include "Scene_credits.h"
 #include "Scene_enemylist.h"
+#include "Scene_magiclist.h"
 #include "Scene_introduction.h"
 
 #include "Status.h"
@@ -135,7 +136,7 @@ int main()
                 scene.reset(new Scene::Enemy_list(text_generator, status));
                 break;
             case Scene::Scene_Type::Magic_list:
-                scene.reset(new Scene::Credits(text_generator));
+                scene.reset(new Scene::Magic_list(text_generator, status));
                 break;
             default:
                 BN_ERROR("Unknown Scene type: ", (int)*nextscene);

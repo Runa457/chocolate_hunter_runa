@@ -1,10 +1,12 @@
 #ifndef GAME_BATTLE_STATUSEFFECT_H
 #define GAME_BATTLE_STATUSEFFECT_H
 
+#include "bn_string_view.h"
+
 namespace Runa::Game
 {
 
-constexpr int MAX_STATUS_NUMBER = 3;
+constexpr int MAX_STATUS_NUMBER = 5;
 
 enum Status_effect_index : int
 {
@@ -19,6 +21,8 @@ enum Status_effect_index : int
     Guard = 128,      // 0.5x damage taken
     Bleeding = 256,   // 1.5x damage taken
     Poison = 512,
+    // Regeneration
+    // Paralyzed
 };
 
 class Status_effect
@@ -48,6 +52,8 @@ private:
     int _duration[MAX_STATUS_NUMBER];
 
 };
+
+const bn::string_view Print_status_effect(Status_effect_index status);
 
 } // namespace Runa::Game
 

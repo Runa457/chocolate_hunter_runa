@@ -74,4 +74,36 @@ void Status_effect::Turn_passed()
     }
 }
 
+const bn::string_view Print_status_effect(Status_effect_index status)
+{
+    switch (status)
+    {
+    case Status_effect_index::None:
+        return "None";
+    case Status_effect_index::Attack_up:
+        return "Atk. Up";
+    case Status_effect_index::Attack_down:
+        return "Atk. Down";
+    case Status_effect_index::Defence_up:
+        return "Def. Up";
+    case Status_effect_index::Defence_down:
+        return "Def. Down";
+    case Status_effect_index::Speed_up:
+        return "Spd. Up";
+    case Status_effect_index::Speed_down:
+        return "Spd. Down";
+    case Status_effect_index::Charge:
+        return "Charge";
+    case Status_effect_index::Guard:
+        return "Guard";
+    case Status_effect_index::Bleeding:
+        return "Bleeding";
+    case Status_effect_index::Poison:
+        return "Poison";
+    default:
+        BN_ERROR("Not implemented status effect");
+        break;
+    }
+}
+
 } // namespace Runa::Game

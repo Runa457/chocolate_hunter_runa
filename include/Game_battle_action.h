@@ -38,10 +38,17 @@ enum Magic_index : short
     Barrier,
     Charge,
     Fire_II,
-    Sword_Dance,
-    Fire_III,
-    Fire_IV,
+    Ice_II,
     Heal_I,
+
+    Weaken, // Gravity I
+    Soften, // Acid I
+    Sword_Dance,
+
+    Fire_III,
+    // Acid rain (damage + soften)
+    Fire_IV,
+
     END_OF_INDEX
 };
 
@@ -133,6 +140,10 @@ public:
 
 const Action& Get_action_data(Action_index index);
 const Action& Get_magic_data(Magic_index index);
+const Action& Get_magic_data(int index);
+
+const bn::string_view Print_target_type(Target_type target);
+const bn::string_view Print_element_type(Element_type element);
 
 } // namespace Runa::Game
 
