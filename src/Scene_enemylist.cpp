@@ -8,7 +8,7 @@ namespace Runa::Scene
 
 namespace
 {
-constexpr int MAX_PAGE = 9;
+constexpr int MAX_PAGE = 13;
 constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "Appears in Alphabetic Grassland.", // choco attacker
     "Has strong offensive power,",
@@ -54,6 +54,26 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "who protects the gateway",
     "between Alphabetic Grassland",
     "and Bakery Street.",
+
+    "Baked from Bakery Street.", // chip cookie
+    "",
+    "",
+    "",
+
+    "", // checker cookie
+    "",
+    "",
+    "",
+
+    "", // choco cake
+    "",
+    "",
+    "",
+
+    "", // choco muffin
+    "",
+    "",
+    "",
 };
 constexpr int TEXT_X = -102;
 constexpr int TEXT_Y = -64;

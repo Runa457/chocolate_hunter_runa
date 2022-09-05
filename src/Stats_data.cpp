@@ -119,7 +119,7 @@ extern constexpr short Armor_table[] = {
 };
 
 extern constexpr short Enemy_index_table[] = {
-    0, 9, 11
+    0, 9, 13
 };
 
 const short& Get_hp_data(int level) { return HP_table[level]; }

@@ -4,6 +4,8 @@
 namespace Runa::Game
 {
 
+constexpr int MAXSTRATUM = 2;
+
 Battle_Sequence::Battle_Sequence(bn::random& random_generator,
                                  int player_level, short stratum, bool is_boss) :
     _random(random_generator),
@@ -12,7 +14,7 @@ Battle_Sequence::Battle_Sequence(bn::random& random_generator,
     _total_choco(0),
     _total_enemy(0)
 {
-    if (stratum > 1) { stratum = 1; }
+    if (stratum > MAXSTRATUM) { stratum = MAXSTRATUM; }
     short enemy_index_start = Get_enemy_index(stratum-1) + 1;
     short enemy_index_end = Get_enemy_index(stratum);
 
