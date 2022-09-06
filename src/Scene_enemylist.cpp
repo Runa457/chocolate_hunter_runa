@@ -55,17 +55,17 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "between Alphabetic Grassland",
     "and Bakery Street.",
 
-    "Baked from Bakery Street.", // chip cookie
+    "Baked from the Bakery Street.", // chip cookie
     "",
     "",
     "",
 
-    "", // checker cookie
+    "Baked from the Bakery Street.", // checker cookie
     "",
     "",
     "",
 
-    "", // choco cake
+    "Baked from the Bakery Street.", // choco cake
     "",
     "",
     "",

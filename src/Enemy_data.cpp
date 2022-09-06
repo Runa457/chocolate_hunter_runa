@@ -38,9 +38,9 @@ constexpr Enemy_data Enemy_base_data[] = {
     Enemy_data(bn::sprite_items::enemy_abc_w, "Choco White",    5, 7,   10, 14, 7, 6, Pattern_index::Charge_AreaHeal,   100, 160, 40, 100),
     Enemy_data(bn::sprite_items::enemy_abc_boss, "Choco BOSS", 120, 500, 150, 12, 12, 8, Pattern_index::Boss_1,         100, 120, 150, 100), // Actual 180 / 300, 18, 18, 10
     // 2nd stratum : bakery street
-    Enemy_data(bn::sprite_items::enemy_bakery_chipcookie,   "Chip cookie",      15, 20,   25, 12, 10, 8, Pattern_index::Slash, 100, 100, 100, 100), //
-    Enemy_data(bn::sprite_items::enemy_bakery_checker,      "Checker cookie",   15, 20,   25, 12, 10, 8, Pattern_index::Slash, 100, 100, 100, 100), //
-    Enemy_data(bn::sprite_items::enemy_bakery_chococake,    "Choco Cake",       15, 20,   25, 12, 10, 8, Pattern_index::Slash, 100, 100, 100, 100), //
+    Enemy_data(bn::sprite_items::enemy_bakery_chipcookie,   "Chip cookie",      15, 20,   25, 12, 10, 8, Pattern_index::Slash, 200, 50, 120, 100), //
+    Enemy_data(bn::sprite_items::enemy_bakery_checker,      "Checker cookie",   15, 20,   25, 12, 10, 8, Pattern_index::Slash, 200, 50, 120, 100), //
+    Enemy_data(bn::sprite_items::enemy_bakery_chococake,    "Choco Cake",       15, 20,   25, 12, 10, 8, Pattern_index::Slash, 80, 150, 150, 100), //
     Enemy_data(bn::sprite_items::enemy_bakery_chocomuffin,  "Choco Muffin",     15, 20,   25, 12, 10, 8, Pattern_index::Slash, 100, 100, 100, 100), //
     // 3rd stratum : chess castle
 };

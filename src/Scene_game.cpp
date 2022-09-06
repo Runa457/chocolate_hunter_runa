@@ -9,6 +9,7 @@
 #include "bn_sprite_items_icon_choco.h"
 #include "bn_regular_bg_items_bg_interface.h"
 #include "bn_regular_bg_items_bg_stratum_1.h"
+#include "bn_regular_bg_items_bg_stratum_2.h"
 #include "bn_sprite_items_portrait_default.h"
 
 namespace Runa::Scene
@@ -146,6 +147,23 @@ bn::optional<Scene_Type> Game::Update()
 
 void Game::Print_text()
 {
+    if (_current_stratum != _status.Get_stratum())
+    {
+        _current_stratum = _status.Get_stratum();
+        switch (_current_stratum)
+        {
+        case 1:
+            _bg_stratum.set_item(bn::regular_bg_items::bg_stratum_1);
+            break;
+        case 2:
+            _bg_stratum.set_item(bn::regular_bg_items::bg_stratum_2);
+            break;
+        default:
+            BN_ERROR("Background needed");
+            break;
+        }
+    }
+
     int level = _status.Get_level();
     _status_text.clear();
     _text_generator.set_left_alignment();

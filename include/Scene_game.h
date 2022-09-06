@@ -44,6 +44,8 @@ private:
     Effect::Transition _scene_begin;
     Effect::Transition _scene_end;
     static constexpr int TRANSITION_FRAMES = 10;
+
+    int _current_stratum = 0;
 };
 
 } // namespace Runa::Scene
