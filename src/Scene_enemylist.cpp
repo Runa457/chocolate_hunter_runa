@@ -8,16 +8,16 @@ namespace Runa::Scene
 
 namespace
 {
-constexpr int MAX_PAGE = 13;
+constexpr int MAX_PAGE = 15;
 constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "Appears in Alphabetic Grassland.", // choco attacker
     "Has strong offensive power,",
     "but very weak defensive power.",
-    "Always do slash attack.",
+    "Always does slash attack.",
 
     "Appears in Alphabetic Grassland.", // choco blocker
     "Has strong defensive power.",
-    "Always guard.",
+    "Always guards.",
     "",
 
     "Appears in Alphabetic Grassland.", // choco charger
@@ -55,25 +55,36 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "between Alphabetic Grassland",
     "and Bakery Street.",
 
+
     "Baked from the Bakery Street.", // chip cookie
-    "",
-    "",
-    "",
+    "Attacks by throwing its own",
+    "chocolate chips.",
+    "Vulnerable to physical attacks.",
 
     "Baked from the Bakery Street.", // checker cookie
-    "",
-    "",
-    "",
+    "Distracts the vision and",
+    "gives the impression of being",
+    "attacked from all sides.",
 
     "Baked from the Bakery Street.", // choco cake
+    "Attacks after slowing the",
+    "opponent with sticky chocolate.",
+    "",
+
+    "Baked from the Bakery Street.", // choco muffin
+    "Blocks and withstands attacks,",
+    "then self-destructs,",
+    "inflicting great damage.",
+
+    "Baked from the Bakery Street.", // donut
     "",
     "",
     "",
 
-    "", // choco muffin
-    "",
-    "",
-    "",
+    "The greatest masterpiece of", // cookie house * 2nd stratum boss
+    "the Bakery Street.",
+    "Resides in front of the gate",
+    "to the Chess Castle.",
 };
 constexpr int TEXT_X = -102;
 constexpr int TEXT_Y = -64;

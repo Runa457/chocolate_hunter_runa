@@ -12,14 +12,21 @@ enum class Pattern_index : short
     Heal,
     Slash,
     Bash,
+    Throw,
     TripleSlash,
     AreaHeal,
 
     Guard_Slash,
+    Confusion,
     Charge_Bash,
     Charge_AreaHeal,
 
+    Quicksand,
+
+    Explosion,
+
     Boss_1,
+    Boss_2,
 };
 
 class Enemy_pattern

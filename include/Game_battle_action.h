@@ -21,11 +21,15 @@ enum class Action_index : short
     // Single target
     Slash,
     Bash,
+    Throw,
+    Quicksand,
     // Multi hit
     Triple_Slash,
+    Confusion,
     // Every enemy target
     Area_Heal_I,
     // Entire target
+    Explosion,
 };
 enum Magic_index : short
 {

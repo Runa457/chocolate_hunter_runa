@@ -256,8 +256,8 @@ bool Status::turn_end()
 
 void Status::Game_over()
 {
-    Max_level = Level;
-    Max_turn = total_turn;
+    Max_level = (Level > Max_level) ? Level : Max_level;
+    Max_turn = (total_turn > Max_turn) ? total_turn : Max_turn;
     WriteGlobal();
 }
 

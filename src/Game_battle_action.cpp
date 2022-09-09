@@ -21,23 +21,23 @@ constexpr Action Action_data[] = {
     // Self target
     Action("Guard", Target_type::Self_target, Action_type::Normal_attack, Element_type::None,
     0, 0, 500, Status_effect_index::Guard, 100, 1,
-    bn::sprite_items::effect_guard, 2, bn::sound_items::sfx_battle_sword),//
+    bn::sprite_items::effect_guard, 2, bn::sound_items::sfx_battle_sword),// sound
 
     Action("Charge", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     10, 0, 150, Status_effect_index::Charge, 100, 2,
-    bn::sprite_items::effect_charge, 2, bn::sound_items::sfx_battle_sword),//
+    bn::sprite_items::effect_charge, 2, bn::sound_items::sfx_battle_sword),// sound
 
     Action("Heal I", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     15, -100, 100, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),//
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),// sound
 
     Action("Attack Up", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     7, 0, 100, Status_effect_index::Attack_up, 100, 5,
-    bn::sprite_items::effect_red_arrow_up, 2, bn::sound_items::sfx_battle_magic),//
+    bn::sprite_items::effect_red_arrow_up, 2, bn::sound_items::sfx_battle_magic),// sound
 
     Action("Defence Up", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     7, 0, 100, Status_effect_index::Defence_up, 100, 5,
-    bn::sprite_items::effect_blue_arrow_up, 2, bn::sound_items::sfx_battle_magic),//
+    bn::sprite_items::effect_blue_arrow_up, 2, bn::sound_items::sfx_battle_magic),// sound
 
     // Single target
     Action("Slash", Target_type::Single_target, Action_type::Normal_attack, Element_type::Physical,
@@ -48,17 +48,33 @@ constexpr Action Action_data[] = {
     0, 100, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_sword, 4, bn::sound_items::sfx_battle_damage_taken),//
 
+    Action("Throw", Target_type::Single_target, Action_type::Normal_attack, Element_type::Physical,
+    0, 100, 100, Status_effect_index::None, 0, 0,
+    bn::sprite_items::effect_sword, 4, bn::sound_items::sfx_battle_damage_taken),// same as bash
+
+    Action("Quicksand", Target_type::Single_target, Action_type::Normal_attack, Element_type::Physical,
+    0, 50, 100, Status_effect_index::Speed_down, 75, 3,
+    bn::sprite_items::effect_sword, 4, bn::sound_items::sfx_battle_damage_taken),//
+
     // Multi hit
     Action("Triple Slash", Target_type::Multi_hit, Action_type::Normal_attack, Element_type::Physical,
     0, 80, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_sword, 2, bn::sound_items::sfx_battle_sword),
 
+    Action("Confusion", Target_type::Multi_hit, Action_type::Normal_attack, Element_type::Physical,
+    0, 75, 100, Status_effect_index::None, 0, 0,
+    bn::sprite_items::effect_sword, 4, bn::sound_items::sfx_battle_sword), //
+
     // Every enemy target
     Action("Area Heal I", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
     30, -100, 80, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),//
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),// sound
 
     // Entire target
+    Action("Explosion", Target_type::Entire_target, Action_type::Normal_attack, Element_type::Fire,
+    0, 500, 50, Status_effect_index::None, 0, 0,
+    bn::sprite_items::effect_sword, 4, bn::sound_items::sfx_battle_damage_taken),// sound
+
 };
 
 constexpr Action Magic_data[] = {
