@@ -35,6 +35,7 @@ public:
     short Get_multiplier();
     int Get_Max_level();
     int Get_Max_turn();
+    int Get_Total_turn();
     int Get_Enemy_codex(int index);
 
     /**

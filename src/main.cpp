@@ -17,16 +17,6 @@
 
 #include "common_variable_8x16_sprite_font.h"
 
-// for debug; from sym_merged <- delete at end
-#include <bn_fixed_point.h>
-#include <bn_format.h>
-#include <bn_keypad.h>
-#include <bn_music.h>
-#include <bn_sprite_ptr.h>
-#include <bn_string.h>
-#include <bn_vector.h>
-//
-
 using namespace Runa;
 
 int main()
@@ -56,48 +46,9 @@ int main()
      */
     int scene_change_wait = 0;
 
-// for debug; from sym_merged <- delete at end
-    constexpr int IWRAM_BYTES = 32'768, EWRAM_BYTES = 262'144;
-    int resourceUsageUpdateCountDown = 1;
-    bn::vector<bn::sprite_ptr, 24> resourceUsageSprites;
-    bool isDebugViewOn = false;
-//
-
     while(true)
     {
         if (scene) nextscene = scene->Update();
-
-// for debug; from sym_merged <- delete at end
-        if (bn::keypad::select_pressed())
-        {
-            isDebugViewOn = !isDebugViewOn;
-            if (!isDebugViewOn)
-            {
-                resourceUsageSprites.clear();
-            }
-        }
-        if (isDebugViewOn && --resourceUsageUpdateCountDown <= 0)
-        {
-            text_generator.set_left_alignment();
-            resourceUsageSprites.clear();
-            text_generator.generate({-120, -70}, bn::format<9>("CPU: {}%", (bn::core::last_cpu_usage() * 100).integer()),
-                              resourceUsageSprites);
-
-            const int iwramUsedPercent =
-                (bn::fixed(bn::memory::used_static_iwram() + bn::memory::used_stack_iwram()) / IWRAM_BYTES * 100)
-                    .integer();
-            const int ewramUsedPercent =
-                (bn::fixed(EWRAM_BYTES - bn::memory::available_alloc_ewram()) / EWRAM_BYTES * 100).integer();
-            const int iwramFree = IWRAM_BYTES - bn::memory::used_static_iwram() - bn::memory::used_stack_iwram();
-            const int ewramFree = bn::memory::available_alloc_ewram();
-
-            text_generator.generate({-120, -58}, bn::format<20>("IW: {}% {}", iwramUsedPercent, iwramFree),
-                              resourceUsageSprites);
-            text_generator.generate({-120, -46},
-                              bn::format<20>("EW: {}% {}", ewramUsedPercent, ewramFree), resourceUsageSprites);
-            resourceUsageUpdateCountDown = 5;
-        }
-//
 
         bn::core::update();
         random_generator.update();

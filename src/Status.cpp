@@ -170,6 +170,7 @@ short Status::Get_choco() { return chocolate; }
 short Status::Get_multiplier() { return choco_multiplier; }
 int Status::Get_Max_level() { return Max_level; }
 int Status::Get_Max_turn() { return Max_turn; }
+int Status::Get_Total_turn() { return total_turn; }
 int Status::Get_Enemy_codex(int index)
 {
     return Enemy_codex[index];

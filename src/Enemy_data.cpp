@@ -14,6 +14,8 @@
 
 #include "bn_sprite_items_enemy_bakery_chipcookie.h"
 #include "bn_sprite_items_enemy_bakery_checker.h"
+#include "bn_sprite_items_enemy_bakery_cracker.h"
+#include "bn_sprite_items_enemy_bakery_chococracker.h"
 #include "bn_sprite_items_enemy_bakery_chococake.h"
 #include "bn_sprite_items_enemy_bakery_chocomuffin.h"
 #include "bn_sprite_items_enemy_bakery_donut.h"
@@ -39,13 +41,14 @@ constexpr Enemy_data Enemy_base_data[] = {
     Enemy_data(bn::sprite_items::enemy_abc_w, "Choco White",    5, 7,   10, 14, 7, 6, Pattern_index::Charge_AreaHeal,   100, 160, 40, 100),
     Enemy_data(bn::sprite_items::enemy_abc_boss, "Choco BOSS", 120, 500, 150, 12, 12, 8, Pattern_index::Boss_1,         100, 120, 150, 100), // Actual 180 / 300, 18, 18, 10
     // 2nd stratum : bakery street
-    Enemy_data(bn::sprite_items::enemy_bakery_chipcookie,   "Chip cookie",      15, 20,   20, 11, 10, 8, Pattern_index::Throw,      200, 50, 120, 100),
-    Enemy_data(bn::sprite_items::enemy_bakery_checker,      "Checker cookie",   17, 22,   20, 10, 10, 8, Pattern_index::Confusion,  200, 50, 120, 100),
-    Enemy_data(bn::sprite_items::enemy_bakery_chococake,    "Choco Cake",       18, 23,   23, 11, 10, 8, Pattern_index::Quicksand,  80, 150, 150, 100),
-    Enemy_data(bn::sprite_items::enemy_bakery_chocomuffin,  "Choco Muffin",     17, 22,   25, 13, 10, 8, Pattern_index::Explosion,  80, 150, 150, 100),
-    Enemy_data(bn::sprite_items::enemy_bakery_donut,        "Donut",            15, 20,   20, 11, 10, 8, Pattern_index::Slash,      80, 150, 150, 100), //
-    Enemy_data(bn::sprite_items::enemy_bakery_donut,        "Cookie House",   150, 800,   200, 20, 15, 10, Pattern_index::Boss_2,   200, 50, 120, 100), // Actual 300 / 600, 40, 30, 16
-    // (choco) cookie house * boss?
+    Enemy_data(bn::sprite_items::enemy_bakery_chipcookie,   "Chip cookie",    15, 16,   20, 11, 10, 8, Pattern_index::Throw,            200, 50, 120, 100),
+    Enemy_data(bn::sprite_items::enemy_bakery_checker,      "Checker cookie", 17, 18,   20, 9, 10, 8, Pattern_index::Confusion,         200, 50, 120, 100),
+    Enemy_data(bn::sprite_items::enemy_bakery_cracker,      "Cracker",        30, 0,    17, 20, 10, 8, Pattern_index::Charge_Lightning, 200, 80, 120, 50),
+    Enemy_data(bn::sprite_items::enemy_bakery_chococracker, "Choco cracker",  8, 25,    17, 20, 10, 8, Pattern_index::Charge_Fire,      120, 50, 200, 80),
+    Enemy_data(bn::sprite_items::enemy_bakery_chococake,    "Choco Cake",     17, 18,   23, 11, 10, 8, Pattern_index::Quicksand,        80, 150, 150, 100),
+    Enemy_data(bn::sprite_items::enemy_bakery_chocomuffin,  "Choco Muffin",   17, 18,   25, 13, 10, 8, Pattern_index::Explosion,        80, 150, 150, 100),
+    Enemy_data(bn::sprite_items::enemy_bakery_donut,        "Donut",          18, 20,   20, 15, 10, 8, Pattern_index::Healer,           80, 150, 150, 100),
+    Enemy_data(bn::sprite_items::enemy_bakery_donut,        "Cookie House", 150, 800,   200, 20, 15, 10, Pattern_index::Boss_2,         200, 50, 120, 100), // Actual 300 / 600, 40, 30, 16
     // 3rd stratum : chess castle
 };
 

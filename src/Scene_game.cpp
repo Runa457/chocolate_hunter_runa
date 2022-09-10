@@ -10,6 +10,7 @@
 #include "bn_regular_bg_items_bg_interface.h"
 #include "bn_regular_bg_items_bg_stratum_1.h"
 #include "bn_regular_bg_items_bg_stratum_2.h"
+#include "bn_regular_bg_items_bg_stratum_3.h"
 #include "bn_sprite_items_portrait_default.h"
 
 namespace Runa::Scene
@@ -134,7 +135,9 @@ bn::optional<Scene_Type> Game::Update()
             _status.Game_over();
             _status.Value_changed();
             Print_text();
-            Effect::Print_text(_text_generator, false, Effect::Alignment::Center, 0, 0, 0, _status_text, 1, "Game over");
+            Effect::Print_text(_text_generator, false, Effect::Alignment::Center, 0, -24, 0, _status_text, 1, "Game over");
+            _text_generator.generate(0, 0, bn::format<12>("Score: {}", _status.Get_Total_turn()), _status_text);
+            _text_generator.generate(0, 12, bn::format<16>("Highscore: {}", _status.Get_Max_turn()), _status_text);
             _game_mode = Runa::Game::Game_Type::Result;
             break;
         default:
@@ -157,6 +160,9 @@ void Game::Print_text()
             break;
         case 2:
             _bg_stratum.set_item(bn::regular_bg_items::bg_stratum_2);
+            break;
+        case 3:
+            _bg_stratum.set_item(bn::regular_bg_items::bg_stratum_3);
             break;
         default:
             BN_ERROR("Background needed");

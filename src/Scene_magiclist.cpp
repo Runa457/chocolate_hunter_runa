@@ -188,6 +188,7 @@ void Magic_list::Print_magic_codex()
         _magic_graphic.set_visible(true);
         _magic_graphic.set_palette(_action->_action_effect.palette_item());
         _magic_effect = bn::create_sprite_animate_action_forever(_magic_graphic, _action->_frames, _action->_action_effect.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8);
+        _magic_effect.update();
 
         _text_generator.set_left_alignment();
         _text_generator.generate(TEXT_X + 16, TEXT_Y, _action->_name, _description_text);

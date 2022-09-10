@@ -394,6 +394,8 @@ void Battle::Turn_action()
     else if (!_enemies[index].Is_dead()) { attacker = &_enemies[index]._stats; }
     else { ++_action_order_index; return; }
 
+    if (_num_enemies == 0) { ++_action_order_index; return; }
+
     switch (attacker->Get_action_type()->_target)
     {
     case Action::Target_type::Self_target:

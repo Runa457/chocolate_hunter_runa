@@ -8,7 +8,7 @@ namespace Runa::Scene
 
 namespace
 {
-constexpr int MAX_PAGE = 15;
+constexpr int MAX_PAGE = 17;
 constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "Appears in Alphabetic Grassland.", // choco attacker
     "Has strong offensive power,",
@@ -66,6 +66,16 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "gives the impression of being",
     "attacked from all sides.",
 
+    "Baked from the Bakery Street.", // cracker
+    "Doesn't contain chocolate,",
+    "but gives more experience.",
+    "Uses lightning magic.",
+
+    "Baked from the Bakery Street.", // choco cracker
+    "Contains more chocolates,",
+    "but gives less experience.",
+    "Uses fire magic.",
+
     "Baked from the Bakery Street.", // choco cake
     "Attacks after slowing the",
     "opponent with sticky chocolate.",
@@ -77,8 +87,8 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "inflicting great damage.",
 
     "Baked from the Bakery Street.", // donut
-    "",
-    "",
+    "Recovers others at the expense",
+    "of its own stamina.",
     "",
 
     "The greatest masterpiece of", // cookie house * 2nd stratum boss

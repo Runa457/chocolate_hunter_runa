@@ -15,6 +15,7 @@ enum class Action_index : short
     // Self target
     Guard,
     Charge,
+    Super_Charge,
     Heal_I,
     Attack_Up,
     Defence_Up,
@@ -23,6 +24,9 @@ enum class Action_index : short
     Bash,
     Throw,
     Quicksand,
+    Fire_I,
+    Ice_I,
+    Lightning_I,
     // Multi hit
     Triple_Slash,
     Confusion,

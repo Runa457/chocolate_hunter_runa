@@ -8,22 +8,29 @@ namespace Runa::Game::Enemy
 
 enum class Pattern_index : short
 {
-    Guard,
-    Heal,
     Slash,
     Bash,
     Throw,
     TripleSlash,
-    AreaHeal,
 
     Guard_Slash,
     Confusion,
     Charge_Bash,
-    Charge_AreaHeal,
+    Charge_Fire,
+    Charge_Ice,
+    Charge_Lightning,
 
     Quicksand,
 
     Explosion,
+
+    Guard,
+    Heal,
+    AreaHeal,
+
+    Charge_AreaHeal,
+
+    Healer,
 
     Boss_1,
     Boss_2,
