@@ -14,8 +14,10 @@
 
 #include "bn_sprite_text_generator.h"
 #include "bn_random.h"
+#include "bn_regular_bg_actions.h"
 
 #include "common_variable_8x16_sprite_font.h"
+#include "bn_regular_bg_items_bg_main.h"
 
 using namespace Runa;
 
@@ -33,6 +35,9 @@ int main()
     Status status;
     bn::unique_ptr<Scene::Scene_Root> scene(new Scene::Logo(text_generator));
 
+    bn::optional<bn::regular_bg_ptr> bg_main;
+    bn::optional<bn::regular_bg_move_by_action> bg_main_action;
+
     /**
      * @brief Parameter for changing scene.
      * value is returned from scene->Update function.
@@ -48,6 +53,8 @@ int main()
 
     while(true)
     {
+        if (bg_main && bg_main_action) { bg_main_action->update(); }
+
         if (scene) nextscene = scene->Update();
 
         bn::core::update();
@@ -66,15 +73,27 @@ int main()
             switch (*nextscene)
             {
             case Scene::Scene_Type::Logo:
+                bg_main.reset();
+                bg_main_action.reset();
                 scene.reset(new Scene::Logo(text_generator));
                 break;
             case Scene::Scene_Type::Title:
+                if (!bg_main)
+                {
+                    bg_main = bn::regular_bg_items::bg_main.create_bg(0, 0);
+                    bg_main->set_blending_enabled(false);
+                    bg_main->set_visible(true);
+                    bg_main->set_priority(3);
+                    bg_main_action = bn::regular_bg_move_by_action(*bg_main, -0.5, 0.5);
+                }
                 scene.reset(new Scene::Title(text_generator));
                 break;
             case Scene::Scene_Type::Introduction:
                 scene.reset(new Scene::Introduction(text_generator));
                 break;
             case Scene::Scene_Type::Main_game:
+                bg_main.reset();
+                bg_main_action.reset();
                 scene.reset(new Scene::Game(text_generator, random_generator, status));
                 break;
             case Scene::Scene_Type::Options:

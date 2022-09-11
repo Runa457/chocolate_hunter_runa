@@ -49,9 +49,9 @@ enum Magic_index : short
     Ice_II,
     Heal_I,
 
+    Sword_Dance,
     Weaken, // Gravity I
     Soften, // Acid I
-    Sword_Dance,
 
     Fire_III,
     // Acid rain (damage + soften)

@@ -62,6 +62,11 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "quickly.",
     "",
 
+    "Dancing with a sword and", // Sword Dance
+    "attacking everyone in the battle.",
+    "Causes bleeding.",
+    "Cost no mana.",
+
     "Increase the weight of the", // Weaken
     "enemy and reduce offensive",
     "power.",
@@ -71,11 +76,6 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "to soften it, and lower",
     "enemy's defensive power.",
     "",
-
-    "Dancing with a sword and", // Sword Dance
-    "attacking everyone in the battle.",
-    "Causes bleeding.",
-    "Cost no mana.",
 
     "Will be changed", // Fire III
     "",

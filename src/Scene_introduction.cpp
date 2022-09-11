@@ -6,8 +6,9 @@ namespace Runa::Scene
 
 namespace
 {
-constexpr int MAX_PAGE = 9;
-constexpr bn::string_view INTRO_LIST[12 * MAX_PAGE] = {
+constexpr int MAX_PAGE = 14;
+constexpr int LINES_PER_PAGE = 9;
+constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
     " Hunt for chocolates!",
     "",
     "Chocolate hunter Runa is",
@@ -17,9 +18,6 @@ constexpr bn::string_view INTRO_LIST[12 * MAX_PAGE] = {
     "",
     "",
     "",
-    "",
-    "Press left or right key to",
-    "switch page, B to return",
 
     " In the camp (1):",
     "",
@@ -30,9 +28,6 @@ constexpr bn::string_view INTRO_LIST[12 * MAX_PAGE] = {
     "",
     "",
     "",
-    "",
-    "Press left or right key to",
-    "switch page, B to return",
 
     " In the camp (2):",
     "",
@@ -43,9 +38,6 @@ constexpr bn::string_view INTRO_LIST[12 * MAX_PAGE] = {
     "with potions.",
     "",
     "",
-    "",
-    "Press left or right key to",
-    "switch page, B to return",
 
     " In the camp (3):",
     "",
@@ -56,50 +48,58 @@ constexpr bn::string_view INTRO_LIST[12 * MAX_PAGE] = {
     "",
     "",
     "",
-    "",
-    "Press left or right key to",
-    "switch page, B to return",
 
-    " In the crossroad:",
+    " In the crossroad (1):",
     "",
     "After each battle, you can choose",
     "one of the three paths to proceed.",
-    "Each path contains",
-    "series of battles.",
-    "You can check the amount of",
-    "chocolate enemies have and",
-    "the number of enemies.",
+    "Each path contains series of",
+    "battles.",
     "",
-    "Press left or right key to",
-    "switch page, B to return",
+    "",
+    "",
+
+    " In the crossroad (2):",
+    "",
+    "You can check the total number",
+    "of battles (S), the number of",
+    "enemies (E), amount of chocolate",
+    "enemies have (C).",
+    "",
+    "",
+    "",
 
     " In the battlefield (1):",
     "",
     "She can fight with",
     "two types of attack.",
-    "Melee type costs nothing, but weak.",
-    "Magic type attack is powerful,",
-    "but it costs mana.",
+    "Melee type attack is physical",
+    "element attack.",
+    "It costs nothing, but weak.",
     "",
     "",
-    "",
-    "Press left or right key to",
-    "switch page, B to return",
 
     " In the battlefield (2):",
     "",
-    "At the end of the battle, chocolates",
-    "and experiences are gained.",
+    "She can use various magic to",
+    "strengthen herself or",
+    "attack the enemies.",
+    "Most magic consumes mana.",
+    "She learns one spell at each level.",
+    "",
+    "",
+
+    " In the battlefield (3):",
+    "",
+    "At the end of the battle,",
+    "chocolates and experiences",
+    "are gained.",
     "The multiplier of the chocolates",
     "to get will decrease after",
     "every battle sequence.",
     "",
-    "",
-    "",
-    "Press left or right key to",
-    "switch page, B to return",
 
-    " In the battlefield (3):",
+    " In the battlefield (4):",
     "",
     "When the boss of stratum is",
     "defeated, game will proceed",
@@ -108,22 +108,46 @@ constexpr bn::string_view INTRO_LIST[12 * MAX_PAGE] = {
     "",
     "",
     "",
-    "",
-    "Press left or right key to",
-    "switch page, B to return",
 
     " Game over:",
     "",
     "When health reaches zero or",
     "lifespan (turns) is over,",
     "the game ends.",
+    "You can view your current game's",
+    "score and your best record ever.",
+    "",
+    "",
+
+    " Elements:",
+    "",
+    "There are four types of elements:",
+    "physical, fire, ice and lightning.",
+    "All enemies have resistance or",
+    "weakness for each element.",
+    "Each attack has its element type.",
+    "",
+    "",
+
+    " Status effects:",
+    "",
+    "Some attacks have the chance to",
+    "cause status effects.",
+    "Types of status effects include",
+    "raising/lowering stats, charge,",
+    "guard, etc.",
+    "",
+    "",
+
+    " Codexes:",
+    "",
+    "From the options menu,",
+    "you can read the codexes for",
+    "the enemies encountered and",
+    "the spells learned.",
     "",
     "",
     "",
-    "",
-    "",
-    "Press left or right key to",
-    "switch page, B to return",
 };
 constexpr int INTRO_X = -110;
 constexpr int INTRO_Y = -64;
@@ -136,6 +160,12 @@ Introduction::Introduction(bn::sprite_text_generator& text_generator) :
     _scene_start(Effect::Type::Transparency, Effect::Direction::In, TRANSITION_FRAMES),
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES)
 {
+    Effect::Print_text(_text_generator, true, Effect::Alignment::Left, INTRO_X, INTRO_Y + INTRO_Y_INT * 10, INTRO_Y_INT,
+                       _sub_text, 2, "Press left or right key to", "switch page, B to return");
+    for (bn::sprite_ptr& text_sprite : _sub_text)
+    {
+        text_sprite.set_blending_enabled(true);
+    }
     Print_text();
     _scene_start.Start();
 }
@@ -194,9 +224,9 @@ void Introduction::Print_text()
 {
     _intro_text.clear();
     _text_generator.set_left_alignment();
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < LINES_PER_PAGE; i++)
     {
-        _text_generator.generate(INTRO_X, INTRO_Y + INTRO_Y_INT * i, INTRO_LIST[i + 12 * _current_page], _intro_text);
+        _text_generator.generate(INTRO_X, INTRO_Y + INTRO_Y_INT * i, INTRO_LIST[i + LINES_PER_PAGE * _current_page], _intro_text);
     }
     _page_text.clear();
     _text_generator.set_right_alignment();

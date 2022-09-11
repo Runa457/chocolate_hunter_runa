@@ -17,7 +17,8 @@ public:
 
 private:
     bn::sprite_text_generator& _text_generator;
-    bn::vector<bn::sprite_ptr, 80> _intro_text;
+    bn::vector<bn::sprite_ptr, 60> _intro_text;
+    bn::vector<bn::sprite_ptr, 20> _sub_text;
     bn::vector<bn::sprite_ptr, 5> _page_text;
 
     Effect::Transition _scene_start;

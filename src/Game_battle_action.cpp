@@ -138,6 +138,10 @@ constexpr Action Magic_data[] = {
     bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),//
 
 
+    Action("Sword Dance", Target_type::Entire_target, Action_type::Normal_attack, Element_type::Physical,
+    0, 100, 100, Status_effect_index::Bleeding, 60, 3,
+    bn::sprite_items::effect_sword, 2, bn::sound_items::sfx_battle_sword),
+
     Action("Weaken", Target_type::Single_target, Action_type::Magic_attack, Element_type::None,
     8, 0, 100, Status_effect_index::Attack_down, 100, 5,
     bn::sprite_items::effect_red_arrow_down, 2, bn::sound_items::sfx_battle_magic),//
@@ -145,10 +149,6 @@ constexpr Action Magic_data[] = {
     Action("Soften", Target_type::Single_target, Action_type::Magic_attack, Element_type::None,
     8, 0, 100, Status_effect_index::Defence_down, 100, 5,
     bn::sprite_items::effect_blue_arrow_down, 2, bn::sound_items::sfx_battle_magic),//
-
-    Action("Sword Dance", Target_type::Entire_target, Action_type::Normal_attack, Element_type::Physical,
-    0, 100, 100, Status_effect_index::Bleeding, 60, 3,
-    bn::sprite_items::effect_sword, 2, bn::sound_items::sfx_battle_sword),
 
 
     Action("Fire III", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::Fire,

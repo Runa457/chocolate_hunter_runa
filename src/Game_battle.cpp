@@ -391,7 +391,7 @@ void Battle::Turn_action()
         attacker = &_status._stats;
         if (_left_hit == 0) { _status.Mp_change(-attacker->Get_action_type()->_cost); }
     }
-    else if (!_enemies[index].Is_dead()) { attacker = &_enemies[index]._stats; }
+    else if (!_enemies[index].Is_dead() || _left_hit > 0) { attacker = &_enemies[index]._stats; }
     else { ++_action_order_index; return; }
 
     if (_num_enemies == 0) { ++_action_order_index; return; }

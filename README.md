@@ -23,12 +23,15 @@ Help her earn chocolate through battle.
 
   After each battle, you can choose one of the three paths to proceed.\
   Each path contains series of battles.\
-  You can check the amount of chocolate enemies have and the number of enemies.
+
+  You can check the total number of battles (S), the number of enemies (E), amount of chocolate enemies have (C).
 
 + #### In the battlefield
 
   She can fight with two types of attack.\
-  Melee type costs nothing, but weak.\
+  Melee type attack is physical element attack. It costs nothing, but weak.
+
+  She can use various magic to strengthen self or attack enemies.
   Magic type attack is powerful, but it costs mana. It can target single or multiple enemy.
 
   When battle is over, chocolates and experiences are gained.
@@ -38,4 +41,20 @@ Help her earn chocolate through battle.
 
 + #### Game over
 
-  If health goes to zero or lifespan (turns) is over, the game is over.
+  If health goes to zero or lifespan (turns) is over, the game is over.\
+  You can see your current game's score and your best record ever.
+
++ #### Elements
+
+  There are four types of elements: physical, fire, ice and lightning.\
+  All enemies have resistance or weakness for each element.\
+  Each attack has its element type.
+
++ #### Status effects
+
+  Some attacks have the chance to cause status effects.\
+  Types of status effects include raising/lowering stats, charge, guard, etc.
+
++ #### Codexes
+
+  From the options menu, you can read the codexes for the enemies encountered and the spells learned.
