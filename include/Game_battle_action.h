@@ -27,6 +27,8 @@ enum class Action_index : short
     Fire_I,
     Ice_I,
     Lightning_I,
+    Weaken,
+    Soften,
     // Multi hit
     Triple_Slash,
     Confusion,
@@ -53,8 +55,8 @@ enum Magic_index : short
     Weaken, // Gravity I
     Soften, // Acid I
 
+    Acid_Rain, // Acid II
     Fire_III,
-    // Acid rain (damage + soften)
     Fire_IV,
 
     END_OF_INDEX

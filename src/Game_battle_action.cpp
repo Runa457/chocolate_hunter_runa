@@ -74,6 +74,14 @@ constexpr Action Action_data[] = {
     5, 100, 150, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_lightning, 2, bn::sound_items::sfx_battle_magic),
 
+    Action("Weaken", Target_type::Single_target, Action_type::Magic_attack, Element_type::None,
+    8, 0, 100, Status_effect_index::Attack_down, 100, 5,
+    bn::sprite_items::effect_red_arrow_down, 2, bn::sound_items::sfx_battle_magic),//
+
+    Action("Soften", Target_type::Single_target, Action_type::Magic_attack, Element_type::None,
+    8, 0, 100, Status_effect_index::Defence_down, 100, 5,
+    bn::sprite_items::effect_blue_arrow_down, 2, bn::sound_items::sfx_battle_magic),//
+
     // Multi hit
     Action("Triple Slash", Target_type::Multi_hit, Action_type::Normal_attack, Element_type::Physical,
     0, 80, 100, Status_effect_index::None, 0, 0,
@@ -150,6 +158,10 @@ constexpr Action Magic_data[] = {
     8, 0, 100, Status_effect_index::Defence_down, 100, 5,
     bn::sprite_items::effect_blue_arrow_down, 2, bn::sound_items::sfx_battle_magic),//
 
+
+    Action("Acid Rain", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
+    15, 50, 100, Status_effect_index::Defence_down, 100, 5,
+    bn::sprite_items::effect_blue_arrow_down, 2, bn::sound_items::sfx_battle_magic),//
 
     Action("Fire III", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::Fire,
     20, 150, 100, Status_effect_index::None, 0, 0,

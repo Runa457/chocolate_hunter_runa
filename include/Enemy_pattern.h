@@ -14,15 +14,18 @@ enum class Pattern_index : short
     TripleSlash,
 
     Guard_Slash,
-    Confusion,
     Charge_Bash,
+    Charge_Confusion,
     Charge_Fire,
     Charge_Ice,
     Charge_Lightning,
 
     Quicksand,
+    FireIce,
 
     Explosion,
+
+    Confusion,
 
     Guard,
     Heal,

@@ -8,7 +8,7 @@ namespace Runa::Scene
 
 namespace
 {
-constexpr int MAX_PAGE = 17;
+constexpr int MAX_PAGE = 19;
 constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "Appears in Alphabetic Grassland.", // choco attacker
     "Has strong offensive power,",
@@ -81,6 +81,11 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "opponent with sticky chocolate.",
     "",
 
+    "Baked from the Bakery Street.", // red velvet
+    "Charges by consuming stamina",
+    "and attacks continuously with",
+    "fire and ice.",
+
     "Baked from the Bakery Street.", // choco muffin
     "Blocks and withstands attacks,",
     "then self-destructs,",
@@ -89,6 +94,11 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "Baked from the Bakery Street.", // donut
     "Recovers others at the expense",
     "of its own stamina.",
+    "",
+
+    "Baked from the Bakery Street.", // roll cake
+    "Attacks after weakening",
+    "the opponent by confusing.",
     "",
 
     "The greatest masterpiece of", // cookie house * 2nd stratum boss
@@ -162,6 +172,24 @@ bn::optional<Scene_Type> Enemy_list::Update()
         if (--_current_page < 0) { ++_current_page; }
         else
         {
+            bn::sound_items::sfx_menu_move.play();
+            Print_enemy_codex();
+        }
+    }
+    else if (bn::keypad::up_pressed())
+    {
+        if (_current_page > 0)
+        {
+            _current_page = bn::max(0, _current_page - 10);
+            bn::sound_items::sfx_menu_move.play();
+            Print_enemy_codex();
+        }
+    }
+    else if (bn::keypad::down_pressed())
+    {
+        if (_current_page < MAX_PAGE - 1)
+        {
+            _current_page = bn::min(MAX_PAGE - 1, _current_page + 10);
             bn::sound_items::sfx_menu_move.play();
             Print_enemy_codex();
         }

@@ -10,7 +10,7 @@ namespace Runa::Scene
 namespace
 {
 
-constexpr int MAX_PAGE = 15;
+constexpr int MAX_PAGE = 16;
 constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "Basic flame magic.", // Fire I
     "Concentrate thermal energy",
@@ -76,6 +76,11 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "to soften it, and lower",
     "enemy's defensive power.",
     "",
+
+    "Cast rain of acid on the", // Acid Rain
+    "enemies, causing great",
+    "damage and lowering their",
+    "defences.",
 
     "Will be changed", // Fire III
     "",
@@ -162,6 +167,24 @@ bn::optional<Scene_Type> Magic_list::Update()
             Print_magic_codex();
         }
     }
+    else if (bn::keypad::up_pressed())
+    {
+        if (_current_page > 0)
+        {
+            _current_page = bn::max(0, _current_page - 10);
+            bn::sound_items::sfx_menu_move.play();
+            Print_magic_codex();
+        }
+    }
+    else if (bn::keypad::down_pressed())
+    {
+        if (_current_page < MAX_PAGE - 1)
+        {
+            _current_page = bn::min(MAX_PAGE - 1, _current_page + 10);
+            bn::sound_items::sfx_menu_move.play();
+            Print_magic_codex();
+        }
+    }
     else if (bn::keypad::b_pressed())
     {
         bn::sound_items::sfx_menu_cancelled.play();
@@ -207,7 +230,7 @@ void Magic_list::Print_magic_codex()
     }
     _page_text.clear();
     _text_generator.set_right_alignment();
-    _text_generator.generate(112, TEXT_Y + TEXT_Y_INT * 11, bn::format<14>("< {} / {} >", _current_page+1, MAX_PAGE), _page_text);
+    _text_generator.generate(103, TEXT_Y + TEXT_Y_INT * 11, bn::format<15>("{} level spell", _current_page), _page_text);
 
     for (bn::sprite_ptr& text_sprite : _description_text) { text_sprite.set_blending_enabled(true); }
     for (bn::sprite_ptr& text_sprite : _page_text) { text_sprite.set_blending_enabled(true); }

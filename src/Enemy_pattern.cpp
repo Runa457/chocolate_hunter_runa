@@ -13,7 +13,7 @@ constexpr Action::Action_index GuardSlash[] = {
     Action::Action_index::Guard,
     Action::Action_index::Slash
 };
-constexpr Action::Action_index GuardConfusion[] = {
+constexpr Action::Action_index ChargeConfusion[] = {
     Action::Action_index::Charge,
     Action::Action_index::Confusion
 };
@@ -39,6 +39,11 @@ constexpr Action::Action_index Quicksand[] = {
     Action::Action_index::Throw,
     Action::Action_index::Throw
 };
+constexpr Action::Action_index FireIce[] = {
+    Action::Action_index::Super_Charge,
+    Action::Action_index::Fire_I,
+    Action::Action_index::Ice_I
+};
 
 constexpr Action::Action_index Explosion[] = {
     Action::Action_index::Guard,
@@ -46,6 +51,13 @@ constexpr Action::Action_index Explosion[] = {
     Action::Action_index::Guard,
     Action::Action_index::Guard,
     Action::Action_index::Explosion
+};
+
+//weaken
+constexpr Action::Action_index Confusion[] = {
+    Action::Action_index::Weaken,
+    Action::Action_index::Soften,
+    Action::Action_index::Confusion
 };
 
 //self, support
@@ -87,15 +99,18 @@ constexpr Enemy_pattern Enemy_pattern_data[] = {
     Enemy_pattern(1, OnlyTripleSlash), // TripleSlash
 
     Enemy_pattern(2, GuardSlash), // Guard_Slash
-    Enemy_pattern(2, GuardConfusion), // Confusion
     Enemy_pattern(2, ChargeBash), // Charge_Bash
+    Enemy_pattern(2, ChargeConfusion), // Charge_Confusion
     Enemy_pattern(2, ChargeFire), // Charge_Fire
     Enemy_pattern(2, ChargeIce), // Charge_Ice
     Enemy_pattern(2, ChargeLightning), // Charge_Lightning
 
     Enemy_pattern(3, Quicksand), // Quicksand
+    Enemy_pattern(3, FireIce), // FireIce
 
     Enemy_pattern(5, Explosion), // Explosion
+
+    Enemy_pattern(3, Confusion), // Confusion
 
     Enemy_pattern(1, OnlyGuard), // Guard
     Enemy_pattern(1, OnlyHeal), // Heal

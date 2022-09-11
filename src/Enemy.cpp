@@ -21,8 +21,8 @@ void Enemy::Init()
     // atk, def = 5% increase per level
     int atk = _base_data.base_atk * (100 + _level * 5) / 100;
     int def = _base_data.base_def * (100 + _level * 5) / 100;
-    // int = 50% of atk
-    int inteligence = atk / 2;
+    // int = 75% of atk
+    int inteligence = atk * 3 / 4;
     // spd = 3% increase per level
     int spd = _base_data.base_spd * (100 + _level * 3) / 100;
 
