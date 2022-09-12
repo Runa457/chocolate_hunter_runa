@@ -18,23 +18,32 @@ enum class Action_index : short
     Super_Charge,
     Heal_I,
     Attack_Up,
-    Defence_Up,
+    Defense_Up,
+    Barrier,
     // Single target
     Slash,
     Bash,
     Throw,
-    Quicksand,
+    Quicksand, // Earth I
     Fire_I,
     Ice_I,
+    Ice_II,
+    Ice_III,
     Lightning_I,
-    Weaken,
-    Soften,
+    Weaken, // Gravity I
+    Soften, // Acid I
     // Multi hit
     Triple_Slash,
     Confusion,
+    Fire_II,
+    Fire_III,
+    Sandstorm, // Earth II
     // Every enemy target
     Area_Heal_I,
+    Lightning_II,
+    Acid_Rain, // Acid II
     // Entire target
+    Sword_Dance,
     Explosion,
 };
 enum Magic_index : short
@@ -52,12 +61,15 @@ enum Magic_index : short
     Heal_I,
 
     Sword_Dance,
-    Weaken, // Gravity I
-    Soften, // Acid I
+    Weaken,
+    Soften,
+    Lightning_II,
+    Sandstorm,
 
-    Acid_Rain, // Acid II
+    Acid_Rain,
     Fire_III,
-    Fire_IV,
+    Ice_III,
+    // Regeneration
 
     END_OF_INDEX
 };

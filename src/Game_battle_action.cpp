@@ -41,9 +41,13 @@ constexpr Action Action_data[] = {
     7, 0, 100, Status_effect_index::Attack_up, 100, 5,
     bn::sprite_items::effect_red_arrow_up, 2, bn::sound_items::sfx_battle_magic),// sound
 
-    Action("Defence Up", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
+    Action("Defense Up", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     7, 0, 100, Status_effect_index::Defence_up, 100, 5,
     bn::sprite_items::effect_blue_arrow_up, 2, bn::sound_items::sfx_battle_magic),// sound
+
+    Action("Barrier", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
+    10, 0, 100, Status_effect_index::Guard, 100, 5,
+    bn::sprite_items::effect_guard, 2, bn::sound_items::sfx_battle_magic),//
 
     // Single target
     Action("Slash", Target_type::Single_target, Action_type::Normal_attack, Element_type::Physical,
@@ -70,6 +74,14 @@ constexpr Action Action_data[] = {
     5, 100, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_ice, 2, bn::sound_items::sfx_battle_magic),//
 
+    Action("Ice II", Target_type::Single_target, Action_type::Magic_attack, Element_type::Ice,
+    10, 200, 100, Status_effect_index::None, 0, 0,
+    bn::sprite_items::effect_ice, 2, bn::sound_items::sfx_battle_magic),//
+
+    Action("Ice III", Target_type::Single_target, Action_type::Magic_attack, Element_type::Ice,
+    15, 300, 100, Status_effect_index::Defence_down, 80, 5,
+    bn::sprite_items::effect_ice, 2, bn::sound_items::sfx_battle_magic),//
+
     Action("Lightning I", Target_type::Single_target, Action_type::Magic_attack, Element_type::Lightning,
     5, 100, 150, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_lightning, 2, bn::sound_items::sfx_battle_magic),
@@ -91,85 +103,65 @@ constexpr Action Action_data[] = {
     0, 80, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_bash, 2, bn::sound_items::sfx_battle_damage_taken),
 
+    Action("Fire II", Target_type::Multi_hit, Action_type::Magic_attack, Element_type::Fire,
+    15, 100, 100, Status_effect_index::None, 0, 0,
+    bn::sprite_items::effect_fire, 2, bn::sound_items::sfx_battle_magic),
+
+    Action("Fire III", Target_type::Multi_hit, Action_type::Magic_attack, Element_type::Fire,
+    20, 150, 100, Status_effect_index::Attack_down, 50, 3,
+    bn::sprite_items::effect_fire, 2, bn::sound_items::sfx_battle_magic),
+
+    Action("Sandstorm", Target_type::Multi_hit, Action_type::Magic_attack, Element_type::Physical,
+    15, 100, 100, Status_effect_index::Speed_down, 50, 3,
+    bn::sprite_items::effect_quicksand, 2, bn::sound_items::sfx_battle_magic),
+
     // Every enemy target
     Action("Area Heal I", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
     30, -100, 80, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),// sound
 
-    // Entire target
-    Action("Explosion", Target_type::Entire_target, Action_type::Normal_attack, Element_type::Fire,
-    0, 500, 50, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_fire, 4, bn::sound_items::sfx_battle_damage_taken),//
-
-};
-
-constexpr Action Magic_data[] = {
-    Action("Fire I", Target_type::Single_target, Action_type::Magic_attack, Element_type::Fire,
-    5, 100, 100, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_fire, 2, bn::sound_items::sfx_battle_magic),
-
-    Action("Ice I", Target_type::Single_target, Action_type::Magic_attack, Element_type::Ice,
-    5, 100, 100, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_ice, 2, bn::sound_items::sfx_battle_magic),//
-
-    Action("Lightning I", Target_type::Single_target, Action_type::Magic_attack, Element_type::Lightning,
-    5, 100, 150, Status_effect_index::None, 0, 0,
+    Action("Lightning II", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::Lightning,
+    12, 100, 200, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_lightning, 2, bn::sound_items::sfx_battle_magic),
-
-    Action("Defense Up", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
-    7, 0, 100, Status_effect_index::Defence_up, 100, 5,
-    bn::sprite_items::effect_blue_arrow_up, 2, bn::sound_items::sfx_battle_magic),//
-
-    Action("Attack Up", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
-    7, 0, 100, Status_effect_index::Attack_up, 100, 5,
-    bn::sprite_items::effect_red_arrow_up, 2, bn::sound_items::sfx_battle_magic),//
-
-
-    Action("Barrier", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
-    10, 0, 100, Status_effect_index::Guard, 100, 5,
-    bn::sprite_items::effect_guard, 2, bn::sound_items::sfx_battle_magic),//
-
-    Action("Charge", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
-    10, 0, 150, Status_effect_index::Charge, 100, 2,
-    bn::sprite_items::effect_charge, 2, bn::sound_items::sfx_battle_magic),
-
-    Action("Fire II", Target_type::Multi_hit, Action_type::Magic_attack, Element_type::Fire,
-    15, 100, 100, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_fire, 2, bn::sound_items::sfx_battle_magic),
-
-    Action("Ice II", Target_type::Single_target, Action_type::Magic_attack, Element_type::Ice,
-    10, 200, 100, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_ice, 2, bn::sound_items::sfx_battle_magic),//
-
-    Action("Heal I", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
-    15, -100, 100, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),//
-
-
-    Action("Sword Dance", Target_type::Entire_target, Action_type::Normal_attack, Element_type::Physical,
-    0, 100, 100, Status_effect_index::Bleeding, 60, 3,
-    bn::sprite_items::effect_sword, 2, bn::sound_items::sfx_battle_sword),
-
-    Action("Weaken", Target_type::Single_target, Action_type::Magic_attack, Element_type::None,
-    8, 0, 100, Status_effect_index::Attack_down, 100, 5,
-    bn::sprite_items::effect_red_arrow_down, 2, bn::sound_items::sfx_battle_magic),//
-
-    Action("Soften", Target_type::Single_target, Action_type::Magic_attack, Element_type::None,
-    8, 0, 100, Status_effect_index::Defence_down, 100, 5,
-    bn::sprite_items::effect_blue_arrow_down, 2, bn::sound_items::sfx_battle_magic),//
-
 
     Action("Acid Rain", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
     15, 50, 100, Status_effect_index::Defence_down, 100, 5,
     bn::sprite_items::effect_blue_arrow_down, 2, bn::sound_items::sfx_battle_magic),//
 
-    Action("Fire III", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::Fire,
-    20, 150, 100, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_fire, 2, bn::sound_items::sfx_battle_magic),
+    // Entire target    
+    Action("Sword Dance", Target_type::Entire_target, Action_type::Normal_attack, Element_type::Physical,
+    0, 100, 100, Status_effect_index::Bleeding, 60, 3,
+    bn::sprite_items::effect_sword, 2, bn::sound_items::sfx_battle_sword),
 
-    Action("Fire IV", Target_type::Entire_target, Action_type::Magic_attack, Element_type::Fire,
-    15, 200, 100, Status_effect_index::Attack_down, 10, 3,
-    bn::sprite_items::effect_fire, 2, bn::sound_items::sfx_battle_magic),
+    Action("Explosion", Target_type::Entire_target, Action_type::Normal_attack, Element_type::Fire,
+    0, 500, 50, Status_effect_index::None, 0, 0,
+    bn::sprite_items::effect_fire, 4, bn::sound_items::sfx_battle_damage_taken),//
+
+};
+constexpr Action Get_action_data_I(Action_index index) { return Action_data[(int)index]; }
+
+constexpr Action Magic_data[] = {
+    Get_action_data_I(Action_index::Fire_I),
+    Get_action_data_I(Action_index::Ice_I),
+    Get_action_data_I(Action_index::Lightning_I),
+    Get_action_data_I(Action_index::Defense_Up),
+    Get_action_data_I(Action_index::Attack_Up),
+
+    Get_action_data_I(Action_index::Barrier),
+    Get_action_data_I(Action_index::Charge),
+    Get_action_data_I(Action_index::Fire_II),
+    Get_action_data_I(Action_index::Ice_II),
+    Get_action_data_I(Action_index::Heal_I),
+
+    Get_action_data_I(Action_index::Sword_Dance),
+    Get_action_data_I(Action_index::Weaken),
+    Get_action_data_I(Action_index::Soften),
+    Get_action_data_I(Action_index::Lightning_II),
+    Get_action_data_I(Action_index::Sandstorm),
+
+    Get_action_data_I(Action_index::Acid_Rain),
+    Get_action_data_I(Action_index::Fire_III),
+    Get_action_data_I(Action_index::Ice_III),
 
 };
 

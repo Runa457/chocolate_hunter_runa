@@ -79,14 +79,14 @@ constexpr Action::Action_index Healer[] = {
 //boss
 constexpr Action::Action_index Boss_1[] = {
     Action::Action_index::Guard,
-    Action::Action_index::Defence_Up,
+    Action::Action_index::Defense_Up,
     Action::Action_index::Bash,
     Action::Action_index::Charge,
     Action::Action_index::Bash,
 };
 constexpr Action::Action_index Boss_2[] = {
     Action::Action_index::Guard,
-    Action::Action_index::Defence_Up,
+    Action::Action_index::Defense_Up,
     Action::Action_index::Bash,
     Action::Action_index::Charge,
     Action::Action_index::Bash,

@@ -11,7 +11,7 @@ constexpr int MULTIPLIER_DEFAULT = 200;
 
 struct Game_data
 {
-    constexpr static const char* SAVE_CHECK = "RUNA_0902";
+    constexpr static const char* SAVE_CHECK = "RUNA_0912";
 
     char CHECK[10] = {};
     short level = 0;
@@ -42,7 +42,7 @@ struct Game_data
 
 struct Global_data
 {
-    constexpr static const char* SAVE_CHECK = "RUNA_0902";
+    constexpr static const char* SAVE_CHECK = "RUNA_0912";
 
     char CHECK[10] = {};
     int Max_level = 0;
@@ -66,10 +66,19 @@ struct Global_data
 Status::Status()
 {
     Global_data _global_data;
-    _global_data.Read();
-    Max_level = _global_data.Max_level;
-    Max_turn = _global_data.Max_turn;
-    for (int i = 0; i < NUM_ENEMY; i++) { Enemy_codex[i] = _global_data.Enemy_codex[i]; }
+    if (_global_data.Read())
+    {
+        Max_level = _global_data.Max_level;
+        Max_turn = _global_data.Max_turn;
+        for (int i = 0; i < NUM_ENEMY; i++) { Enemy_codex[i] = _global_data.Enemy_codex[i]; }
+    }
+    else
+    {
+        Max_level = 0;
+        Max_turn = 0;
+        for (int i = 0; i < NUM_ENEMY; i++) { Enemy_codex[i] = 0; }
+    }
+    WriteGlobal();
 
     if (!Read())
     {
@@ -207,6 +216,7 @@ void Status::Exp_earn(int increment)
         ++Level;
         _stats_update();
     }
+    Max_level = (Level > Max_level) ? Level : Max_level;
 }
 void Status::Choco_earn(int increment)
 {

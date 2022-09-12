@@ -21,7 +21,7 @@ enum Status_effect_index : int
     Guard = 128,      // 0.5x damage taken
     Bleeding = 256,   // 1.5x damage taken
     Poison = 512,
-    // Regeneration
+    // Regeneration = 1024
     // Paralyzed
 };
 

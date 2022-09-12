@@ -104,7 +104,7 @@ private:
 
     int Max_level;
     int Max_turn;
-    int Enemy_codex[NUM_ENEMY];
+    int Enemy_codex[NUM_ENEMY] = {0};
 
     /**
      * @brief For interface update.

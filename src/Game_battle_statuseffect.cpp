@@ -30,6 +30,11 @@ void Status_effect::Set_status_effect(Status_effect_index next_status, int turns
         if (_inner_index[i] == next_status)
         {
             _duration[i] += turns;
+            if (_duration[i] <= 0)
+            {
+                _inner_index[i] = Status_effect_index::None;
+                _duration[i] = 0;
+            }
             return;
         }
     }

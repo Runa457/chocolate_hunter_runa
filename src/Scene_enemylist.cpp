@@ -206,7 +206,8 @@ bn::optional<Scene_Type> Enemy_list::Update()
 void Enemy_list::Print_enemy_codex()
 {
     _description_text.clear();
-    if (_status.Get_Enemy_codex(_current_page+1) <= 0)
+    if (_status.Get_Enemy_codex(_current_page+1) < 0) { BN_ERROR("Invalid enemy defeat count"); }
+    else if (_status.Get_Enemy_codex(_current_page+1) == 0)
     {
         Effect::Print_text(_text_generator, true, Effect::Alignment::Left,
                            TEXT_X, TEXT_Y + TEXT_Y_INT * 7, TEXT_Y_INT, _description_text,

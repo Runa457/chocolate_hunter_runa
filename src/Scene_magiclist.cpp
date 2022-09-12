@@ -10,7 +10,7 @@ namespace Runa::Scene
 namespace
 {
 
-constexpr int MAX_PAGE = 16;
+constexpr int MAX_PAGE = 18;
 constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "Basic flame magic.", // Fire I
     "Concentrate thermal energy",
@@ -37,6 +37,7 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "of attacks.",
     "",
 
+
     "Create magical shield to defend", // Barrier
     "from enemy attacks for a while.",
     "It has same effect as the",
@@ -62,6 +63,7 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "quickly.",
     "",
 
+
     "Dancing with a sword and", // Sword Dance
     "attacking everyone in the battle.",
     "Causes bleeding.",
@@ -77,20 +79,31 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "enemy's defensive power.",
     "",
 
+    "Powerful electric magic.", // Lightning II
+    "Disturb the electromagnetic",
+    "field to shock all enemies.",
+    "",
+
+    "Summon sandstorms and trap", // Sandstorm
+    "enemies in them, slowing them",
+    "down and damaging them.",
+    "",
+
+
     "Cast rain of acid on the", // Acid Rain
     "enemies, causing great",
     "damage and lowering their",
     "defences.",
 
-    "Will be changed", // Fire III
-    "",
-    "",
-    "",
+    "Attack with overwhelming", // Fire III
+    "flame power.",
+    "Decreases the enemy's morale,",
+    "lowering their attack power.",
 
-    "Will be changed", // Fire IV
-    "",
-    "",
-    "",
+    "Freeze the enemy to the bone", // Ice III
+    "with extreme cold.",
+    "Frozen enemies lose their",
+    "defenses.",
 };
 
 constexpr int TEXT_X = -102;

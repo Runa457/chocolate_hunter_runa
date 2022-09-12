@@ -22,7 +22,7 @@ Help her earn chocolate through battle.
 + #### In the crossroad
 
   After each battle, you can choose one of the three paths to proceed.\
-  Each path contains series of battles.\
+  Each path contains series of battles.
 
   You can check the total number of battles (S), the number of enemies (E), amount of chocolate enemies have (C).
 
