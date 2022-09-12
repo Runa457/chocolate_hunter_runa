@@ -70,16 +70,28 @@ private:
      */
     void Action_execute(int attacker_idx, int defender_idx);
     /**
+     * @brief Handles actor taking damage. Calls Attack_effect and Damage_effect.
+     * @param The actor who is taking damage.
+     * @param Damage
+     * @param Pointer of action type.
+     */
+    void Taking_damage(int actor_index, int damage, const Action::Action* action);
+    /**
      * @brief Handles attack effects.
      * @param x coordinate of defender.
      * @param y coordinate of defender.
-     * @param damage
-     * @param Action
+     * @param Pointer of action type.
      */
-    void Attack_effect(int x, int y, int damage,
-                       const Action::Action* action);
+    void Attack_effect(int x, int y, const Action::Action* action);
+    /**
+     * @brief Handles damage text generate.
+     * @param x coordinate of defender.
+     * @param y coordinate of defender.
+     * @param Damage
+     */
+    void Damage_effect(int x, int y, int damage);
+    void End_turn_action(int actor_idx);
     bool Effect_action();
-    void Camera_action();
     /**
      * @brief Handles enemy dead effect and move target index to next.
      * @param index
@@ -103,7 +115,7 @@ private:
 
     State _state;
     short _action_order_index = 0;
-    bn::vector<bn::pair<int, short>, 4> _action_order;
+    bn::vector<bn::pair<int, short>, 5> _action_order;
 
     bn::sprite_text_generator& _text_generator;
     bn::vector<bn::sprite_ptr, 30> _battle_text;

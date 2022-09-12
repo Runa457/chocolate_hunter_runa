@@ -11,17 +11,17 @@ constexpr int MAX_STATUS_NUMBER = 5;
 enum Status_effect_index : int
 {
     None = 0,
-    Attack_up = 1,    // 1.3x atk
-    Attack_down = 2,  // 0.7x atk
-    Defence_up = 4,   // 1.3x def
-    Defence_down = 8, // 0.7x def
-    Speed_up = 16,    // 1.3x spd
-    Speed_down = 32,  // 0.7x spd
-    Charge = 64,      // 2.0x damage given
-    Guard = 128,      // 0.5x damage taken
-    Bleeding = 256,   // 1.5x damage taken
-    Poison = 512,
-    // Regeneration = 1024
+    Attack_up = 1,     // 1.3x atk
+    Attack_down = 2,   // 0.7x atk
+    Defence_up = 4,    // 1.3x def
+    Defence_down = 8,  // 0.7x def
+    Speed_up = 16,     // 1.3x spd
+    Speed_down = 32,   // 0.7x spd
+    Charge = 64,       // 2.0x damage given
+    Guard = 128,       // 0.5x damage taken
+    Bleeding = 256,    // 1.5x damage taken
+    Poison = 512,      // ATK based self attack
+    Regenerate = 1024, // DEF based self attack
     // Paralyzed
 };
 

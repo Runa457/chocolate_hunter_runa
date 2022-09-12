@@ -10,14 +10,20 @@ namespace Runa::Game
 
 /**
  * @brief Handles attack damage calculation, pre/post processing.
- * @param Player data.
- * @param Attck type.
- * @param nullopt if attacker is player
- * @param nullopt if defender is player
- * @return Damage for effects
+ * @param Attacker actor data.
+ * @param Defender actor data.
+ * @param Random function for status chance.
+ * @return Damage from action.
  */
 int attack_function(ActorStats* attacker, ActorStats* defender,
                     bn::random& random);
+
+/**
+ * @brief Handles status effects damage or healing at end of turn.
+ * @param Actor data.
+ * @return Damage from status effects.
+ */
+int end_of_turn(ActorStats* actor);
 
 } // namespace Runa::Game
 

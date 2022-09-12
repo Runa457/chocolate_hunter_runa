@@ -55,6 +55,22 @@ int attack_function(ActorStats* attacker, ActorStats* defender,
     return damage;
 }
 
+int end_of_turn(ActorStats* actor)
+{
+    int atk_pow = actor->Get_atk();
+    int def_pow = actor->Get_def();
+    double damage = 0;
 
+    Status_effect_index status = actor->Get_status_effect();
+    if ((status & Status_effect_index::Poison) != 0)
+    {
+        damage += Damage_calculator(atk_pow, 0, atk_pow, 0);
+    }
+    if ((status & Status_effect_index::Regenerate) != 0)
+    {
+        damage -= Damage_calculator(def_pow, 0, def_pow, 0);
+    }
+    return damage;
+}
 
 } // namespace Runa::Game

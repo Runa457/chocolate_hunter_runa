@@ -20,6 +20,15 @@ namespace Runa::Game::Action
 {
 
 constexpr Action Action_data[] = {
+    // None target
+    Action("Poisoned", Target_type::None, Action_type::None, Element_type::None,
+    0, 0, 0, Status_effect_index::None, 0, 0,
+    bn::sprite_items::effect_heal, 4, bn::sound_items::sfx_battle_damage_taken),//
+
+    Action("Regenerate", Target_type::None, Action_type::None, Element_type::None,
+    0, 0, 0, Status_effect_index::None, 0, 0,
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_sword),// sound
+
     // Self target
     Action("Guard", Target_type::Self_target, Action_type::Normal_attack, Element_type::None,
     0, 0, 500, Status_effect_index::Guard, 100, 1,
@@ -48,6 +57,14 @@ constexpr Action Action_data[] = {
     Action("Barrier", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     10, 0, 100, Status_effect_index::Guard, 100, 5,
     bn::sprite_items::effect_guard, 2, bn::sound_items::sfx_battle_magic),//
+
+    Action("Regenerate", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
+    15, 0, 100, Status_effect_index::Regenerate, 100, 5,
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),//
+
+    Action("Cure", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
+    5, -30, 100, Status_effect_index::Poison, 100, -99,
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),//
 
     // Single target
     Action("Slash", Target_type::Single_target, Action_type::Normal_attack, Element_type::Physical,
@@ -138,6 +155,7 @@ constexpr Action Action_data[] = {
     bn::sprite_items::effect_fire, 4, bn::sound_items::sfx_battle_damage_taken),//
 
 };
+
 constexpr Action Get_action_data_I(Action_index index) { return Action_data[(int)index]; }
 
 constexpr Action Magic_data[] = {
@@ -162,6 +180,8 @@ constexpr Action Magic_data[] = {
     Get_action_data_I(Action_index::Acid_Rain),
     Get_action_data_I(Action_index::Fire_III),
     Get_action_data_I(Action_index::Ice_III),
+    Get_action_data_I(Action_index::Regenerate),
+    Get_action_data_I(Action_index::Cure),
 
 };
 

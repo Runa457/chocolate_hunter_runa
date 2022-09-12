@@ -105,7 +105,7 @@ bn::optional<Scene_Type> Game::Update()
         case Runa::Game::Game_Type::Battle:
             _subscene.reset(new Runa::Game::Battle(_text_generator, _random, _status, _player_sprite, _battle_sq));
             break;
-        case Runa::Game::Game_Type::Result: //unused
+        case Runa::Game::Game_Type::Result:
             if (bn::keypad::a_pressed())
             {
                 _status.Read();

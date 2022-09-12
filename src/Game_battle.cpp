@@ -82,35 +82,29 @@ bn::optional<Game_Type> Battle::Update()
         _magic_attack_icon.set_visible(true);
 
         _state = Action_select();
-        if (_state == State::Target_select)
+        switch (_state)
         {
+        case State::Target_select:
             Print_enemy_information();
-            _sword_attack_icon.set_visible(false);
-            _shield_icon.set_visible(false);
-            _magic_attack_icon.set_visible(false);
             _status._stats.Set_action_type(&Action::Get_action_data(Action::Action_index::Slash));
-        }
-        if (_state == State::Magic_select)
-        {
-            _status._stats.Set_action_type(&Action::Get_magic_data(static_cast<Action::Magic_index>(_magic_index)));
+            break;
+        case State::Magic_select:
             Print_magic_information();
-            _sword_attack_icon.set_visible(false);
-            _shield_icon.set_visible(false);
-            _cursor.set_visible(false);
-        }
-        if (_state == State::Confirm)
-        {
-            _sword_attack_icon.set_visible(false);
-            _shield_icon.set_visible(false);
-            _magic_attack_icon.set_visible(false);
-            _cursor.set_visible(false);
+            break;
+        case State::Confirm:
             Effect::Print_text(_text_generator, true, Effect::Alignment::Center,
                                0, 15, 10, _battle_text,
                                2, "Confirm?", "A: YES B: NO");
             _status._stats.Set_action_type(&Action::Get_action_data(Action::Action_index::Guard));
+            break;
+        default: break;
         }
         break;
     case State::Magic_select:
+        _sword_attack_icon.set_visible(false);
+        _shield_icon.set_visible(false);
+        _cursor.set_visible(false);
+
         _state = Magic_select();
         switch (_state)
         {
@@ -119,10 +113,8 @@ bn::optional<Game_Type> Battle::Update()
             break;
         case State::Target_select:
             Print_enemy_information();
-            _magic_attack_icon.set_visible(false);
             break;
         case State::Confirm:
-            _magic_attack_icon.set_visible(false);
             Effect::Print_text(_text_generator, true, Effect::Alignment::Center,
                                0, 15, 10, _battle_text,
                                2, "Confirm?", "A: YES B: NO");
@@ -131,6 +123,10 @@ bn::optional<Game_Type> Battle::Update()
         }
         break;
     case State::Target_select:
+        _sword_attack_icon.set_visible(false);
+        _shield_icon.set_visible(false);
+        _magic_attack_icon.set_visible(false);
+
         _cursor.set_item(bn::sprite_items::select_cursor_down);
         _cursor.set_visible(true);
 
@@ -141,7 +137,6 @@ bn::optional<Game_Type> Battle::Update()
             _battle_text.clear();
             break;
         case State::Confirm:
-            _cursor.set_visible(false);
             Effect::Print_text(_text_generator, true, Effect::Alignment::Center,
                                0, 15, 10, _battle_text,
                                2, "Confirm?", "A: YES B: NO");
@@ -150,6 +145,11 @@ bn::optional<Game_Type> Battle::Update()
         }
         break;
     case State::Confirm:
+        _sword_attack_icon.set_visible(false);
+        _shield_icon.set_visible(false);
+        _magic_attack_icon.set_visible(false);
+        _cursor.set_visible(false);
+
         _state = Confirm();
         switch (_state)
         {
@@ -175,7 +175,7 @@ bn::optional<Game_Type> Battle::Update()
             _damage_text_cooltime = 10;
             _enemy_dead_cooltime = 10;
 
-            if (_action_order_index >= _enemies.size() + 1)
+            if (_action_order_index >= _enemies.size() + 2)
             {
                 _action_order_index = 0;
                 _state = State::End_turn;
@@ -262,6 +262,8 @@ Battle::State Battle::Magic_select()
 {
     if (bn::keypad::a_pressed())
     {
+        _status._stats.Set_action_type(&Action::Get_magic_data(_magic_index));
+
         if (_status.Get_mp() < _status._stats.Get_action_type()->_cost)
         {
             bn::sound_items::sfx_menu_denied.play();
@@ -279,24 +281,39 @@ Battle::State Battle::Magic_select()
         bn::sound_items::sfx_menu_cancelled.play();
         return State::Action_select;
     }
+    int maxindex = bn::min(_status.Get_level(), (short)(Action::Magic_index::END_OF_INDEX-1));
     if (bn::keypad::left_pressed())
     {
-        if (_magic_index != 0)
+        if (_magic_index > 0)
         {
             --_magic_index;
-            _status._stats.Set_action_type(&Action::Get_magic_data(static_cast<Action::Magic_index>(_magic_index)));
             bn::sound_items::sfx_menu_move.play();
             Print_magic_information();
         }
     }
     else if (bn::keypad::right_pressed())
     {
-        ++_magic_index;
-        if (_magic_index > _status.Get_level() ||
-                static_cast<Action::Magic_index>(_magic_index) == Action::Magic_index::END_OF_INDEX) { --_magic_index; }
-        else
+        if (_magic_index < maxindex)
         {
-            _status._stats.Set_action_type(&Action::Get_magic_data(static_cast<Action::Magic_index>(_magic_index)));
+            ++_magic_index;
+            bn::sound_items::sfx_menu_move.play();
+            Print_magic_information();
+        }
+    }
+    else if (bn::keypad::up_pressed())
+    {
+        if (_magic_index > 0)
+        {
+            _magic_index = bn::max(0, _magic_index - 10);
+            bn::sound_items::sfx_menu_move.play();
+            Print_magic_information();
+        }
+    }
+    else if (bn::keypad::down_pressed())
+    {
+        if (_magic_index < maxindex)
+        {
+            _magic_index = bn::min(maxindex, _magic_index + 10);
             bn::sound_items::sfx_menu_move.play();
             Print_magic_information();
         }
@@ -305,9 +322,8 @@ Battle::State Battle::Magic_select()
 }
 void Battle::Print_magic_information()
 {
-    const Action::Action* _action_type = _status._stats.Get_action_type();
+    const Action::Action* _action_type = &Action::Get_magic_data(_magic_index);
 
-    //Effect::Print_text(_text_generator, true, Effect::Alignment::Right, ATTACK_ICON_X, ATTACK_ICON_Y, 0, _battle_text, 1, "");
     _battle_text.clear();
     _text_generator.set_right_alignment();
     _text_generator.generate(ATTACK_ICON_X+40, ATTACK_ICON_Y-16, bn::format<20>("{} ({})", _action_type->_name, _action_type->_cost), _battle_text);
@@ -350,7 +366,6 @@ void Battle::Print_enemy_information()
     _text_generator.set_center_alignment();
     _text_generator.generate(0, -60, bn::format<20>("Lv {} {}", _enemies[_target_index].Get_level(), _enemies[_target_index].Get_name()), _battle_text);
     _text_generator.generate(0, -50, bn::format<10>("Hp {}", _enemies[_target_index].Get_hp()), _battle_text);
-    // debug line ; stats
     _text_generator.generate(0, -40, bn::format<20>("A {} D {} S {}", _enemies[_target_index]._stats.Get_base_atk(), _enemies[_target_index]._stats.Get_base_def(), _enemies[_target_index]._stats.Get_base_spd()), _battle_text);
 }
 
@@ -368,7 +383,7 @@ Battle::State Battle::Confirm()
 
         return State::Action_select;
     }
-    return State::Confirm;//
+    return State::Confirm;
 }
 void Battle::Action_order_decision()
 {
@@ -380,6 +395,7 @@ void Battle::Action_order_decision()
         _action_order.push_back({_enemies[i]._stats.Get_spd(), i});
     }
     bn::sort(_action_order.rbegin(), _action_order.rend());
+    _action_order.push_back({-1, -2});
 }
 void Battle::Turn_action()
 {
@@ -390,6 +406,20 @@ void Battle::Turn_action()
     {
         attacker = &_status._stats;
         if (_left_hit == 0) { _status.Mp_change(-attacker->Get_action_type()->_cost); }
+    }
+    else if (index == -2)
+    {
+        if (_left_hit == 0)
+        {
+            _left_hit = 4;
+            End_turn_action(-1);
+        }
+        else if (_left_hit <= _enemies.size() && !_enemies[_left_hit-1].Is_dead())
+        {
+            End_turn_action(_left_hit-1);
+        }
+        if (--_left_hit == 0) { ++_action_order_index; }
+        return;
     }
     else if (!_enemies[index].Is_dead() || _left_hit > 0) { attacker = &_enemies[index]._stats; }
     else { ++_action_order_index; return; }
@@ -427,8 +457,11 @@ void Battle::Turn_action()
         if (--_left_hit > 0) { return; }
         break;
     case Action::Target_type::Entire_target:
-        if (_left_hit == 0) { _left_hit = 4; }
-        if (_left_hit == 4) { Action_execute(index, -1); }
+        if (_left_hit == 0)
+        {
+            _left_hit = 4;
+            Action_execute(index, -1);
+        }
         else if (_left_hit <= _enemies.size() && !_enemies[_left_hit-1].Is_dead())
         {
             Action_execute(index, _left_hit-1);
@@ -447,19 +480,15 @@ void Battle::Action_execute(int attacker_idx, int defender_idx)
     ActorStats* attacker = nullptr;
     ActorStats* defender = nullptr;
 
-    //BN_LOG("Action execute");
-
     if (attacker_idx == -1)
     {
         attacker = &_status._stats;
-        //BN_LOG(attacker->Get_action_type()->_name);
         Effect::Print_text(_text_generator, false, Effect::Alignment::Center, -90, 72, 0,
                            _battle_text, 1, attacker->Get_action_type()->_name);
     }
     else
     {
         attacker = &_enemies[attacker_idx]._stats;
-        //BN_LOG(attacker->Get_action_type()->_name);
         Effect::Print_text(_text_generator, false, Effect::Alignment::Center, _enemy_x[attacker_idx], ENEMY_Y+20, 0,
                            _battle_text, 1, attacker->Get_action_type()->_name);
     }
@@ -472,32 +501,38 @@ void Battle::Action_execute(int attacker_idx, int defender_idx)
     if (attacker_idx == -1) { /* _camera.Set_attacker(_player_sprite); */ }
     else { _camera.Set_attacker(_enemy_sprite[attacker_idx]); }
 
-    if (defender_idx == -1)
+    Taking_damage(defender_idx, damage, attacker->Get_action_type());
+    _camera.Start_movement();
+}
+void Battle::Taking_damage(int actor_index, int damage, const Action::Action *action)
+{
+    if (actor_index == -1)
     {
         _status.Hp_change(-damage);
-        Attack_effect(-90, 57, damage, attacker->Get_action_type());
+        Attack_effect(-90, 57, action);
+        Damage_effect(-90, 57, damage);
         if (damage > 0) { _camera.Set_defender(_player_sprite); }
     }
     else
     {
-        _enemies[defender_idx].Hp_change(-damage);
-        Attack_effect(_enemy_x[defender_idx], ENEMY_Y, damage, attacker->Get_action_type());
-        if (damage > 0) { _camera.Set_defender(_enemy_sprite[defender_idx]); }
+        _enemies[actor_index].Hp_change(-damage);
+        Attack_effect(_enemy_x[actor_index], ENEMY_Y, action);
+        Damage_effect(_enemy_x[actor_index], ENEMY_Y, damage);
+        if (damage > 0) { _camera.Set_defender(_enemy_sprite[actor_index]); }
     }
-    _camera.Start_movement();
 }
-void Battle::Attack_effect(int x, int y, int damage,
-                           const Action::Action* action)
+void Battle::Attack_effect(int x, int y, const Action::Action* action)
 {
-    //BN_LOG("Action effect");
-
+    if (action == nullptr) { return; }
     _attack_effect_sprite.set_position(x, y);
     _attack_effect_sprite.set_visible(true);
     _attack_effect_sprite.set_palette(action->_action_effect.palette_item());
     _attack_effect = bn::create_sprite_animate_action_once(_attack_effect_sprite, action->_frames, action->_action_effect.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
 
     action->_action_sound.play();
-
+}
+void Battle::Damage_effect(int x, int y, int damage)
+{
     _text_generator.set_center_alignment();
     if (damage == 0) { return; }
     else if (damage > 0)
@@ -514,9 +549,25 @@ void Battle::Attack_effect(int x, int y, int damage,
         text.set_blending_enabled(true);
     }
 }
+void Battle::End_turn_action(int actor_idx)
+{
+    ActorStats* actor = nullptr;
+
+    if (actor_idx == -1) { actor = &_status._stats; }
+    else { actor = &_enemies[actor_idx]._stats; }
+    int damage = end_of_turn(actor);
+
+    if (damage == 0) { return; }
+    else if (damage > 0)
+    {
+        Taking_damage(actor_idx, damage, &Action::Get_action_data(Action::Action_index::Poisoned));
+        _camera.Start_movement();
+    }
+    else { Taking_damage(actor_idx, damage, &Action::Get_action_data(Action::Action_index::Regenerating)); }
+}
 bool Battle::Effect_action()
 {
-    Camera_action();
+    _camera.Update();
 
     if (!_attack_effect.done())
     {
@@ -526,8 +577,6 @@ bool Battle::Effect_action()
     if (bn::keypad::a_held()) { _effect_cooltime = 0; }
     else if (--_effect_cooltime > 0) { return false; }
 
-    //BN_LOG("_text_end.Get_state()");
-
     switch (_text_end.Get_state())
     {
     case Effect::State::Waiting:
@@ -535,7 +584,6 @@ bool Battle::Effect_action()
         else
         {
             for (bn::sprite_ptr& text : _damage_text) { text.set_visible(true); }
-            //bn::sound_items::sfx_battle_sword.play();
             _text_end.Start();
         }
         return false;
@@ -577,10 +625,6 @@ bool Battle::Effect_action()
     default: break;
     }
     return false;
-}
-void Battle::Camera_action()
-{
-    _camera.Update();
 }
 
 void Battle::Enemy_dead(short index)

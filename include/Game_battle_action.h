@@ -12,6 +12,10 @@ namespace Runa::Game::Action
 
 enum class Action_index : short
 {
+    // None target
+    Poisoned,
+    Regenerating,
+
     // Self target
     Guard,
     Charge,
@@ -20,6 +24,9 @@ enum class Action_index : short
     Attack_Up,
     Defense_Up,
     Barrier,
+    Regenerate,
+    Cure,
+
     // Single target
     Slash,
     Bash,
@@ -32,16 +39,19 @@ enum class Action_index : short
     Lightning_I,
     Weaken, // Gravity I
     Soften, // Acid I
+
     // Multi hit
     Triple_Slash,
     Confusion,
     Fire_II,
     Fire_III,
     Sandstorm, // Earth II
+
     // Every enemy target
     Area_Heal_I,
     Lightning_II,
     Acid_Rain, // Acid II
+
     // Entire target
     Sword_Dance,
     Explosion,
@@ -69,7 +79,8 @@ enum Magic_index : short
     Acid_Rain,
     Fire_III,
     Ice_III,
-    // Regeneration
+    Regenerate,
+    Cure,
 
     END_OF_INDEX
 };

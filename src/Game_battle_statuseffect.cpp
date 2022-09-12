@@ -38,6 +38,7 @@ void Status_effect::Set_status_effect(Status_effect_index next_status, int turns
             return;
         }
     }
+    if (turns < 0) { return; }
     // check if status effect could be cancelled
     for (int i = 0; i < MAX_STATUS_NUMBER; i++)
     {
