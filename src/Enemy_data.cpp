@@ -53,7 +53,7 @@ constexpr Enemy_data Enemy_base_data[] = {
     Enemy_data(bn::sprite_items::enemy_bakery_chocomuffin,  "Choco Muffin",   17, 18,   25, 13, 10, 8, Pattern_index::Explosion,        80, 150, 150, 100),
     Enemy_data(bn::sprite_items::enemy_bakery_donut,        "Donut",          18, 20,   20, 11, 12, 8, Pattern_index::Healer,           80, 150, 150, 100),
     Enemy_data(bn::sprite_items::enemy_bakery_rollcake,     "Roll Cake",      18, 20,   20, 9, 11, 10, Pattern_index::Confusion,        80, 150, 150, 100),
-    Enemy_data(bn::sprite_items::enemy_bakery_cookiehouse,  "Cookie House", 150, 800,   200, 20, 15, 10, Pattern_index::Boss_2,         150, 50, 120, 100), // Actual 300 / 600, 40, 30, 16
+    Enemy_data(bn::sprite_items::enemy_bakery_cookiehouse,  "Cookie House", 250, 800,   240, 20, 17, 10, Pattern_index::Boss_2,         150, 50, 120, 100), // Actual 500 / 720, 40, 34, 16
     // 3rd stratum : chess castle
 };
 

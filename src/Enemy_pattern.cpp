@@ -85,11 +85,14 @@ constexpr Action::Action_index Boss_1[] = {
     Action::Action_index::Bash,
 };
 constexpr Action::Action_index Boss_2[] = {
-    Action::Action_index::Guard,
-    Action::Action_index::Defense_Up,
-    Action::Action_index::Bash,
+    Action::Action_index::Throw,
+    Action::Action_index::Attack_Up,
     Action::Action_index::Charge,
-    Action::Action_index::Bash,
+    Action::Action_index::Throw,
+    Action::Action_index::Guard,
+    Action::Action_index::Guard,
+    Action::Action_index::Quicksand,
+    Action::Action_index::Defense_Up,
 };
 
 constexpr Enemy_pattern Enemy_pattern_data[] = {
@@ -121,7 +124,7 @@ constexpr Enemy_pattern Enemy_pattern_data[] = {
     Enemy_pattern(3, Healer), // Healer
 
     Enemy_pattern(5, Boss_1), // Boss_1
-    Enemy_pattern(5, Boss_2), // Boss_2
+    Enemy_pattern(8, Boss_2), // Boss_2
 };
 
 const Enemy_pattern& Get_enemy_pattern_data(Pattern_index index)

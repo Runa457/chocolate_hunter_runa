@@ -106,6 +106,8 @@ const bn::string_view Print_status_effect(Status_effect_index status)
         return "Bleeding";
     case Status_effect_index::Poison:
         return "Poison";
+    case Status_effect_index::Regenerate:
+        return "Regen";
     default:
         BN_ERROR("Not implemented status effect");
         break;

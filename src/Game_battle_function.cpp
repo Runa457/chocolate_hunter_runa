@@ -27,18 +27,21 @@ int attack_function(ActorStats* attacker, ActorStats* defender,
     damage *= action->_multiplier;
     damage *= defender->Get_weakness((int)action->_element);
 
-    if ((attacker->Get_status_effect() & Status_effect_index::Charge) != 0)
+    Status_effect_index attacker_status = attacker->Get_status_effect();
+    Status_effect_index defender_status = defender->Get_status_effect();
+
+    if ((attacker_status & Status_effect_index::Charge) != 0)
     {
         damage = damage * 2;
     }
-    if (damage > 0 && (defender->Get_status_effect() & Status_effect_index::Bleeding) != 0)
+    if (damage > 0 && (defender_status & Status_effect_index::Bleeding) != 0)
     {
         damage = damage * 3 / 2;
     }
 
     damage += (damage > 0) ? 5000 : -5000;
 
-    if (damage > 0 && (defender->Get_status_effect() & Status_effect_index::Guard) != 0)
+    if (damage > 0 && (defender_status & Status_effect_index::Guard) != 0)
     {
         damage = damage / 2;
     }
