@@ -4,7 +4,7 @@
 namespace Runa::Game
 {
 
-constexpr int MAXSTRATUM = 2;
+constexpr int MAXSTRATUM = 3;
 
 Battle_Sequence::Battle_Sequence(bn::random& random_generator,
                                  int player_level, short stratum, bool is_boss) :

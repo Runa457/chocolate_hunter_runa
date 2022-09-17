@@ -10,7 +10,7 @@ namespace Runa::Scene
 namespace
 {
 
-constexpr int MAX_PAGE = 20;
+constexpr int MAX_PAGE = 22;
 constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "Basic flame magic.", // Fire I
     "Concentrate thermal energy",
@@ -105,14 +105,25 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "Frozen enemies lose their",
     "defenses.",
 
+    "Focus mind and recover mana.", // Focus
+    "The defense decreases while",
+    "concentrating.",
+    "",
+
     "Increase the recovery speed", // Regenerate
     "of the body for a certain",
     "period of time.",
     "",
 
+
     "Activates the body's immune", // Cure
     "system to decompose and remove",
     "toxic substances in the body.",
+    "",
+
+    "Cast forbidden magic to", // Blood Cast
+    "extract life energy from self",
+    "and convert it into mana.",
     "",
 };
 

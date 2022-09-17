@@ -23,6 +23,19 @@
 #include "bn_sprite_items_enemy_bakery_rollcake.h"
 #include "bn_sprite_items_enemy_bakery_cookiehouse.h"
 
+#include "bn_sprite_items_enemy_chess_pawnb.h"
+#include "bn_sprite_items_enemy_chess_pawnw.h"
+#include "bn_sprite_items_enemy_chess_knightb.h"
+#include "bn_sprite_items_enemy_chess_knightw.h"
+#include "bn_sprite_items_enemy_chess_bishopb.h"
+#include "bn_sprite_items_enemy_chess_bishopw.h"
+#include "bn_sprite_items_enemy_chess_rookb.h"
+#include "bn_sprite_items_enemy_chess_rookw.h"
+#include "bn_sprite_items_enemy_chess_queenb.h"
+#include "bn_sprite_items_enemy_chess_queenw.h"
+#include "bn_sprite_items_enemy_chess_kingb.h"
+#include "bn_sprite_items_enemy_chess_kingw.h"
+
 namespace Runa::Game::Enemy
 {
 
@@ -55,6 +68,20 @@ constexpr Enemy_data Enemy_base_data[] = {
     Enemy_data(bn::sprite_items::enemy_bakery_rollcake,     "Roll Cake",      18, 20,   20, 9, 11, 10, Pattern_index::Confusion,        80, 150, 150, 100),
     Enemy_data(bn::sprite_items::enemy_bakery_cookiehouse,  "Cookie House", 250, 800,   240, 20, 17, 10, Pattern_index::Boss_2,         150, 50, 120, 100), // Actual 500 / 720, 40, 34, 16
     // 3rd stratum : chess castle
+    Enemy_data(bn::sprite_items::enemy_chess_pawnb,   "Black Pawn",   20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 10, 150, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_pawnw,   "White Pawn",   20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 150, 10, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_knightb, "Black Knight", 20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 10, 150, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_knightw, "White Knight", 20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 150, 10, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_bishopb, "Black Bishop", 20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 10, 150, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_bishopw, "White Bishop", 20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 150, 10, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_rookb,   "Black Rook",   20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 10, 150, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_rookw,   "White Rook",   20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 150, 10, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_queenb,  "Black Queen",  20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 10, 150, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_queenw,  "White Queen",  20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 150, 10, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_kingb,   "Black King",   20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 10, 150, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_kingw,   "White King",   20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 150, 10, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_knightw, "Unicorn",      20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 150, 10, 100),
+    // 4th stratum
 };
 
 const Enemy_data& Get_enemy_base_data(int index)

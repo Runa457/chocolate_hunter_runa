@@ -6,10 +6,14 @@
 #include "bn_sprite_items_effect_bash.h"
 #include "bn_sprite_items_effect_guard.h"
 #include "bn_sprite_items_effect_heal.h"
+#include "bn_sprite_items_effect_regen.h"
+#include "bn_sprite_items_effect_focus.h"
+#include "bn_sprite_items_effect_blood_cast.h"
 #include "bn_sprite_items_effect_charge.h"
 #include "bn_sprite_items_effect_fire.h"
 #include "bn_sprite_items_effect_ice.h"
 #include "bn_sprite_items_effect_lightning.h"
+#include "bn_sprite_items_effect_acid.h"
 #include "bn_sprite_items_effect_quicksand.h"
 #include "bn_sprite_items_effect_red_arrow_up.h"
 #include "bn_sprite_items_effect_red_arrow_down.h"
@@ -27,7 +31,7 @@ constexpr Action Action_data[] = {
 
     Action("Regenerate", Target_type::None, Action_type::None, Element_type::None,
     0, 0, 0, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_sword),// sound
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),// sound
 
     // Self target
     Action("Guard", Target_type::Self_target, Action_type::Normal_attack, Element_type::None,
@@ -58,9 +62,17 @@ constexpr Action Action_data[] = {
     10, 0, 100, Status_effect_index::Guard, 100, 5,
     bn::sprite_items::effect_guard, 2, bn::sound_items::sfx_battle_magic),//
 
+    Action("Focus", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
+    -10, 0, 100, Status_effect_index::Defence_down, 100, 3,
+    bn::sprite_items::effect_focus, 2, bn::sound_items::sfx_battle_magic),//
+
+    Action("Blood Cast", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
+    -30, 100, 100, Status_effect_index::None, 0, 0,
+    bn::sprite_items::effect_blood_cast, 2, bn::sound_items::sfx_battle_magic),//
+
     Action("Regenerate", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     15, 0, 100, Status_effect_index::Regenerate, 100, 5,
-    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),//
+    bn::sprite_items::effect_regen, 2, bn::sound_items::sfx_battle_magic),//
 
     Action("Cure", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     5, -30, 100, Status_effect_index::Poison, 100, -99,
@@ -143,7 +155,7 @@ constexpr Action Action_data[] = {
 
     Action("Acid Rain", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
     15, 50, 100, Status_effect_index::Defence_down, 100, 5,
-    bn::sprite_items::effect_blue_arrow_down, 2, bn::sound_items::sfx_battle_magic),//
+    bn::sprite_items::effect_acid, 2, bn::sound_items::sfx_battle_magic),//
 
     // Entire target    
     Action("Sword Dance", Target_type::Entire_target, Action_type::Normal_attack, Element_type::Physical,
@@ -180,8 +192,11 @@ constexpr Action Magic_data[] = {
     Get_action_data_I(Action_index::Acid_Rain),
     Get_action_data_I(Action_index::Fire_III),
     Get_action_data_I(Action_index::Ice_III),
+    Get_action_data_I(Action_index::Focus),
     Get_action_data_I(Action_index::Regenerate),
+
     Get_action_data_I(Action_index::Cure),
+    Get_action_data_I(Action_index::Blood_Cast),
 
 };
 

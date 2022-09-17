@@ -21,7 +21,7 @@ constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
 
     " In the camp (1):",
     "",
-    "She must eat enough chocolate",
+    "Runa must eat enough chocolate",
     "in a certain amount of time.",
     "She can extend her lifespan",
     "only if she eat chocolates.",

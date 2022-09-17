@@ -24,6 +24,8 @@ enum class Action_index : short
     Attack_Up,
     Defense_Up,
     Barrier,
+    Focus,
+    Blood_Cast,
     Regenerate,
     Cure,
 
@@ -79,8 +81,11 @@ enum Magic_index : short
     Acid_Rain,
     Fire_III,
     Ice_III,
+    Focus,
     Regenerate,
+
     Cure,
+    Blood_Cast,
 
     END_OF_INDEX
 };

@@ -8,7 +8,7 @@ namespace Runa::Scene
 
 namespace
 {
-constexpr int MAX_PAGE = 19;
+constexpr int MAX_PAGE = 32;
 constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "Appears in Alphabetic Grassland.", // choco attacker
     "Has strong offensive power,",
@@ -105,6 +105,71 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "the Bakery Street.",
     "Resides in front of the gate",
     "to the Chess Castle.",
+
+    "Resides in Chess Castle.", // black pawn
+    "",
+    "",
+    "",
+
+    "Resides in Chess Castle.", // white pawn
+    "",
+    "",
+    "",
+
+    "Resides in Chess Castle.", // black knight
+    "",
+    "",
+    "",
+
+    "Resides in Chess Castle.", // white knight
+    "",
+    "",
+    "",
+
+    "Resides in Chess Castle.", // black bishop
+    "",
+    "",
+    "",
+
+    "Resides in Chess Castle.", // white bishop
+    "",
+    "",
+    "",
+
+    "Resides in Chess Castle.", // black rook
+    "",
+    "",
+    "",
+
+    "Resides in Chess Castle.", // white rook
+    "",
+    "",
+    "",
+
+    "Resides in Chess Castle.", // black queen
+    "",
+    "",
+    "",
+
+    "Resides in Chess Castle.", // white queen
+    "",
+    "",
+    "",
+
+    "Resides in Chess Castle.", // black king
+    "",
+    "",
+    "",
+
+    "Resides in Chess Castle.", // white king
+    "",
+    "",
+    "",
+
+    "", // unicorn * 3rd stratum boss
+    "",
+    "",
+    "",
 };
 constexpr int TEXT_X = -102;
 constexpr int TEXT_Y = -64;
