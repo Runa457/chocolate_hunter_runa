@@ -27,7 +27,7 @@ constexpr Action Action_data[] = {
     // None target
     Action("Poisoned", Target_type::None, Action_type::None, Element_type::None,
     0, 0, 0, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_heal, 4, bn::sound_items::sfx_battle_damage_taken),//
+    bn::sprite_items::effect_blood_cast, 4, bn::sound_items::sfx_battle_damage_taken),//
 
     Action("Regenerate", Target_type::None, Action_type::None, Element_type::None,
     0, 0, 0, Status_effect_index::None, 0, 0,
@@ -44,6 +44,10 @@ constexpr Action Action_data[] = {
 
     Action("Super Charge", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     10, 500, 150, Status_effect_index::Charge, 100, 3,
+    bn::sprite_items::effect_charge, 2, bn::sound_items::sfx_battle_magic),
+
+    Action("Promotion", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
+    80, -1000, 100, static_cast<Status_effect_index>(Status_effect_index::Charge | Status_effect_index::Attack_up | Status_effect_index::Defence_up), 100, 25,
     bn::sprite_items::effect_charge, 2, bn::sound_items::sfx_battle_magic),
 
     Action("Heal I", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
@@ -78,6 +82,10 @@ constexpr Action Action_data[] = {
     5, -30, 100, Status_effect_index::Poison, 100, -99,
     bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),//
 
+    Action("Hemostatis", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
+    5, -30, 100, Status_effect_index::Bleeding, 100, -99,
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),//
+
     // Single target
     Action("Slash", Target_type::Single_target, Action_type::Normal_attack, Element_type::Physical,
     0, 100, 100, Status_effect_index::None, 0, 0,
@@ -90,6 +98,18 @@ constexpr Action Action_data[] = {
     Action("Throw", Target_type::Single_target, Action_type::Normal_attack, Element_type::Physical,
     0, 100, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_bash, 2, bn::sound_items::sfx_battle_damage_taken),
+
+    Action("Jump", Target_type::Single_target, Action_type::Normal_attack, Element_type::Physical,
+    0, 100, 150, Status_effect_index::None, 0, 0,
+    bn::sprite_items::effect_bash, 2, bn::sound_items::sfx_battle_damage_taken),
+
+    Action("Pierce", Target_type::Single_target, Action_type::Normal_attack, Element_type::Physical,
+    0, 60, 80, Status_effect_index::Bleeding, 60, 2,
+    bn::sprite_items::effect_bash, 2, bn::sound_items::sfx_battle_damage_taken),
+
+    Action("En_Passant", Target_type::Single_target, Action_type::Normal_attack, Element_type::Physical,
+    0, 100, 100, Status_effect_index::Bleeding, 30, 1,
+    bn::sprite_items::effect_sword, 2, bn::sound_items::sfx_battle_sword),
 
     Action("Quicksand", Target_type::Single_target, Action_type::Normal_attack, Element_type::Physical,
     0, 50, 100, Status_effect_index::Speed_down, 75, 3,
@@ -123,6 +143,10 @@ constexpr Action Action_data[] = {
     8, 0, 100, Status_effect_index::Defence_down, 100, 5,
     bn::sprite_items::effect_blue_arrow_down, 2, bn::sound_items::sfx_battle_magic),//
 
+    Action("Poison", Target_type::Single_target, Action_type::Magic_attack, Element_type::None,
+    10, 0, 100, Status_effect_index::Poison, 95, 5,
+    bn::sprite_items::effect_blood_cast, 4, bn::sound_items::sfx_battle_magic),//
+
     // Multi hit
     Action("Triple Slash", Target_type::Multi_hit, Action_type::Normal_attack, Element_type::Physical,
     0, 80, 100, Status_effect_index::None, 0, 0,
@@ -149,8 +173,32 @@ constexpr Action Action_data[] = {
     30, -100, 80, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),// sound
 
+    Action("Bless", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
+    40, 0, 100, Status_effect_index::Regenerate, 100, 3,
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),// sound
+
+    Action("Morale Boost", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
+    28, 0, 100, Status_effect_index::Attack_up, 100, 5,
+    bn::sprite_items::effect_red_arrow_up, 2, bn::sound_items::sfx_battle_magic),// sound
+
+    Action("Protection", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
+    28, 0, 100, Status_effect_index::Defence_up, 100, 5,
+    bn::sprite_items::effect_blue_arrow_up, 2, bn::sound_items::sfx_battle_magic),// sound
+
+    Action("Charger", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
+    35, 0, 60, Status_effect_index::Charge, 100, 2,
+    bn::sprite_items::effect_charge, 2, bn::sound_items::sfx_battle_magic),// sound
+
+    Action("Castling", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
+    35, 0, 60, Status_effect_index::Guard, 100, 2,
+    bn::sprite_items::effect_guard, 2, bn::sound_items::sfx_battle_magic),// sound
+
     Action("Lightning II", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::Lightning,
     12, 100, 200, Status_effect_index::None, 0, 0,
+    bn::sprite_items::effect_lightning, 2, bn::sound_items::sfx_battle_magic),
+
+    Action("Lightning III", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::Lightning,
+    15, 120, 300, Status_effect_index::Speed_down, 80, 5,
     bn::sprite_items::effect_lightning, 2, bn::sound_items::sfx_battle_magic),
 
     Action("Acid Rain", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
@@ -193,10 +241,12 @@ constexpr Action Magic_data[] = {
     Get_action_data_I(Action_index::Fire_III),
     Get_action_data_I(Action_index::Ice_III),
     Get_action_data_I(Action_index::Focus),
-    Get_action_data_I(Action_index::Regenerate),
+    Get_action_data_I(Action_index::Hemostasis),
 
     Get_action_data_I(Action_index::Cure),
+    Get_action_data_I(Action_index::Regenerate),
     Get_action_data_I(Action_index::Blood_Cast),
+    Get_action_data_I(Action_index::Lightning_III),
 
 };
 

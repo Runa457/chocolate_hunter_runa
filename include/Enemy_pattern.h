@@ -35,8 +35,22 @@ enum class Pattern_index : short
 
     Healer,
 
+    Pawn_Black,
+    Pawn_White,
+    Knight_Black,
+    Knight_White,
+    Bishop_Black,
+    Bishop_White,
+    Rook_Black,
+    Rook_White,
+    Queen_Black,
+    Queen_White,
+    King_Black,
+    King_White,
+
     Boss_1,
     Boss_2,
+    Boss_3,
 };
 
 class Enemy_pattern

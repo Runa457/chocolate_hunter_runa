@@ -6,7 +6,7 @@ namespace Runa
 
 const short& Get_hp_data(int level);
 const short& Get_mp_data(int level);
-const short& Get_exp_data(int level);
+const int &Get_exp_data(int level);
 const short& Get_str_data(int level);
 const short& Get_def_data(int level);
 const short& Get_int_data(int level);

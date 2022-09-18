@@ -22,7 +22,7 @@ int attack_function(ActorStats* attacker, ActorStats* defender,
     if (action->_multiplier < 0) { def_pow = atk_pow; armor = 0; }
 
     double damage = Damage_calculator(atk_pow, weapon, def_pow, armor);
-    //BN_LOG(damage, " ", atk_pow, " ", weapon, " ", def_pow, " ", armor);
+    //BN_LOG((int)damage, " ", atk_pow, " ", weapon, " ", def_pow, " ", armor);
 
     damage *= action->_multiplier;
     damage *= defender->Get_weakness((int)action->_element);

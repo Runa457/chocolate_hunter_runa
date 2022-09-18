@@ -107,63 +107,63 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "to the Chess Castle.",
 
     "Resides in Chess Castle.", // black pawn
-    "",
-    "",
-    "",
+    "It's the most basic unit, but",
+    "it becomes very powerful",
+    "after the promotion.",
 
     "Resides in Chess Castle.", // white pawn
-    "",
-    "",
-    "",
+    "It's the most basic unit, but",
+    "it becomes very powerful",
+    "after the promotion.",
 
     "Resides in Chess Castle.", // black knight
-    "",
-    "",
+    "Make a piercing attack that",
+    "causes bleeding with the spear.",
     "",
 
     "Resides in Chess Castle.", // white knight
-    "",
-    "",
+    "It can leap and attack faster",
+    "than other units.",
     "",
 
     "Resides in Chess Castle.", // black bishop
-    "",
-    "",
+    "After boosting the morale of its",
+    "allies, attacks with flame magic.",
     "",
 
     "Resides in Chess Castle.", // white bishop
-    "",
-    "",
-    "",
+    "Build a defensive formation to",
+    "strengthen the defense of allies",
+    "and then attacks with ice magic.",
 
     "Resides in Chess Castle.", // black rook
-    "",
-    "",
-    "",
+    "Attacks with non-weakness",
+    "element do not work.",
+    "Charges other units.",
 
     "Resides in Chess Castle.", // white rook
-    "",
-    "",
-    "",
+    "Attacks with non-weakness",
+    "element do not work.",
+    "Guards other units.",
 
     "Resides in Chess Castle.", // black queen
-    "",
+    "Uses high level fire magic.",
     "",
     "",
 
     "Resides in Chess Castle.", // white queen
-    "",
+    "Uses high level ice magic.",
     "",
     "",
 
     "Resides in Chess Castle.", // black king
-    "",
-    "",
+    "Heals allies with the dignity",
+    "of the king.",
     "",
 
     "Resides in Chess Castle.", // white king
-    "",
-    "",
+    "Gives allies a blessing that",
+    "increases regeneration speed.",
     "",
 
     "", // unicorn * 3rd stratum boss

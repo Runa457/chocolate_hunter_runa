@@ -20,6 +20,7 @@ enum class Action_index : short
     Guard,
     Charge,
     Super_Charge,
+    Promotion,
     Heal_I,
     Attack_Up,
     Defense_Up,
@@ -28,11 +29,15 @@ enum class Action_index : short
     Blood_Cast,
     Regenerate,
     Cure,
+    Hemostasis,
 
     // Single target
     Slash,
     Bash,
     Throw,
+    Jump,
+    Pierce,
+    En_Passant,
     Quicksand, // Earth I
     Fire_I,
     Ice_I,
@@ -41,6 +46,7 @@ enum class Action_index : short
     Lightning_I,
     Weaken, // Gravity I
     Soften, // Acid I
+    Poison,
 
     // Multi hit
     Triple_Slash,
@@ -51,7 +57,13 @@ enum class Action_index : short
 
     // Every enemy target
     Area_Heal_I,
+    Bless,
+    Morale_Boost,
+    Protection,
+    Charger,
+    Castling,
     Lightning_II,
+    Lightning_III,
     Acid_Rain, // Acid II
 
     // Entire target
@@ -82,10 +94,12 @@ enum Magic_index : short
     Fire_III,
     Ice_III,
     Focus,
-    Regenerate,
+    Hemostasis,
 
     Cure,
+    Regenerate,
     Blood_Cast,
+    Lightning_III,
 
     END_OF_INDEX
 };

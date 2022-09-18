@@ -44,6 +44,7 @@ private:
     int _intelligence;
     int _spd;
     Status_effect _status_effect;
+    Status_effect_index _current_status;
     const Enemy::Element_weakness* _element_weak = nullptr;
     const Action::Action* _action_type;
 };

@@ -33,13 +33,13 @@ extern constexpr short MP_table[] = {
  * Base Exp = 100
  * Multiplier = 1.10
  */
-extern constexpr short EXP_table[] = {
+extern constexpr int EXP_table[] = {
     100, 110, 121, 133, 146, 161, 177, 194, 214, 235,
     259, 285, 313, 345, 379, 417, 459, 505, 555, 611,
     672, 740, 814, 895, 984, 1083, 1191, 1310, 1442, 1586,
     1744, 1919, 2111, 2322, 2554, 2810, 3091, 3400, 3740, 4114,
     4525, 4978, 5476, 6024, 6626, 7289, 8017, 8819, 9701, 10671,
-    32767 //11739
+    2'147'483'647 //11739
 };
 
 /**
@@ -124,7 +124,7 @@ extern constexpr short Enemy_index_table[] = {
 
 const short& Get_hp_data(int level) { return HP_table[level]; }
 const short& Get_mp_data(int level) { return MP_table[level]; }
-const short& Get_exp_data(int level) { return EXP_table[level]; }
+const int& Get_exp_data(int level) { return EXP_table[level]; }
 const short& Get_str_data(int level) { return STR_table[level]; }
 const short& Get_def_data(int level) { return DEF_table[level]; }
 const short& Get_int_data(int level) { return INT_table[level]; }

@@ -1,5 +1,7 @@
 #include "Game_battle_statuseffect.h"
 
+//#include "bn_log.h"
+
 namespace Runa::Game
 {
 
@@ -19,11 +21,15 @@ Status_effect_index Status_effect::Get_status_effect()
     {
         _index = static_cast<Status_effect_index>(_index | _inner_index[i]);
     }
+    //BN_LOG("Current status effect:", _index);
     return _index;
 }
 
 void Status_effect::Set_status_effect(Status_effect_index next_status, int turns)
 {
+    //BN_LOG("next: ", (int)(next_status));
+    //BN_LOG("turns: ", turns);
+
     // check if status effect is already active
     for (int i = 0; i < MAX_STATUS_NUMBER; i++)
     {

@@ -35,6 +35,7 @@
 #include "bn_sprite_items_enemy_chess_queenw.h"
 #include "bn_sprite_items_enemy_chess_kingb.h"
 #include "bn_sprite_items_enemy_chess_kingw.h"
+#include "bn_sprite_items_enemy_chess_unicorn.h"
 
 namespace Runa::Game::Enemy
 {
@@ -68,19 +69,19 @@ constexpr Enemy_data Enemy_base_data[] = {
     Enemy_data(bn::sprite_items::enemy_bakery_rollcake,     "Roll Cake",      18, 20,   20, 9, 11, 10, Pattern_index::Confusion,        80, 150, 150, 100),
     Enemy_data(bn::sprite_items::enemy_bakery_cookiehouse,  "Cookie House", 250, 800,   240, 20, 17, 10, Pattern_index::Boss_2,         150, 50, 120, 100), // Actual 500 / 720, 40, 34, 16
     // 3rd stratum : chess castle
-    Enemy_data(bn::sprite_items::enemy_chess_pawnb,   "Black Pawn",   20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 10, 150, 100),
-    Enemy_data(bn::sprite_items::enemy_chess_pawnw,   "White Pawn",   20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 150, 10, 100),
-    Enemy_data(bn::sprite_items::enemy_chess_knightb, "Black Knight", 20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 10, 150, 100),
-    Enemy_data(bn::sprite_items::enemy_chess_knightw, "White Knight", 20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 150, 10, 100),
-    Enemy_data(bn::sprite_items::enemy_chess_bishopb, "Black Bishop", 20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 10, 150, 100),
-    Enemy_data(bn::sprite_items::enemy_chess_bishopw, "White Bishop", 20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 150, 10, 100),
-    Enemy_data(bn::sprite_items::enemy_chess_rookb,   "Black Rook",   20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 10, 150, 100),
-    Enemy_data(bn::sprite_items::enemy_chess_rookw,   "White Rook",   20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 150, 10, 100),
-    Enemy_data(bn::sprite_items::enemy_chess_queenb,  "Black Queen",  20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 10, 150, 100),
-    Enemy_data(bn::sprite_items::enemy_chess_queenw,  "White Queen",  20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 150, 10, 100),
-    Enemy_data(bn::sprite_items::enemy_chess_kingb,   "Black King",   20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 10, 150, 100),
-    Enemy_data(bn::sprite_items::enemy_chess_kingw,   "White King",   20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 150, 10, 100),
-    Enemy_data(bn::sprite_items::enemy_chess_knightw, "Unicorn",      20, 30,   30, 14, 12, 10, Pattern_index::Throw, 100, 150, 10, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_pawnb,   "Black Pawn",   23, 36,   30, 14, 12, 10, Pattern_index::Pawn_Black,   100, 10, 150, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_pawnw,   "White Pawn",   23, 36,   30, 14, 12, 11, Pattern_index::Pawn_White,   100, 150, 10, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_knightb, "Black Knight", 20, 30,   30, 14, 12, 11, Pattern_index::Knight_Black, 100, 10, 150, 80),
+    Enemy_data(bn::sprite_items::enemy_chess_knightw, "White Knight", 20, 30,   30, 14, 12, 12, Pattern_index::Knight_White, 100, 150, 10, 80),
+    Enemy_data(bn::sprite_items::enemy_chess_bishopb, "Black Bishop", 23, 36,   30, 17, 12, 10, Pattern_index::Bishop_Black, 100, 10, 150, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_bishopw, "White Bishop", 21, 32,   30, 17, 12, 11, Pattern_index::Bishop_White, 100, 150, 10, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_rookb,   "Black Rook",   22, 34,   30, 14, 15, 10, Pattern_index::Rook_Black,   10, 10, 150, 10),
+    Enemy_data(bn::sprite_items::enemy_chess_rookw,   "White Rook",   21, 32,   30, 14, 15, 11, Pattern_index::Rook_White,   10, 150, 10, 10),
+    Enemy_data(bn::sprite_items::enemy_chess_queenb,  "Black Queen",  22, 34,   30, 15, 12, 10, Pattern_index::Queen_Black,  100, 10, 150, 50),
+    Enemy_data(bn::sprite_items::enemy_chess_queenw,  "White Queen",  22, 34,   30, 15, 12, 11, Pattern_index::Queen_White,  100, 150, 10, 50),
+    Enemy_data(bn::sprite_items::enemy_chess_kingb,   "Black King",   21, 32,   30, 14, 12, 10, Pattern_index::King_Black,   100, 10, 150, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_kingw,   "White King",   21, 32,   30, 14, 12, 11, Pattern_index::King_White,   100, 150, 10, 100),
+    Enemy_data(bn::sprite_items::enemy_chess_unicorn, "Unicorn",    500, 900,   300, 20, 20, 12, Pattern_index::Boss_3,       100, 100, 100, 100), // Actual 1250 / 1200, 50, 50, 22
     // 4th stratum
 };
 
