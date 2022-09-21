@@ -5,6 +5,8 @@
 #include "Stats_data.h"
 
 #include "bn_format.h"
+#include "bn_music.h"
+#include "bn_music_items.h"
 
 #include "bn_sprite_items_icon_choco.h"
 #include "bn_regular_bg_items_bg_interface.h"
@@ -44,6 +46,7 @@ Game::Game(bn::sprite_text_generator& text_generator,
     _bg_interface.set_priority(2);
 
     bn::bg_palettes::set_transparent_color(bn::color(0, 0, 0));
+    Handle_Stratum();
     Print_text();
 
     _bg_stratum.set_blending_enabled(true);
@@ -96,7 +99,11 @@ bn::optional<Scene_Type> Game::Update()
         break;
     }
 
-    if (_status.Value_changed()) { Print_text(); }
+    if (_status.Value_changed())
+    {
+        Handle_Stratum();
+        Print_text();
+    }
     if (_subscene) { _game_mode = _subscene->Update(); }
     if (_game_mode)
     {
@@ -134,6 +141,7 @@ bn::optional<Scene_Type> Game::Update()
             _subscene.reset();
             _status.Game_over();
             _status.Value_changed();
+            bn::music::stop();
             Print_text();
             Effect::Print_text(_text_generator, false, Effect::Alignment::Center, 0, -24, 0, _status_text, 1, "Game over");
             _text_generator.generate(0, 0, bn::format<12>("Score: {}", _status.Get_Total_turn()), _status_text);
@@ -147,8 +155,7 @@ bn::optional<Scene_Type> Game::Update()
     }
     return bn::nullopt;
 }
-
-void Game::Print_text()
+void Game::Handle_Stratum()
 {
     if (_current_stratum != _status.Get_stratum())
     {
@@ -157,19 +164,24 @@ void Game::Print_text()
         {
         case 1:
             _bg_stratum.set_item(bn::regular_bg_items::bg_stratum_1);
+            bn::music_items::k_jose__tropical_feels.play(bn::fixed(0.5));
             break;
         case 2:
             _bg_stratum.set_item(bn::regular_bg_items::bg_stratum_2);
+            bn::music_items::k_jose__merrily_strolling.play(bn::fixed(0.5));
             break;
         case 3:
             _bg_stratum.set_item(bn::regular_bg_items::bg_stratum_3);
+            bn::music_items::pxf_squarevox.play(bn::fixed(0.5*0.5));
             break;
         default:
             BN_ERROR("Background needed");
             break;
         }
     }
-
+}
+void Game::Print_text()
+{
     int level = _status.Get_level();
     _status_text.clear();
     _text_generator.set_left_alignment();

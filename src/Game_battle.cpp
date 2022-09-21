@@ -2,6 +2,7 @@
 
 #include "bn_format.h"
 #include "bn_algorithm.h"
+#include "bn_music_items.h"
 
 #include "bn_sprite_items_select_cursor_square.h"
 #include "bn_sprite_items_select_cursor_down.h"
@@ -58,6 +59,8 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
     _shield_icon.set_visible(false);
     _magic_attack_icon.set_bg_priority(0);
     _magic_attack_icon.set_visible(false);
+
+    if (_battle_sq->Get_is_boss()) { bn::music_items::drozerix__crush.play(0.5*0.5); }
 
     Battle_start();
 }

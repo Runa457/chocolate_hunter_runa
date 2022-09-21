@@ -1,5 +1,8 @@
 #include "Scene_title.h"
 
+#include "bn_music.h"
+#include "bn_music_items.h"
+
 #include "bn_sprite_items_cursor_0.h"
 #include "bn_regular_bg_items_bg_title.h"
 
@@ -19,9 +22,9 @@ Title::Title(bn::sprite_text_generator& text_generator) :
     _bg_title(bn::regular_bg_items::bg_title.create_bg(0, 0)),
     _scene_start(Effect::Type::Transparency, Effect::Direction::In, TRANSITION_FRAMES),
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES)
-    //bg(bn::regular_bg_items::bg_title.create_bg(0, 0))
 {
     Print_text();
+    if (!bn::music::playing()) { bn::music_items::k_jose__tropical_feels.play(bn::fixed(0.5)); }
     bn::bg_palettes::set_transparent_color(bn::color(16, 16, 16));
     _bg_title.set_blending_enabled(true);
 

@@ -24,6 +24,10 @@ public:
     bn::optional<Scene_Type> Update();
 
 private:
+    /**
+     * @brief Change BG and BGM according to current stratum.
+     */
+    void Handle_Stratum();
     void Print_text();
 
     bn::random& _random;

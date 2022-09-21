@@ -12,6 +12,7 @@
 
 #include "Status.h"
 
+#include "bn_music.h"
 #include "bn_sprite_text_generator.h"
 #include "bn_random.h"
 #include "bn_regular_bg_actions.h"
@@ -75,6 +76,7 @@ int main()
             case Scene::Scene_Type::Logo:
                 bg_main.reset();
                 bg_main_action.reset();
+                bn::music::stop();
                 scene.reset(new Scene::Logo(text_generator));
                 break;
             case Scene::Scene_Type::Title:
@@ -94,6 +96,7 @@ int main()
             case Scene::Scene_Type::Main_game:
                 bg_main.reset();
                 bg_main_action.reset();
+                bn::music::stop();
                 scene.reset(new Scene::Game(text_generator, random_generator, status));
                 break;
             case Scene::Scene_Type::Options:
