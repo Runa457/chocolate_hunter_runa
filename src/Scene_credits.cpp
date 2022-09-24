@@ -12,7 +12,7 @@ constexpr bn::string_view CREDITS_LIST[NUM_CREDITS] = {
     "Made with Butano 10.5.0",
     "",
     "Programming: Lsh Games",
-    "Music:",
+    "Music: Various artists",
     "Graphics: Lsh Games",
     "",
     "Special Thanks: copyrat90",

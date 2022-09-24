@@ -16,7 +16,7 @@ static constexpr int MENU_Y = 20;
 static constexpr int MENU_Y_INT = 12;
 }
 
-Title::Title(bn::sprite_text_generator& text_generator) :
+Title::Title(bn::sprite_text_generator& text_generator, int volume) :
     _text_generator(text_generator),
     _cursor(bn::sprite_items::cursor_0.create_sprite(MENU_X-10, MENU_Y)),
     _bg_title(bn::regular_bg_items::bg_title.create_bg(0, 0)),
@@ -24,7 +24,7 @@ Title::Title(bn::sprite_text_generator& text_generator) :
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES)
 {
     Print_text();
-    if (!bn::music::playing()) { bn::music_items::k_jose__tropical_feels.play(bn::fixed(0.5)); }
+    if (!bn::music::playing()) { bn::music_items::my_street.play(bn::fixed(volume) / 100); }
     bn::bg_palettes::set_transparent_color(bn::color(16, 16, 16));
     _bg_title.set_blending_enabled(true);
 

@@ -35,14 +35,18 @@ public:
     short Get_multiplier();
     int Get_Max_level();
     int Get_Max_turn();
+    int Get_Max_stratum();
     int Get_Total_turn();
     int Get_Enemy_codex(int index);
+    int Get_Volume();
 
     /**
      * @brief Increase enemy defeat counter.
      * @param Enemy index
      */
     void Defeat_enemy(int index);
+
+    void Set_Volume(bool increase);
 
     /**
      * @brief Change hp and check if hp is below 0
@@ -88,7 +92,7 @@ public:
     Game::ActorStats _stats;
 private:
     /**
-     * @brief Player (Runa) status.
+     * @brief Game save data.
      */
     short Level;
     int hp;
@@ -101,10 +105,14 @@ private:
     int chocolate;
     int choco_multiplier;
     int total_turn;
-
+    /**
+     * @brief Global save data.
+     */
     int Max_level;
     int Max_turn;
+    short Max_stratum;
     int Enemy_codex[NUM_ENEMY] = {0};
+    int Volume;
 
     /**
      * @brief For interface update.

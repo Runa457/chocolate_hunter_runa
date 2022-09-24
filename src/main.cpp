@@ -88,7 +88,7 @@ int main()
                     bg_main->set_priority(3);
                     bg_main_action = bn::regular_bg_move_by_action(*bg_main, -0.5, 0.5);
                 }
-                scene.reset(new Scene::Title(text_generator));
+                scene.reset(new Scene::Title(text_generator, status.Get_Volume()));
                 break;
             case Scene::Scene_Type::Introduction:
                 scene.reset(new Scene::Introduction(text_generator));

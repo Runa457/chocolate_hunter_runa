@@ -14,7 +14,7 @@ namespace Runa::Scene
 class Title final : public Scene_Root
 {
 public:
-    Title(bn::sprite_text_generator& text_generator);
+    Title(bn::sprite_text_generator& text_generator, int volume);
     ~Title();
     bn::optional<Scene_Type> Update();
 

@@ -60,7 +60,7 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
     _magic_attack_icon.set_bg_priority(0);
     _magic_attack_icon.set_visible(false);
 
-    if (_battle_sq->Get_is_boss()) { bn::music_items::drozerix__crush.play(0.5*0.5); }
+    if (_battle_sq->Get_is_boss()) { bn::music_items::drozerix__crush.play(bn::fixed(_status.Get_Volume()*0.5) / 100); }
 
     Battle_start();
 }

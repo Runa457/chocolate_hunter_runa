@@ -164,15 +164,15 @@ void Game::Handle_Stratum()
         {
         case 1:
             _bg_stratum.set_item(bn::regular_bg_items::bg_stratum_1);
-            bn::music_items::k_jose__tropical_feels.play(bn::fixed(0.5));
+            bn::music_items::k_jose__tropical_feels.play(bn::fixed(_status.Get_Volume()) / 100);
             break;
         case 2:
             _bg_stratum.set_item(bn::regular_bg_items::bg_stratum_2);
-            bn::music_items::k_jose__merrily_strolling.play(bn::fixed(0.5));
+            bn::music_items::k_jose__merrily_strolling.play(bn::fixed(_status.Get_Volume()*0.5) / 100);
             break;
         case 3:
             _bg_stratum.set_item(bn::regular_bg_items::bg_stratum_3);
-            bn::music_items::pxf_squarevox.play(bn::fixed(0.5*0.5));
+            bn::music_items::pxf_squarevox.play(bn::fixed(_status.Get_Volume()*0.5) / 100);
             break;
         default:
             BN_ERROR("Background needed");

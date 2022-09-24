@@ -37,7 +37,7 @@ AUDIO       :=  audio
 DMGAUDIO    :=  dmg_audio
 ROMTITLE    :=  Choco_hunter
 ROMCODE     :=  Runa
-USERFLAGS   :=  
+USERFLAGS   :=  -DBN_CFG_AUDIO_MIXING_RATE=BN_AUDIO_MIXING_RATE_31_KHZ
 USERASFLAGS :=  
 USERLDFLAGS :=  
 USERLIBDIRS :=  

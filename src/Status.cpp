@@ -11,7 +11,7 @@ constexpr int MULTIPLIER_DEFAULT = 200;
 
 struct Game_data
 {
-    constexpr static const char* SAVE_CHECK = "RUNA_0912";
+    constexpr static const char* SAVE_CHECK = "RUNA_0924";
 
     char CHECK[10] = {};
     short level = 0;
@@ -42,12 +42,14 @@ struct Game_data
 
 struct Global_data
 {
-    constexpr static const char* SAVE_CHECK = "RUNA_0912";
+    constexpr static const char* SAVE_CHECK = "RUNA_0924";
 
     char CHECK[10] = {};
     int Max_level = 0;
     int Max_turn = 0;
+    short Max_stratum = 0;
     int Enemy_codex[NUM_ENEMY] = {0};
+    int Volume = 0;
 
     bool Read()
     {
@@ -70,13 +72,17 @@ Status::Status()
     {
         Max_level = _global_data.Max_level;
         Max_turn = _global_data.Max_turn;
+        Max_stratum = _global_data.Max_stratum;
         for (int i = 0; i < NUM_ENEMY; i++) { Enemy_codex[i] = _global_data.Enemy_codex[i]; }
+        Volume = _global_data.Volume;
     }
     else
     {
         Max_level = 0;
         Max_turn = 0;
+        Max_stratum = 1;
         for (int i = 0; i < NUM_ENEMY; i++) { Enemy_codex[i] = 0; }
+        Volume = 50;
     }
     WriteGlobal();
 
@@ -141,7 +147,9 @@ void Status::WriteGlobal()
     Global_data _global_data;
     _global_data.Max_level = Max_level;
     _global_data.Max_turn = Max_turn;
+    _global_data.Max_stratum = Max_stratum;
     for (int i = 0; i < NUM_ENEMY; i++) { _global_data.Enemy_codex[i] = Enemy_codex[i]; }
+    _global_data.Volume = Volume;
     _global_data.Write();
 }
 bool Status::Read()
@@ -179,15 +187,22 @@ short Status::Get_choco() { return chocolate; }
 short Status::Get_multiplier() { return choco_multiplier; }
 int Status::Get_Max_level() { return Max_level; }
 int Status::Get_Max_turn() { return Max_turn; }
+int Status::Get_Max_stratum() { return Max_stratum; }
 int Status::Get_Total_turn() { return total_turn; }
 int Status::Get_Enemy_codex(int index)
 {
     return Enemy_codex[index];
 }
+int Status::Get_Volume() { return Volume; }
 
 void Status::Defeat_enemy(int index)
 {
     ++Enemy_codex[index];
+}
+void Status::Set_Volume(bool increase)
+{
+    if (increase) { Volume = (Volume >= 95) ? 100 : Volume + 5; }
+    else { Volume = (Volume <= 5) ? 0 : Volume - 5; }
 }
 
 bool Status::Hp_change(short increment)
@@ -243,6 +258,7 @@ void Status::Next_stratum()
 {
     _value_changed = true;
     ++stratum;
+    Max_stratum = (stratum > Max_stratum) ? stratum : Max_stratum;
     choco_multiplier = MULTIPLIER_DEFAULT;
 }
 void Status::Lower_multiplier()
@@ -269,6 +285,7 @@ void Status::Game_over()
 {
     Max_level = (Level > Max_level) ? Level : Max_level;
     Max_turn = (total_turn > Max_turn) ? total_turn : Max_turn;
+    Max_stratum = (stratum > Max_stratum) ? stratum : Max_stratum;
     WriteGlobal();
 }
 

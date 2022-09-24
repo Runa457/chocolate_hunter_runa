@@ -23,6 +23,8 @@ private:
         Enemy_list,
         //Attack_list,
         Magic_list,
+        Music_volume,
+        Music_player,
         Delete_save,
         Confirm_delete_save = 255
     };
@@ -32,9 +34,13 @@ private:
     bn::sprite_text_generator& _text_generator;
     bn::vector<bn::sprite_ptr, 50> _option_text;
     bn::vector<bn::sprite_ptr, 20> _confirm_text;
+    bn::vector<bn::sprite_ptr, 20> _music_volume_text;
+    bn::vector<bn::sprite_ptr, 30> _music_text;
 
     bn::sprite_ptr _cursor;
     Options _current_option = Options::Enemy_list;
+    int _current_music_index = 0;
+    int _max_music_index = 0;
     bn::optional<Scene::Scene_Type> _nextscene;
 
     Effect::Transition _scene_start;
@@ -45,6 +51,10 @@ private:
      * @brief Handles menu cursor movement when pressing up / down button.
      */
     void Press_up_down();
+    void Press_left_right();
+    void Print_music_volume_text();
+    void Print_music_text();
+    void Save_delete_confirm();
     /**
      * @brief Handles when option is selected.
      */
