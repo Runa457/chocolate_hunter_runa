@@ -48,15 +48,23 @@ int ActorStats::Get_int()
     else if (_current_status & Status_effect_index::Attack_down) { return _intelligence * 7 / 10; }
     else { return _intelligence; }
 }
-int ActorStats::Get_spd()
+int ActorStats::Get_base_int() { return _intelligence; }
+int ActorStats::Get_final_spd()
 {
     int spd = _spd * _action_type->_speed;
     if (_current_status & Status_effect_index::Speed_up) { spd = spd * 13 / 10; }
     else if (_current_status & Status_effect_index::Speed_down) { spd = spd * 7 / 10; }
     return spd / 100;
 }
+int ActorStats::Get_spd()
+{
+    if (_current_status & Status_effect_index::Speed_up) { return _spd * 13 / 10; }
+    else if (_current_status & Status_effect_index::Speed_down) { return _spd * 7 / 10; }
+    return _spd;
+}
 int ActorStats::Get_base_spd() { return _spd; }
 Status_effect_index ActorStats::Get_status_effect() { return _current_status; }
+Status_effect_index ActorStats::Get_status_effect(int index) { return _status_effect.Get_status_effect(index); }
 int ActorStats::Get_weakness(int index) { return _element_weak->Get_weakness(index); }
 const Action::Action* ActorStats::Get_action_type() { return _action_type; }
 

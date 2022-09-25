@@ -50,28 +50,36 @@ bn::optional<Game_Type> Choice::Update()
     {
     case Effect::State::Ongoing:
         _scene_start.Update();
-        Press_left_right();
+        return bn::nullopt;
+    case Effect::State::Done:
+        break;
+    default: break;
+    }
+
+    Press_left_right();
+    if (bn::keypad::a_pressed())
+    {
+        bn::sound_items::sfx_menu_selected.play(); //<- may different sfx?
+        _next_scene = Game_Type::Battle;
+        _scene_end.Start();
+    }
+    if (bn::keypad::b_pressed())
+    {
+        bn::sound_items::sfx_menu_cancelled.play();
+        _next_scene = Game_Type::Rest;
+        _scene_end.Start();
+    }
+
+    switch (_scene_end.Get_state())
+    {
+    case Effect::State::Waiting:
+        break;
+    case Effect::State::Ongoing:
+        _scene_end.Update();
         break;
     case Effect::State::Done:
-        switch (_scene_end.Get_state())
-        {
-        case Effect::State::Waiting:
-            Press_left_right();
-            if (bn::keypad::a_pressed())
-            {
-                bn::sound_items::sfx_menu_selected.play(); //<- may different sfx?
-                _scene_end.Start();
-            }
-            break;
-        case Effect::State::Ongoing:
-            _scene_end.Update();
-            break;
-        case Effect::State::Done:
-            _next_sequence = bn::move(_sequence_option[_current_menu]);
-            return Game_Type::Battle;
-            break;
-        default: break;
-        }
+        _next_sequence = bn::move(_sequence_option[_current_menu]);
+        return _next_scene;
         break;
     default: break;
     }

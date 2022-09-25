@@ -25,9 +25,12 @@ public:
     int Get_base_def();
     int Get_armor();
     int Get_int();
+    int Get_base_int();
+    int Get_final_spd();
     int Get_spd();
     int Get_base_spd();
     Status_effect_index Get_status_effect();
+    Status_effect_index Get_status_effect(int index);
     int Get_weakness(int index);
     const Action::Action* Get_action_type();
 

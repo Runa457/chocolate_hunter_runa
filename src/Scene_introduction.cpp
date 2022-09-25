@@ -6,7 +6,7 @@ namespace Runa::Scene
 
 namespace
 {
-constexpr int MAX_PAGE = 16;
+constexpr int MAX_PAGE = 17;
 constexpr int LINES_PER_PAGE = 9;
 constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
     " Hunt for chocolates!",
@@ -34,8 +34,8 @@ constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
     "She can make potions by",
     "extracting ingredients from ",
     "chocolate to recover her health.",
-    "But she cannot restore her life",
-    "with potions.",
+    "But she cannot restore her",
+    "lifespan with potions.",
     "",
     "",
 
@@ -55,7 +55,7 @@ constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
     "one of the three paths to proceed.",
     "Each path contains series of",
     "battles.",
-    "",
+    "Press B to return to the camp.",
     "",
     "",
 
@@ -91,6 +91,16 @@ constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
 
     " In the battlefield (3):",
     "",
+    "Hold select key to check Runa's",
+    "stats and status effects in",
+    "action select menu.",
+    "In target select menu, you can",
+    "see current target's stats and",
+    "status effects as well.",
+    "",
+
+    " In the battlefield (4):",
+    "",
     "At the end of the battle,",
     "chocolates and experiences",
     "are gained.",
@@ -99,14 +109,14 @@ constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
     "every battle sequence.",
     "",
 
-    " In the battlefield (4):",
+    " In the battlefield (5):",
     "",
     "When the boss of stratum is",
     "defeated, game will proceed",
     "to next stratum, and",
     "chocolate multiplier is recovered.",
-    "",
-    "",
+    "When the chocolate multiplier is",
+    "100% or less, the boss appears.",
     "",
 
     " Game over:",
@@ -136,8 +146,8 @@ constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
     "Types of status effects include",
     "raising/lowering stats, charge,",
     "guard, etc.",
-    "",
-    "",
+    "A maximum of five status effects",
+    "are applied.",
 
     " Codexes:",
     "",

@@ -32,6 +32,7 @@ public:
     ~Status_effect();
 
     Status_effect_index Get_status_effect();
+    Status_effect_index Get_status_effect(int index);
     /**
      * @brief Add new status effect if possible
      * @param Status effect to be added

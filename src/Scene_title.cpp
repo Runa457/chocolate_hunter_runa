@@ -24,7 +24,7 @@ Title::Title(bn::sprite_text_generator& text_generator, int volume) :
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES)
 {
     Print_text();
-    if (!bn::music::playing()) { bn::music_items::my_street.play(bn::fixed(volume) / 100); }
+    if (!bn::music::playing()) { bn::music_items::my_street.play(bn::fixed(volume) / 100, false); }
     bn::bg_palettes::set_transparent_color(bn::color(16, 16, 16));
     _bg_title.set_blending_enabled(true);
 

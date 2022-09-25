@@ -104,6 +104,9 @@ private:
      */
     void Print_enemy_information();
 
+    void Print_actor_status(int index);
+    void Print_stats_changed(int x, int y, bn::string_view stat, int base, int current);
+
     /**
      * @brief Called at end of battle.
      * Gain exp, chocolate.
@@ -121,6 +124,7 @@ private:
     bn::vector<bn::sprite_ptr, 30> _battle_text;
     bn::vector<bn::sprite_ptr, 5> _damage_text;
     bn::vector<bn::sprite_ptr, 6> _turn_text;
+    bn::vector<bn::sprite_ptr, 60> _status_text;
 
     short _current_turn = 0;
 

@@ -39,6 +39,7 @@ private:
     Menu _current_menu;
     bn::array<bn::unique_ptr<Battle_Sequence>, 3> _sequence_option;
     bn::unique_ptr<Battle_Sequence>& _next_sequence;
+    bn::optional<Game_Type> _next_scene;
 
     Effect::Transition _scene_start;
     Effect::Transition _scene_end;

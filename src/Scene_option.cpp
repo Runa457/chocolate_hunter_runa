@@ -102,7 +102,7 @@ bn::optional<Scene_Type> Option::Update()
         _scene_end.Update();
         return bn::nullopt;
     case Effect::State::Done:
-        if (_current_music_index != 0) { MUSIC_LIST[0].play(bn::fixed(_status.Get_Volume()) / 100); }
+        if (_current_music_index != 0) { MUSIC_LIST[0].play(bn::fixed(_status.Get_Volume()) / 100, false); }
         return _nextscene;
     default: break;
     }
@@ -157,7 +157,7 @@ void Option::Press_left_right()
             {
                 _current_music_index -= 1;
             }
-            MUSIC_LIST[_current_music_index].play(bn::fixed(_status.Get_Volume() * MUSIC_VOLUME[_current_music_index]) / 10000);
+            MUSIC_LIST[_current_music_index].play(bn::fixed(_status.Get_Volume() * MUSIC_VOLUME[_current_music_index]) / 10000, _current_music_index != 0);
             Print_music_text();
             break;
         default:

@@ -16,13 +16,14 @@ Help her earn chocolate through battle.
 + #### In the camp
 
   Runa must eat enough chocolate in a certain amount of time. She can extend her lifespan only if she eat chocolates.\
-  She can make potions by extracting ingredients from chocolate to recover her health. But she cannot restore her life with potions.\
+  She can make potions by extracting ingredients from chocolate to recover her health. But she cannot restore her lifespan with potions.\
   Upgrading equipments by special magic costs a lot of chocolate, but it is worth it. Weapon and armor can be upgraded.
 
 + #### In the crossroad
 
   After each battle, you can choose one of the three paths to proceed.\
-  Each path contains series of battles.
+  Each path contains series of battles.\
+  Press B to return to the camp.
 
   You can check the total number of battles (S), the number of enemies (E), amount of chocolate enemies have (C).
 
@@ -35,10 +36,14 @@ Help her earn chocolate through battle.
   Most magic consumes mana.\
   She learns one spell at each level.
 
+  Hold select key to check Runa's stats and status effects in action select menu.\
+  In target select menu, you can see current target's stats and status effects as well.
+
   When battle is over, chocolates and experiences are gained.\
   The multiplier of the chocolates you get will decrease after every battle sequence.
 
-  When the boss of stratum is defeated, game will proceed to next stratum, and multiplier is recovered.
+  When the boss of stratum is defeated, game will proceed to next stratum, and multiplier is recovered.\
+  If the chocolate multiplier is 100% or less, the boss appears.
 
 + #### Game over
 
@@ -54,7 +59,8 @@ Help her earn chocolate through battle.
 + #### Status effects
 
   Some attacks have the chance to cause status effects.\
-  Types of status effects include raising/lowering stats, charge, guard, etc.
+  Types of status effects include raising/lowering stats, charge, guard, etc.\
+  A maximum of five status effects are applied.
 
 + #### Codexes
 

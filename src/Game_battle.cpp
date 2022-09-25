@@ -11,6 +11,10 @@
 #include "bn_sprite_items_icon_magic_attack.h"
 #include "bn_sprite_items_effect_sword.h"
 
+#include "bn_sprite_items_palette_text_cyan.h"
+#include "bn_sprite_items_palette_text_yellow.h"
+#include "bn_sprite_items_palette_text_white.h"
+
 //#include "bn_log.h"
 
 namespace Runa::Game
@@ -45,7 +49,7 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
     _enemy_end(static_cast<Effect::Type>(Effect::Type::Transparency | Effect::Type::Sprite_mosaic), Effect::Direction::Out, 20),
     _camera()
 {
-    _cursor.set_z_order(-10);
+    _cursor.set_z_order(-5);
     _cursor.set_bg_priority(0);
     _cursor.set_visible(false);
 
@@ -84,17 +88,23 @@ bn::optional<Game_Type> Battle::Update()
         _shield_icon.set_visible(true);
         _magic_attack_icon.set_visible(true);
 
+        if (bn::keypad::select_pressed()) { Print_actor_status(-1); }
+        else if (bn::keypad::select_released()) { _status_text.clear(); }
+
         _state = Action_select();
         switch (_state)
         {
         case State::Target_select:
+            _status_text.clear();
             Print_enemy_information();
             _status._stats.Set_action_type(&Action::Get_action_data(Action::Action_index::Slash));
             break;
         case State::Magic_select:
+            _status_text.clear();
             Print_magic_information();
             break;
         case State::Confirm:
+            _status_text.clear();
             Effect::Print_text(_text_generator, true, Effect::Alignment::Center,
                                0, 15, 10, _battle_text,
                                2, "Confirm?", "A: YES B: NO");
@@ -133,13 +143,18 @@ bn::optional<Game_Type> Battle::Update()
         _cursor.set_item(bn::sprite_items::select_cursor_down);
         _cursor.set_visible(true);
 
+        if (bn::keypad::select_pressed()) { Print_actor_status(_target_index); }
+        else if (bn::keypad::select_released()) { _status_text.clear(); }
+
         _state = Target_select();
         switch (_state)
         {
         case State::Action_select:
             _battle_text.clear();
+            _status_text.clear();
             break;
         case State::Confirm:
+            _status_text.clear();
             Effect::Print_text(_text_generator, true, Effect::Alignment::Center,
                                0, 15, 10, _battle_text,
                                2, "Confirm?", "A: YES B: NO");
@@ -233,7 +248,66 @@ bn::optional<Game_Type> Battle::Update()
     }
     return bn::nullopt;
 }
+void Battle::Print_actor_status(int index)
+{
+    ActorStats* actor = nullptr;
 
+    _status_text.clear();
+    if (index == -1)
+    {
+        actor = &_status._stats;
+        _text_generator.set_left_alignment();
+        _text_generator.generate(-116, -60, "Runa stats", _status_text);
+        _text_generator.generate(-116, -10, bn::format<12>("Weapon {}", _status.Get_weapon()), _status_text);
+        _text_generator.generate(-116, 0, bn::format<12>("Armor {}", _status.Get_armor()), _status_text);
+        _text_generator.set_right_alignment();
+        _text_generator.generate(116, -60, "Status effects", _status_text);
+    }
+    else
+    {
+        actor = &_enemies[index]._stats;
+        _text_generator.set_left_alignment();
+        _text_generator.generate(-116, -60, "Stats", _status_text);
+        _text_generator.set_right_alignment();
+        _text_generator.generate(116, -60, "Status", _status_text);
+    }
+
+    int baseatk = actor->Get_base_atk();
+    int basedef = actor->Get_base_def();
+    int basespd = actor->Get_base_spd();
+    int baseint = actor->Get_base_int();
+    int atk = actor->Get_atk();
+    int def = actor->Get_def();
+    int spd = actor->Get_spd();
+    int intel = actor->Get_int();
+
+    _text_generator.set_left_alignment();
+    Print_stats_changed(-116, -50, "ATK", baseatk, atk);
+    Print_stats_changed(-116, -40, "DEF", basedef, def);
+    Print_stats_changed(-116, -30, "SPD", basespd, spd);
+    Print_stats_changed(-116, -20, "INT", baseint, intel);
+    _text_generator.set_right_alignment();
+    for (int i = 0; i < 5; i++)
+    {
+        _text_generator.generate(116, -50+10*i, Print_status_effect(actor->Get_status_effect(i)), _status_text);
+    }
+}
+void Battle::Print_stats_changed(int x, int y, bn::string_view stat, int base, int current)
+{
+    if (base == current) { _text_generator.generate(x, y, bn::format<10>("{} {}", stat, base), _status_text); }
+    else if (base < current)
+    {
+        _text_generator.set_palette_item(bn::sprite_items::palette_text_yellow.palette_item());
+        _text_generator.generate(x, y, bn::format<15>("{} {} +{}", stat, base, current-base), _status_text);
+        _text_generator.set_palette_item(bn::sprite_items::palette_text_white.palette_item());
+    }
+    else
+    {
+        _text_generator.set_palette_item(bn::sprite_items::palette_text_cyan.palette_item());
+        _text_generator.generate(x, y, bn::format<15>("{} {} -{}", stat, base, base-current), _status_text);
+        _text_generator.set_palette_item(bn::sprite_items::palette_text_white.palette_item());
+    }
+}
 Battle::State Battle::Action_select()
 {
     if (bn::keypad::a_pressed())
@@ -373,7 +447,12 @@ void Battle::Print_enemy_information()
     _text_generator.set_center_alignment();
     _text_generator.generate(0, -60, bn::format<20>("Lv {} {}", _enemies[_target_index].Get_level(), _enemies[_target_index].Get_name()), _battle_text);
     _text_generator.generate(0, -50, bn::format<10>("Hp {}", _enemies[_target_index].Get_hp()), _battle_text);
-    _text_generator.generate(0, -40, bn::format<20>("A {} D {} S {}", _enemies[_target_index]._stats.Get_base_atk(), _enemies[_target_index]._stats.Get_base_def(), _enemies[_target_index]._stats.Get_base_spd()), _battle_text);
+
+    if (bn::keypad::select_held())
+    {
+        _status_text.clear();
+        Print_actor_status(_target_index);
+    }
 }
 
 Battle::State Battle::Confirm()
@@ -395,11 +474,11 @@ Battle::State Battle::Confirm()
 void Battle::Action_order_decision()
 {
     _action_order.clear();
-    _action_order.push_back({_status._stats.Get_spd(), -1});
+    _action_order.push_back({_status._stats.Get_final_spd(), -1});
     for (int i = 0; i < _enemies.size(); i++)
     {
         _enemies[i].Set_action_type(_current_turn);
-        _action_order.push_back({_enemies[i]._stats.Get_spd(), i});
+        _action_order.push_back({_enemies[i]._stats.Get_final_spd(), i});
     }
     bn::sort(_action_order.rbegin(), _action_order.rend());
     _action_order.push_back({-1, -2});

@@ -84,8 +84,8 @@ bn::optional<Game_Type> Rest::Update()
             _scene_end.Update();
             break;
         case Effect::State::Done:
-            return Game_Type::Choice;
-            break;
+            if (_status.Get_turns() <= 0) { return Game_Type::Exit; }
+            else { return Game_Type::Choice; }
         default: break;
         }
         break;
@@ -119,7 +119,7 @@ void Rest::Menu_selected()
     switch (_current_menu)
     {
     case Menu::Regain_life:
-        if (choco >= _cost[0])
+        if (choco >= _cost[0] && _status.Get_turns() != 30)
         {
             bn::sound_items::sfx_menu_selected.play();
 
@@ -132,14 +132,14 @@ void Rest::Menu_selected()
         }
         break;
     case Menu::Magic_potion:
-        if (choco >= _cost[1] && _status.Get_turns() > 0)
+        if (choco >= _cost[1] && _status.Get_turns() > 0 && (_status.Get_hp() < Get_hp_data(level) || _status.Get_mp() < Get_mp_data(level)))
         {
             bn::sound_items::sfx_menu_selected.play();
 
             _status.Choco_earn(-_cost[1]);
             _status.Hp_change(Get_hp_data(level));
             _status.Mp_change(Get_mp_data(level));
-            _status.turn_end();
+            //_status.turn_end();
         }
         else
         {
@@ -153,7 +153,7 @@ void Rest::Menu_selected()
 
             _status.Choco_earn(-_cost[2]);
             _status.Weapon_upgrade();
-            _status.turn_end();
+            //_status.turn_end();
             _cost[2] = Get_weapon_data(_status.Get_weapon()) * UPGRADE_MULTIPLIER;
         }
         else
@@ -168,7 +168,7 @@ void Rest::Menu_selected()
 
             _status.Choco_earn(-_cost[3]);
             _status.Armor_upgrade();
-            _status.turn_end();
+            //_status.turn_end();
             _cost[3] = Get_armor_data(_status.Get_armor()) * UPGRADE_MULTIPLIER * 2;
         }
         else

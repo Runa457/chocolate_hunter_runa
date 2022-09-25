@@ -24,6 +24,10 @@ Status_effect_index Status_effect::Get_status_effect()
     //BN_LOG("Current status effect:", _index);
     return _index;
 }
+Status_effect_index Status_effect::Get_status_effect(int index)
+{
+    return _inner_index[index];
+}
 
 void Status_effect::Set_status_effect(Status_effect_index next_status, int turns)
 {
@@ -114,6 +118,8 @@ const bn::string_view Print_status_effect(Status_effect_index status)
         return "Poison";
     case Status_effect_index::Regenerate:
         return "Regen";
+    case static_cast<Status_effect_index>(Status_effect_index::Charge | Status_effect_index::Attack_up | Status_effect_index::Defence_up):
+        return "Promotion";
     default:
         BN_ERROR("Not implemented status effect");
         break;
