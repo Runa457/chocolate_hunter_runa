@@ -15,7 +15,7 @@ Help her earn chocolate through battle.
 
 + #### In the camp
 
-  She must eat enough chocolate in a certain amount of time. She can extend her lifespan only if she eat chocolates.\
+  Runa must eat enough chocolate in a certain amount of time. She can extend her lifespan only if she eat chocolates.\
   She can make potions by extracting ingredients from chocolate to recover her health. But she cannot restore her life with potions.\
   Upgrading equipments by special magic costs a lot of chocolate, but it is worth it. Weapon and armor can be upgraded.
 
@@ -31,10 +31,11 @@ Help her earn chocolate through battle.
   She can fight with two types of attack.\
   Melee type attack is physical element attack. It costs nothing, but weak.
 
-  She can use various magic to strengthen self or attack enemies.
-  Magic type attack is powerful, but it costs mana. It can target single or multiple enemy.
+  She can use various magic to strengthen herself or attack the enemies.\
+  Most magic consumes mana.\
+  She learns one spell at each level.
 
-  When battle is over, chocolates and experiences are gained.
+  When battle is over, chocolates and experiences are gained.\
   The multiplier of the chocolates you get will decrease after every battle sequence.
 
   When the boss of stratum is defeated, game will proceed to next stratum, and multiplier is recovered.
@@ -58,3 +59,11 @@ Help her earn chocolate through battle.
 + #### Codexes
 
   From the options menu, you can read the codexes for the enemies encountered and the spells learned.
+
++ #### Tips
+
+  Each enemy has its own weaknesses and behavioral patterns.\
+  Based on this information, you can gain the upper hand in battle.
+
+  Avoiding enemies too much makes it difficult to deal with the boss later.\
+  It can be advantageous to take out as many enemies as possible in your current state.

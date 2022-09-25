@@ -6,7 +6,7 @@ namespace Runa::Scene
 
 namespace
 {
-constexpr int MAX_PAGE = 14;
+constexpr int MAX_PAGE = 16;
 constexpr int LINES_PER_PAGE = 9;
 constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
     " Hunt for chocolates!",
@@ -114,7 +114,7 @@ constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
     "When health reaches zero or",
     "lifespan (turns) is over,",
     "the game ends.",
-    "You can view your current game's",
+    "You can see your current game's",
     "score and your best record ever.",
     "",
     "",
@@ -146,6 +146,26 @@ constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
     "the enemies encountered and",
     "the spells learned.",
     "",
+    "",
+    "",
+
+    " Tips (1):",
+    "",
+    "Each enemy has its own weaknesses",
+    "and behavioral patterns.",
+    "Based on this information, you can",
+    "gain the upper hand in battle.",
+    "",
+    "",
+    "",
+
+    " Tips (2):",
+    "",
+    "Avoiding enemies too much makes it",
+    "difficult to deal with the boss later.",
+    "It can be advantageous to take out",
+    "as many enemies as possible in",
+    "your current state.",
     "",
     "",
 };

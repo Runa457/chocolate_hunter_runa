@@ -187,7 +187,7 @@ bn::optional<Game_Type> Battle::Update()
         }
         break;
     case State::End_turn:
-        if (_status.turn_end()) { return Game_Type::Exit; }
+        if (_status.turn_end() && _num_enemies > 0) { return Game_Type::Exit; }
 
         if (_num_enemies <= 0)
         {
@@ -213,7 +213,11 @@ bn::optional<Game_Type> Battle::Update()
             bn::sound_items::sfx_menu_selected.play();
 
             _battle_text.clear();
-            if (_battle_sq->To_next_seq()) { return Game_Type::Battle; }
+            if (_battle_sq->To_next_seq())
+            {
+                if (_status.Get_turns() <= 0) { return Game_Type::Exit; }
+                return Game_Type::Battle;
+            }
             else
             {
                 _status.Lower_multiplier();

@@ -175,7 +175,9 @@ void Game::Handle_Stratum()
             bn::music_items::pxf_squarevox.play(bn::fixed(_status.Get_Volume()*0.5) / 100);
             break;
         default:
-            BN_ERROR("Background needed");
+            _bg_stratum.set_item(bn::regular_bg_items::bg_stratum_3);
+            bn::music_items::pxf_squarevox.play(bn::fixed(_status.Get_Volume()*0.5) / 100);
+            //BN_ERROR("Background needed");
             break;
         }
     }

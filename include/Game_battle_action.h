@@ -22,6 +22,7 @@ enum class Action_index : short
     Super_Charge,
     Promotion,
     Heal_I,
+    Heal_II,
     Attack_Up,
     Defense_Up,
     Barrier,
@@ -38,6 +39,7 @@ enum class Action_index : short
     Jump,
     Pierce,
     En_Passant,
+    Sword_Beam,
     Quicksand, // Earth I
     Fire_I,
     Ice_I,
@@ -57,6 +59,7 @@ enum class Action_index : short
 
     // Every enemy target
     Area_Heal_I,
+    Area_Heal_II,
     Bless,
     Morale_Boost,
     Protection,
@@ -98,8 +101,13 @@ enum Magic_index : short
 
     Cure,
     Regenerate,
-    Blood_Cast,
     Lightning_III,
+    Sword_Beam,
+    Blood_Cast,
+
+    //Fusion,
+    //Supernova,
+    //Blackhole,
 
     END_OF_INDEX
 };

@@ -14,9 +14,19 @@ Battle_Sequence::Battle_Sequence(bn::random& random_generator,
     _total_choco(0),
     _total_enemy(0)
 {
-    if (stratum > MAXSTRATUM) { stratum = MAXSTRATUM; }
-    short enemy_index_start = Get_enemy_index(stratum-1) + 1;
-    short enemy_index_end = Get_enemy_index(stratum);
+    short enemy_index_start;
+    short enemy_index_end;
+
+    if (stratum > MAXSTRATUM)
+    {
+        enemy_index_start = Get_enemy_index(MAXSTRATUM-1) + 1;
+        enemy_index_end = Get_enemy_index(MAXSTRATUM);
+    }
+    else
+    {
+    enemy_index_start = Get_enemy_index(stratum-1) + 1;
+    enemy_index_end = Get_enemy_index(stratum);
+    }
 
     if (is_boss)
     {

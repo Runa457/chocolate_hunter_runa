@@ -158,7 +158,7 @@ constexpr Action::Action_index Queen_White[] = {
     Action::Action_index::Ice_II,
 };
 constexpr Action::Action_index King_Black[] = {
-    Action::Action_index::Area_Heal_I,
+    Action::Action_index::Area_Heal_II,
     Action::Action_index::Guard,
     Action::Action_index::Slash
 };
@@ -187,7 +187,16 @@ constexpr Action::Action_index Boss_2[] = {
     Action::Action_index::Defense_Up,
 };
 constexpr Action::Action_index Boss_3[] = {
-    Action::Action_index::Throw,
+    Action::Action_index::Attack_Up,
+    Action::Action_index::Pierce,
+    Action::Action_index::Poison,
+    Action::Action_index::Jump,
+    Action::Action_index::Charge,
+    Action::Action_index::Fire_III,
+    Action::Action_index::Guard,
+    Action::Action_index::Hemostasis,
+    Action::Action_index::Heal_II,
+    Action::Action_index::Barrier,
 };
 
 constexpr Enemy_pattern Enemy_pattern_data[] = {
@@ -233,7 +242,7 @@ constexpr Enemy_pattern Enemy_pattern_data[] = {
 
     Enemy_pattern(5, Boss_1), // Boss_1
     Enemy_pattern(8, Boss_2), // Boss_2
-    Enemy_pattern(1, Boss_3), // Boss_3
+    Enemy_pattern(10, Boss_3), // Boss_3
 };
 
 const Enemy_pattern& Get_enemy_pattern_data(Pattern_index index)

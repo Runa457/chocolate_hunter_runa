@@ -148,12 +148,12 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
 
     "Resides in Chess Castle.", // black queen
     "Uses high level fire magic.",
-    "",
+    "Has high magic resistance.",
     "",
 
     "Resides in Chess Castle.", // white queen
     "Uses high level ice magic.",
-    "",
+    "Has high magic resistance.",
     "",
 
     "Resides in Chess Castle.", // black king
@@ -166,10 +166,10 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "increases regeneration speed.",
     "",
 
-    "", // unicorn * 3rd stratum boss
-    "",
-    "",
-    "",
+    "The ultimate weapon hidden in", // unicorn * 3rd stratum boss
+    "the Chess Castle. The final",
+    "gateway to crossing the portal",
+    "to the Desert Facility.",
 };
 constexpr int TEXT_X = -102;
 constexpr int TEXT_Y = -64;
