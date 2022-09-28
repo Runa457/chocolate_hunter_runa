@@ -73,3 +73,5 @@ Help her earn chocolate through battle.
 
   Avoiding enemies too much makes it difficult to deal with the boss later.\
   It can be advantageous to take out as many enemies as possible in your current state.
+
+  Hold A button to speed up the battle.

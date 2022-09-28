@@ -31,12 +31,12 @@ constexpr Action Action_data[] = {
 
     Action("Regenerate", Target_type::None, Action_type::None, Element_type::None,
     0, 0, 0, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),// sound
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_action_heal),
 
     // Self target
     Action("Guard", Target_type::Self_target, Action_type::Normal_attack, Element_type::None,
     0, 0, 500, Status_effect_index::Guard, 100, 1,
-    bn::sprite_items::effect_guard, 2, bn::sound_items::sfx_battle_sword),// sound
+    bn::sprite_items::effect_guard, 2, bn::sound_items::sfx_action_increase2),
 
     Action("Charge", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     10, 0, 150, Status_effect_index::Charge, 100, 2,
@@ -52,43 +52,43 @@ constexpr Action Action_data[] = {
 
     Action("Heal I", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     15, -100, 100, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),// sound
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_action_heal),
 
     Action("Heal II", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     30, -250, 100, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),// sound
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_action_heal),
 
     Action("Attack Up", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     7, 0, 100, Status_effect_index::Attack_up, 100, 5,
-    bn::sprite_items::effect_red_arrow_up, 2, bn::sound_items::sfx_battle_magic),// sound
+    bn::sprite_items::effect_red_arrow_up, 2, bn::sound_items::sfx_action_increase),
 
     Action("Defense Up", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     7, 0, 100, Status_effect_index::Defence_up, 100, 5,
-    bn::sprite_items::effect_blue_arrow_up, 2, bn::sound_items::sfx_battle_magic),// sound
+    bn::sprite_items::effect_blue_arrow_up, 2, bn::sound_items::sfx_action_increase),
 
     Action("Barrier", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     10, 0, 100, Status_effect_index::Guard, 100, 5,
-    bn::sprite_items::effect_guard, 2, bn::sound_items::sfx_battle_magic),//
+    bn::sprite_items::effect_guard, 2, bn::sound_items::sfx_action_increase2),
 
     Action("Focus", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     -10, 0, 100, Status_effect_index::Defence_down, 100, 3,
     bn::sprite_items::effect_focus, 2, bn::sound_items::sfx_battle_magic),//
 
     Action("Blood Cast", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
-    -40, 100, 100, Status_effect_index::None, 0, 0,
+    -40, 75, 100, Status_effect_index::None, 0, 0,
     bn::sprite_items::effect_blood_cast, 2, bn::sound_items::sfx_battle_magic),//
 
     Action("Regenerate", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     15, 0, 100, Status_effect_index::Regenerate, 100, 5,
-    bn::sprite_items::effect_regen, 2, bn::sound_items::sfx_battle_magic),//
+    bn::sprite_items::effect_regen, 2, bn::sound_items::sfx_action_heal),
 
     Action("Cure", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     5, -30, 100, Status_effect_index::Poison, 100, -99,
-    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),//
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_action_heal),
 
     Action("Hemostatis", Target_type::Self_target, Action_type::Magic_attack, Element_type::None,
     5, -30, 100, Status_effect_index::Bleeding, 100, -99,
-    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),//
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_action_heal),
 
     // Single target
     Action("Slash", Target_type::Single_target, Action_type::Normal_attack, Element_type::Physical,
@@ -145,11 +145,11 @@ constexpr Action Action_data[] = {
 
     Action("Weaken", Target_type::Single_target, Action_type::Magic_attack, Element_type::None,
     8, 0, 100, Status_effect_index::Attack_down, 100, 5,
-    bn::sprite_items::effect_red_arrow_down, 2, bn::sound_items::sfx_battle_magic),//
+    bn::sprite_items::effect_red_arrow_down, 2, bn::sound_items::sfx_action_decrease),
 
     Action("Soften", Target_type::Single_target, Action_type::Magic_attack, Element_type::None,
     8, 0, 100, Status_effect_index::Defence_down, 100, 5,
-    bn::sprite_items::effect_blue_arrow_down, 2, bn::sound_items::sfx_battle_magic),//
+    bn::sprite_items::effect_blue_arrow_down, 2, bn::sound_items::sfx_action_decrease),
 
     Action("Poison", Target_type::Single_target, Action_type::Magic_attack, Element_type::None,
     10, 0, 100, Status_effect_index::Poison, 95, 5,
@@ -179,31 +179,31 @@ constexpr Action Action_data[] = {
     // Every enemy target
     Action("Area Heal I", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
     30, -100, 80, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),// sound
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_action_heal),
 
     Action("Area Heal II", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
     90, -250, 80, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),// sound
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_action_heal),
 
     Action("Bless", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
     40, 0, 100, Status_effect_index::Regenerate, 100, 3,
-    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_battle_magic),// sound
+    bn::sprite_items::effect_heal, 2, bn::sound_items::sfx_action_heal),
 
     Action("Morale Boost", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
     28, 0, 100, Status_effect_index::Attack_up, 100, 5,
-    bn::sprite_items::effect_red_arrow_up, 2, bn::sound_items::sfx_battle_magic),// sound
+    bn::sprite_items::effect_red_arrow_up, 2, bn::sound_items::sfx_action_increase),
 
     Action("Protection", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
     28, 0, 100, Status_effect_index::Defence_up, 100, 5,
-    bn::sprite_items::effect_blue_arrow_up, 2, bn::sound_items::sfx_battle_magic),// sound
+    bn::sprite_items::effect_blue_arrow_up, 2, bn::sound_items::sfx_action_increase),
 
     Action("Charger", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
     35, 0, 60, Status_effect_index::Charge, 100, 2,
-    bn::sprite_items::effect_charge, 2, bn::sound_items::sfx_battle_magic),// sound
+    bn::sprite_items::effect_charge, 2, bn::sound_items::sfx_battle_magic),
 
     Action("Castling", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::None,
     35, 0, 60, Status_effect_index::Guard, 100, 2,
-    bn::sprite_items::effect_guard, 2, bn::sound_items::sfx_battle_magic),// sound
+    bn::sprite_items::effect_guard, 2, bn::sound_items::sfx_action_increase2),
 
     Action("Lightning II", Target_type::Every_enemy_target, Action_type::Magic_attack, Element_type::Lightning,
     12, 100, 200, Status_effect_index::None, 0, 0,
@@ -224,7 +224,7 @@ constexpr Action Action_data[] = {
 
     Action("Explosion", Target_type::Entire_target, Action_type::Normal_attack, Element_type::Fire,
     0, 500, 50, Status_effect_index::None, 0, 0,
-    bn::sprite_items::effect_fire, 3, bn::sound_items::sfx_battle_damage_taken),//
+    bn::sprite_items::effect_fire, 3, bn::sound_items::sfx_action_explode),
 
 };
 

@@ -152,9 +152,13 @@ constexpr Action::Action_index Rook_White[] = {
     Action::Action_index::Guard,
 };
 constexpr Action::Action_index Queen_Black[] = {
+    Action::Action_index::Weaken,
+    Action::Action_index::Fire_II,
     Action::Action_index::Fire_II,
 };
 constexpr Action::Action_index Queen_White[] = {
+    Action::Action_index::Soften,
+    Action::Action_index::Ice_II,
     Action::Action_index::Ice_II,
 };
 constexpr Action::Action_index King_Black[] = {
@@ -235,8 +239,8 @@ constexpr Enemy_pattern Enemy_pattern_data[] = {
     Enemy_pattern(5, Bishop_White), // Bishop_White
     Enemy_pattern(3, Rook_Black), // Rook_Black
     Enemy_pattern(3, Rook_White), // Rook_White
-    Enemy_pattern(1, Queen_Black), // Queen_Black
-    Enemy_pattern(1, Queen_White), // Queen_White
+    Enemy_pattern(3, Queen_Black), // Queen_Black
+    Enemy_pattern(3, Queen_White), // Queen_White
     Enemy_pattern(3, King_Black), // King_Black
     Enemy_pattern(3, King_White), // King_White
 

@@ -110,7 +110,7 @@ bn::optional<Scene_Type> Game::Update()
         switch (*_game_mode)
         {
         case Runa::Game::Game_Type::Battle:
-            _subscene.reset(new Runa::Game::Battle(_text_generator, _random, _status, _player_sprite, _battle_sq));
+            _subscene.reset(new Runa::Game::Battle(_text_generator, _random, _status, _player_sprite, _battle_sq, _print_actor_status));
             break;
         case Runa::Game::Game_Type::Result:
             if (bn::keypad::a_pressed())

@@ -31,7 +31,8 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
                bn::random& random_generator,
                Status& status,
                bn::sprite_ptr& player_sprite,
-               bn::unique_ptr<Battle_Sequence>& battle_sq) :
+               bn::unique_ptr<Battle_Sequence>& battle_sq,
+               bool& print_actor_status) :
     _status(status),
     _random(random_generator),
     _state(State::Start_turn),
@@ -39,6 +40,7 @@ Battle::Battle(bn::sprite_text_generator& text_generator,
     _battle_sq(battle_sq),
     _enemies(battle_sq->Get_current_enemies()),
     _player_sprite(player_sprite),
+    _print_actor_status(print_actor_status),
     _sword_attack_icon(bn::sprite_items::icon_sword_attack.create_sprite(ATTACK_ICON_X, ATTACK_ICON_Y)),
     _shield_icon(bn::sprite_items::icon_shield.create_sprite(ATTACK_ICON_X+16, ATTACK_ICON_Y)),
     _magic_attack_icon(bn::sprite_items::icon_magic_attack.create_sprite(ATTACK_ICON_X+32, ATTACK_ICON_Y)),
@@ -88,8 +90,14 @@ bn::optional<Game_Type> Battle::Update()
         _shield_icon.set_visible(true);
         _magic_attack_icon.set_visible(true);
 
-        if (bn::keypad::select_pressed()) { Print_actor_status(-1); }
-        else if (bn::keypad::select_released()) { _status_text.clear(); }
+        if (_print_actor_status) { Print_actor_status(-1); }
+
+        if (bn::keypad::select_pressed())
+        {
+            Toggle_print_actor_status();
+            if (_print_actor_status) { Print_actor_status(-1); }
+            else { _status_text.clear(); }
+        }
 
         _state = Action_select();
         switch (_state)
@@ -143,8 +151,12 @@ bn::optional<Game_Type> Battle::Update()
         _cursor.set_item(bn::sprite_items::select_cursor_down);
         _cursor.set_visible(true);
 
-        if (bn::keypad::select_pressed()) { Print_actor_status(_target_index); }
-        else if (bn::keypad::select_released()) { _status_text.clear(); }
+        if (bn::keypad::select_pressed())
+        {
+            Toggle_print_actor_status();
+            if (_print_actor_status) { Print_actor_status(_target_index); }
+            else { _status_text.clear(); }
+        }
 
         _state = Target_select();
         switch (_state)
@@ -258,8 +270,8 @@ void Battle::Print_actor_status(int index)
         actor = &_status._stats;
         _text_generator.set_left_alignment();
         _text_generator.generate(-116, -60, "Runa stats", _status_text);
-        _text_generator.generate(-116, -10, bn::format<12>("Weapon {}", _status.Get_weapon()), _status_text);
-        _text_generator.generate(-116, 0, bn::format<12>("Armor {}", _status.Get_armor()), _status_text);
+        _text_generator.generate(-116, -10, bn::format<12>("Weapon {}", actor->Get_weapon()), _status_text);
+        _text_generator.generate(-116, 0, bn::format<12>("Armor {}", actor->Get_armor()), _status_text);
         _text_generator.set_right_alignment();
         _text_generator.generate(116, -60, "Status effects", _status_text);
     }
@@ -307,6 +319,11 @@ void Battle::Print_stats_changed(int x, int y, bn::string_view stat, int base, i
         _text_generator.generate(x, y, bn::format<15>("{} {} -{}", stat, base, base-current), _status_text);
         _text_generator.set_palette_item(bn::sprite_items::palette_text_white.palette_item());
     }
+}
+void Battle::Toggle_print_actor_status()
+{
+    if (_print_actor_status) { _print_actor_status = false; }
+    else { _print_actor_status = true; }
 }
 Battle::State Battle::Action_select()
 {
@@ -448,7 +465,7 @@ void Battle::Print_enemy_information()
     _text_generator.generate(0, -60, bn::format<20>("Lv {} {}", _enemies[_target_index].Get_level(), _enemies[_target_index].Get_name()), _battle_text);
     _text_generator.generate(0, -50, bn::format<10>("Hp {}", _enemies[_target_index].Get_hp()), _battle_text);
 
-    if (bn::keypad::select_held())
+    if (_print_actor_status)
     {
         _status_text.clear();
         Print_actor_status(_target_index);

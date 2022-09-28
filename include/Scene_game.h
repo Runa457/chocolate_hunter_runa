@@ -39,6 +39,8 @@ private:
     bn::unique_ptr<Runa::Game::Game_Root> _subscene;
     bn::optional<Runa::Game::Game_Type> _game_mode;
 
+    bool _print_actor_status = false;
+
     bn::sprite_text_generator& _text_generator;
     bn::vector<bn::sprite_ptr, 60> _status_text;
     bn::vector<bn::sprite_ptr, 2> _choco_icon;

@@ -18,7 +18,8 @@ public:
            bn::random& random_generator,
            Status& status,
            bn::sprite_ptr& player_sprite,
-           bn::unique_ptr<Battle_Sequence>& battle_sq);
+           bn::unique_ptr<Battle_Sequence>& battle_sq,
+           bool& print_actor_status);
     ~Battle();
     bn::optional<Game_Type> Update();
 
@@ -106,6 +107,7 @@ private:
 
     void Print_actor_status(int index);
     void Print_stats_changed(int x, int y, bn::string_view stat, int base, int current);
+    void Toggle_print_actor_status();
 
     /**
      * @brief Called at end of battle.
@@ -134,6 +136,8 @@ private:
     bn::vector<bn::sprite_ptr, 3> _enemy_sprite;
     bn::sprite_ptr& _player_sprite;
     //bn::vector<bn::sprite_ptr, 3> _enemy_hp_sprite;
+
+    bool &_print_actor_status;
 
     bn::sprite_ptr _sword_attack_icon;
     bn::sprite_ptr _shield_icon;

@@ -106,6 +106,7 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "Resides in front of the gate",
     "to the Chess Castle.",
 
+
     "Resides in Chess Castle.", // black pawn
     "It's the most basic unit, but",
     "it becomes very powerful",
@@ -149,12 +150,12 @@ constexpr bn::string_view TEXT_LIST[4 * MAX_PAGE] = {
     "Resides in Chess Castle.", // black queen
     "Uses high level fire magic.",
     "Has high magic resistance.",
-    "",
+    "Decreases offensive power.",
 
     "Resides in Chess Castle.", // white queen
     "Uses high level ice magic.",
     "Has high magic resistance.",
-    "",
+    "Decreases defensive power.",
 
     "Resides in Chess Castle.", // black king
     "Heals allies with the dignity",

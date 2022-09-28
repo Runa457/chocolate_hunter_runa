@@ -6,7 +6,7 @@ namespace Runa::Scene
 
 namespace
 {
-constexpr int MAX_PAGE = 17;
+constexpr int MAX_PAGE = 18;
 constexpr int LINES_PER_PAGE = 9;
 constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
     " Hunt for chocolates!",
@@ -91,7 +91,7 @@ constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
 
     " In the battlefield (3):",
     "",
-    "Hold select key to check Runa's",
+    "Press select key to check Runa's",
     "stats and status effects in",
     "action select menu.",
     "In target select menu, you can",
@@ -176,6 +176,16 @@ constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
     "It can be advantageous to take out",
     "as many enemies as possible in",
     "your current state.",
+    "",
+    "",
+
+    " Tips (3):",
+    "",
+    "Hold A button to speed up",
+    "the battle.",
+    "",
+    "",
+    "",
     "",
     "",
 };
