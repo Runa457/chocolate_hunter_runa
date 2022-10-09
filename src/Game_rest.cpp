@@ -31,7 +31,8 @@ Rest::Rest(bn::sprite_text_generator& text_generator,
     _cost{30 + (status.Get_stratum()-1) * 5,
           50 + status.Get_level() * 5,
           Get_weapon_data(status.Get_weapon()) * UPGRADE_MULTIPLIER,
-          Get_armor_data(status.Get_armor()) * UPGRADE_MULTIPLIER * 2}
+          Get_armor_data(status.Get_armor()) * UPGRADE_MULTIPLIER * 2},
+    _exit(false)
 {
     _icon_sprite.push_back(bn::sprite_items::icon_regain_turn.create_sprite(CURSOR_X, 0));
     _icon_sprite.push_back(bn::sprite_items::icon_potion.create_sprite(CURSOR_X+CURSOR_X_INT, 0));
@@ -65,6 +66,27 @@ bn::optional<Game_Type> Rest::Update()
         switch (_scene_end.Get_state())
         {
         case Effect::State::Waiting:
+            if (bn::keypad::b_pressed())
+            {
+                bn::sound_items::sfx_menu_cancelled.play();
+                if (_exit)
+                {
+                    _save_text.clear();
+                    _scene_end.Start();
+                }
+                else
+                {
+                    _save_text.clear();
+                    _exit = true;
+                    Effect::Print_text(_text_generator, true, Effect::Alignment::Center, 0, -30, 10, _save_text, 2, "Press B again to exit.", "Unsaved data will be lost.");
+                }
+            }
+            else if (_exit && bn::keypad::any_pressed())
+            {
+                _save_text.clear();
+                _exit = false;
+                break;
+            }
             Press_left_right();
             if (bn::keypad::a_pressed()) { Menu_selected(); }
             if (bn::keypad::r_pressed())
@@ -84,7 +106,8 @@ bn::optional<Game_Type> Rest::Update()
             _scene_end.Update();
             break;
         case Effect::State::Done:
-            if (_status.Get_turns() <= 0) { return Game_Type::Exit; }
+            if (_exit) { return Game_Type::Exit; }
+            if (_status.Get_turns() <= 0) { return Game_Type::Gameover; }
             else { return Game_Type::Choice; }
         default: break;
         }

@@ -8,8 +8,9 @@ enum class Game_Type : char
 {
     Battle,
     Result,
-    Rest,
     Choice,
+    Gameover,
+    Rest,
     Exit
 };
 

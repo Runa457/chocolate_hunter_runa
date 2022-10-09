@@ -112,32 +112,13 @@ bn::optional<Scene_Type> Game::Update()
         case Runa::Game::Game_Type::Battle:
             _subscene.reset(new Runa::Game::Battle(_text_generator, _random, _status, _player_sprite, _battle_sq, _print_actor_status));
             break;
-        case Runa::Game::Game_Type::Result:
-            if (bn::keypad::a_pressed())
-            {
-                _status.Read();
-
-                _player_sprite.set_blending_enabled(true);
-                _bg_stratum.set_blending_enabled(true);
-                _bg_interface.set_blending_enabled(true);
-                for (bn::sprite_ptr& icon_sprite : _choco_icon)
-                {
-                    icon_sprite.set_blending_enabled(true);
-                }
-                for (bn::sprite_ptr& text_sprite : _status_text)
-                {
-                    text_sprite.set_blending_enabled(true);
-                }
-                _scene_end.Start();
-            }
-            break;
         case Runa::Game::Game_Type::Rest:
             _subscene.reset(new Runa::Game::Rest(_text_generator, _status));
             break;
         case Runa::Game::Game_Type::Choice:
             _subscene.reset(new Runa::Game::Choice(_text_generator, _random, _status, _battle_sq));
             break;
-        case Runa::Game::Game_Type::Exit:
+        case Runa::Game::Game_Type::Gameover:
             _subscene.reset();
             _status.Game_over();
             _status.Value_changed();
@@ -147,6 +128,30 @@ bn::optional<Scene_Type> Game::Update()
             _text_generator.generate(0, 0, bn::format<12>("Score: {}", _status.Get_Total_turn()), _status_text);
             _text_generator.generate(0, 12, bn::format<16>("Highscore: {}", _status.Get_Max_turn()), _status_text);
             _game_mode = Runa::Game::Game_Type::Result;
+            break;
+        case Runa::Game::Game_Type::Result:
+            if (bn::keypad::a_pressed())
+            {
+                _game_mode = Runa::Game::Game_Type::Exit;
+            }
+            break;
+        case Runa::Game::Game_Type::Exit:
+            if (bn::music::playing()) { bn::music::stop(); }
+            _subscene.reset();
+            _status.Read();
+
+            _player_sprite.set_blending_enabled(true);
+            _bg_stratum.set_blending_enabled(true);
+            _bg_interface.set_blending_enabled(true);
+            for (bn::sprite_ptr& icon_sprite : _choco_icon)
+            {
+                icon_sprite.set_blending_enabled(true);
+            }
+            for (bn::sprite_ptr& text_sprite : _status_text)
+            {
+                text_sprite.set_blending_enabled(true);
+            }
+            _scene_end.Start();
             break;
         default:
             BN_ERROR("Unknown Scene type: ", (int)*_game_mode);

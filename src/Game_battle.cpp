@@ -198,7 +198,7 @@ bn::optional<Game_Type> Battle::Update()
     case State::Effect_action:
         if (Effect_action())
         {
-            if (_status.Get_hp() <= 0) { return Game_Type::Exit; }
+            if (_status.Get_hp() <= 0) { return Game_Type::Gameover; }
             _battle_text.clear();
 
             _effect_cooltime = 10;
@@ -214,7 +214,7 @@ bn::optional<Game_Type> Battle::Update()
         }
         break;
     case State::End_turn:
-        if (_status.turn_end() && _num_enemies > 0) { return Game_Type::Exit; }
+        if (_status.turn_end() && _num_enemies > 0) { return Game_Type::Gameover; }
 
         if (_num_enemies <= 0)
         {
@@ -242,7 +242,7 @@ bn::optional<Game_Type> Battle::Update()
             _battle_text.clear();
             if (_battle_sq->To_next_seq())
             {
-                if (_status.Get_turns() <= 0) { return Game_Type::Exit; }
+                if (_status.Get_turns() <= 0) { return Game_Type::Gameover; }
                 return Game_Type::Battle;
             }
             else

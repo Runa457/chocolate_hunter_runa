@@ -17,7 +17,8 @@ Help her earn chocolate through battle.
 
   Runa must eat enough chocolate in a certain amount of time. She can extend her lifespan only if she eat chocolates.\
   She can make potions by extracting ingredients from chocolate to recover her health. But she cannot restore her lifespan with potions.\
-  Upgrading equipments by special magic costs a lot of chocolate, but it is worth it. Weapon and armor can be upgraded.
+  Upgrading equipments by special magic costs a lot of chocolate, but it is worth it. Weapon and armor can be upgraded.\
+  Press B twice to exit to the main menu, but unsaved data will be lost.
 
 + #### In the crossroad
 
@@ -49,6 +50,15 @@ Help her earn chocolate through battle.
 
   If health goes to zero or lifespan (turns) is over, the game is over.\
   You can see your current game's score and your best record ever.
+
++ #### Target type
+
+  There are 5 types of action's target.\
+  Self: action on self.\
+  Single: select one target.\
+  Multi: select a random target three times.\
+  Enemies: target all enemies.\
+  Entire: target all enemies & self.
 
 + #### Elements
 

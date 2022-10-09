@@ -32,7 +32,7 @@ private:
 
     bn::sprite_text_generator& _text_generator;
     bn::vector<bn::sprite_ptr, 20> _text_sprite;
-    bn::vector<bn::sprite_ptr, 5> _save_text;
+    bn::vector<bn::sprite_ptr, 20> _save_text;
     bn::vector<bn::sprite_ptr, 4> _icon_sprite;
     bn::sprite_ptr _cursor;
 
@@ -43,6 +43,7 @@ private:
     Menu _current_menu;
     int _cost[4];
 
+    bool _exit;
 };
 
 } // namespace Runa::Game

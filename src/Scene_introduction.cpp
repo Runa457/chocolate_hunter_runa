@@ -6,7 +6,7 @@ namespace Runa::Scene
 
 namespace
 {
-constexpr int MAX_PAGE = 18;
+constexpr int MAX_PAGE = 20;
 constexpr int LINES_PER_PAGE = 9;
 constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
     " Hunt for chocolates!",
@@ -45,6 +45,16 @@ constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
     "special magic costs a lot of",
     "chocolate, but it is worth it.",
     "Weapon and armor can be upgraded.",
+    "",
+    "",
+    "",
+
+    " In the camp (4):",
+    "",
+    "Press B twice to exit to the",
+    "main menu, but unsaved data will",
+    "be lost.",
+    "",
     "",
     "",
     "",
@@ -129,6 +139,16 @@ constexpr bn::string_view INTRO_LIST[LINES_PER_PAGE * MAX_PAGE] = {
     "",
     "",
 
+    " Target type:",
+    "",
+    "There're 5 types of action's target.",
+    "Self: action on self.",
+    "Single: select one target.",
+    "Multi: select a random target",
+    "      three times.",
+    "Enemies: target all enemies.",
+    "Entire: target all enemies & self.",
+
     " Elements:",
     "",
     "There are four types of elements:",
@@ -201,7 +221,7 @@ Introduction::Introduction(bn::sprite_text_generator& text_generator) :
     _scene_end(Effect::Type::Transparency, Effect::Direction::Out, TRANSITION_FRAMES)
 {
     Effect::Print_text(_text_generator, true, Effect::Alignment::Left, INTRO_X, INTRO_Y + INTRO_Y_INT * 10, INTRO_Y_INT,
-                       _sub_text, 2, "Press left or right key to", "switch page, B to return");
+                       _sub_text, 2, "Press left or right to switch page,", "B to return");
     for (bn::sprite_ptr& text_sprite : _sub_text)
     {
         text_sprite.set_blending_enabled(true);
