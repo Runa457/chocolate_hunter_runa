@@ -107,7 +107,7 @@ Help her earn chocolate through battle.
 
 -----
 
-Licenses
+### Licenses
 
 Source codes are licensed under the MIT license.\
 Assets are licensed under several different licenses.
