@@ -2,9 +2,22 @@
 
 **GBA 2022 project**
 
-Sequencial battle simulator game for GBA.
+Sequencial battle simulator game for GBA.\
+You can select enemies to fight, and use various strategies to defeat them.
 
-This game is made with Butano 10.5.0.
+![title](./screenshots/34.png) 
+![introduction](./screenshots/35.png) 
+![options](./screenshots/36.png)
+
+![codex1](./screenshots/37.png) 
+![codex2](./screenshots/38.png)
+
+![game1](./screenshots/42.png) 
+![game2](./screenshots/47.png) 
+![game3](./screenshots/48.png)
+
+This game is made with Butano 10.5.0.\
+https://github.com/GValiente/butano
 
 -----
 
@@ -15,9 +28,15 @@ Help her earn chocolate through battle.
 
 + #### In the camp
 
-  Runa must eat enough chocolate in a certain amount of time. She can extend her lifespan only if she eat chocolates.\
-  She can make potions by extracting ingredients from chocolate to recover her health. But she cannot restore her lifespan with potions.\
-  Upgrading equipments by special magic costs a lot of chocolate, but it is worth it. Weapon and armor can be upgraded.\
+  Runa must eat enough chocolate in a certain amount of time.\
+  She can extend her lifespan only if she eat chocolates.
+
+  She can make potions by extracting ingredients from chocolate to recover her health.\
+  But she cannot restore her lifespan with potions.
+
+  Upgrading equipments by special magic costs a lot of chocolate, but it is worth it.\
+  Weapon and armor can be upgraded.
+
   Press B twice to exit to the main menu, but unsaved data will be lost.
 
 + #### In the crossroad
@@ -37,14 +56,14 @@ Help her earn chocolate through battle.
   Most magic consumes mana.\
   She learns one spell at each level.
 
-  Hold select key to check Runa's stats and status effects in action select menu.\
+  Press select key to check Runa's stats and status effects in action select menu.\
   In target select menu, you can see current target's stats and status effects as well.
 
-  When battle is over, chocolates and experiences are gained.\
-  The multiplier of the chocolates you get will decrease after every battle sequence.
+  At the end of battle, chocolates and experiences are gained.\
+  The multiplier of the chocolates to get will decrease after every battle sequence.
 
-  When the boss of stratum is defeated, game will proceed to next stratum, and multiplier is recovered.\
-  If the chocolate multiplier is 100% or less, the boss appears.
+  When the boss of stratum is defeated, game will proceed to next stratum, and chocolate multiplier is recovered.\
+  When the chocolate multiplier is 100% or less, the boss appears.
 
 + #### Game over
 
@@ -85,3 +104,10 @@ Help her earn chocolate through battle.
   It can be advantageous to take out as many enemies as possible in your current state.
 
   Hold A button to speed up the battle.
+
+-----
+
+Licenses
+
+Source codes are licensed under the MIT license.\
+Assets are licensed under several different licenses.
